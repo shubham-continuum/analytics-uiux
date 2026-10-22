@@ -1,0 +1,5 @@
+{
+  "baseline": "original-served.html",
+  "copiedSourceReconciled": [],
+  "legacyIsolation": "API5035; gspreview storage; server CSP restricts connect to self"
+}

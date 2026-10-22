@@ -1,0 +1,10 @@
+{
+ "file": "60-cathy.css",
+ "why": "With C1 the gsc-on class sits on One Studio's .gsx-cont host, so the root's display rule is scoped to that host too and the root fills it; the live #app takeover rules stay but never match in One Studio (#app never carries gsc-on). Reviewed by Claude 2026-10-13 (lift plan 14 L4).",
+ "edits": [
+  {
+   "find": "#app.gsc-on #gsc-root { display: grid; }",
+   "replace": "#app.gsc-on #gsc-root { display: grid; }\n.gsx-cont.gsc-on > #gsc-root { display: grid; flex: 1 1 auto; min-height: 0; }"
+  }
+ ]
+}

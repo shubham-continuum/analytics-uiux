@@ -1,0 +1,54 @@
+/* VENDORED from live Studio ext/32-basemap.css (snapshot 2026-10-06, sha256 6772c32c7ae734fd).
+   DO NOT EDIT: regenerate with plan/vendor_live.py; patches in vendor/live/patches/. */
+/* ═══════════════════════════════════════════════════════════════════════════
+   ext: 32-basemap.css — the basemap under the network (studio/BASEMAP.md).
+
+   Every basemap colour sits within a hair of the map's ground (--sunk), so the
+   network, the buses and every KPI class stay the loudest marks on the map.
+   The gate (client/tests/studio-basemap.mjs) measures it: each fill and line is
+   quieter against the ground than the quietest KPI class is (WCAG contrast), in
+   both themes. Labels are text and are held to a different bar — quieter than
+   the zone labels ext/31 draws over them, and still legible.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root{
+  --gsx-bm-water:#09101c;   /* a shade darker and bluer than the ground */
+  --gsx-bm-land:#141e30;    /* a shade lighter than the ground */
+  --gsx-bm-river:#0c1a2e;
+  --gsx-bm-county:#1d2636;
+  --gsx-bm-state:#212a39;
+  --gsx-bm-label:#434c5e;
+  --gsx-bm-label-2:#343d4e;
+  --gsx-bm-halo:#141e30;
+  --gsx-bm-tile-filter:grayscale(1) invert(1) contrast(.62) brightness(.62);
+  --gsx-bm-tile-alpha:.5;
+}
+html.light,html[data-theme="light"]:not(.dark){
+  --gsx-bm-water:#e3ebf5;
+  --gsx-bm-land:#f3f6fb;
+  --gsx-bm-river:#d9e4f1;
+  --gsx-bm-county:#e0e6ef;
+  --gsx-bm-state:#d3dae5;
+  --gsx-bm-label:#9aa3b2;
+  --gsx-bm-label-2:#b1b9c6;
+  --gsx-bm-halo:#f3f6fb;
+  --gsx-bm-tile-filter:grayscale(1) contrast(.55) brightness(1.12);
+  --gsx-bm-tile-alpha:.55;
+}
+
+.gsx-map-stage canvas.gsx-bm{pointer-events:none}
+
+/* the "Basemap" group in the layer panel */
+.gsx-bm-group{border-top:1px solid var(--border);margin-top:5px;padding-top:3px}
+.gsx-bm-h{font-size:9.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ink-4);padding:3px 2px 1px}
+.gsx-bm-group .gsx-lay em.gsx-bm-off{color:var(--ink-3)}
+
+/* the tile attribution: on the map, stacked just above the corner note (the
+   layer panel owns the left edge), while the street map is showing */
+.gsx-bm-attr{position:absolute;right:8px;bottom:26px;z-index:3;pointer-events:auto;
+  font-size:9.5px;color:var(--ink-3);background:color-mix(in srgb,var(--sunk) 86%,transparent);
+  padding:2px 6px;border-radius:var(--r-pill);max-width:60%;white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis}
+.gsx-bm-attr a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+.gsx-bm-attr[hidden]{display:none}

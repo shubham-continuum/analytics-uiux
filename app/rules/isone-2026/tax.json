@@ -1,0 +1,176 @@
+{
+ "tax": {
+  "itc_rate": {
+   "pwa": 0.3,
+   "no_pwa": 0.06,
+   "src": "IRC §48E(a)",
+   "status": "verified"
+  },
+  "ptc_rate_2026": {
+   "pwa": 0.031,
+   "no_pwa": 0.006,
+   "unit": "$/kWh",
+   "year": 2026,
+   "src": "IRS inflation adjustment 2026; R3 §1A",
+   "status": "verified"
+  },
+  "itc_basis_reduction": {
+   "value": 0.5,
+   "src": "IRC §50(c)(3)",
+   "status": "verified"
+  },
+  "bonus_depreciation": {
+   "value": 1.0,
+   "for": "property acquired after 2025-01-19",
+   "src": "P.L. 119-21 (OBBBA); IRC §168(k)",
+   "status": "verified"
+  },
+  "macrs_class_years": {
+   "solar": 5,
+   "wind": 5,
+   "storage": 5,
+   "src": "IRC §168(e)(3)(B)(vi)",
+   "status": "verified",
+   "note": "MACRS class for wind/solar that fails the eligibility gate is unverifiable (R3 §6)."
+  },
+  "wind_solar_cutoffs": {
+   "boc_by": "2026-07-04",
+   "pis_by": "2027-12-31",
+   "rule": "eligible if placed in service by 2027-12-31, OR construction began by 2026-07-04 (with continuity: PIS by Dec 31 of BOC year + 4)",
+   "src": "IRC §45Y(d)(4), §48E(e)(4) as amended by P.L. 119-21",
+   "status": "verified"
+  },
+  "notice_2025_42": {
+   "status": "contingent",
+   "value": "vacated 2026-06-06 (Oregon Environmental Council v. IRS, D.D.C. No. 25-4400); 5% safe harbor restored; appeal/stay status unverified",
+   "src": "R3 §0"
+  },
+  "storage_phaseout": {
+   "boc_year_full": 2033,
+   "boc_2034": 0.75,
+   "boc_2035": 0.5,
+   "boc_2036_on": 0,
+   "src": "IRC §45Y(d)(3), §48E(e)",
+   "status": "verified"
+  },
+  "material_assistance_thresholds": {
+   "qualified_facility": {
+    "2026": 0.4,
+    "2027": 0.45,
+    "2028": 0.5,
+    "2029": 0.55,
+    "2030": 0.6
+   },
+   "storage": {
+    "2026": 0.55,
+    "2027": 0.6,
+    "2028": 0.65,
+    "2029": 0.7,
+    "2030": 0.75
+   },
+   "applies_from_boc": "2026-01-01",
+   "src": "IRC §7701(a)(52)(B)",
+   "status": "verified",
+   "note": "The 2030 value applies to construction beginning in 2030 or later (R3 A8)."
+  },
+  "transfer_price": {
+   "itc": 0.9,
+   "ptc": 0.92,
+   "range_itc": [
+    0.88,
+    0.93
+   ],
+   "range_ptc": [
+    0.9,
+    0.95
+   ],
+   "src": "Crux 1Q2026 market report",
+   "status": "assumption"
+  },
+  "boc_continuity": {
+   "years_after_boc_year": 4,
+   "src": "Notice 2025-42 §4.04, carrying Notices 2013-29 / 2018-59 (R3 A11)",
+   "status": "verified",
+   "effective": "existing",
+   "note": "Placed in service by 31 Dec of the 4th calendar year after the BOC year is the continuity safe harbor; later is facts and circumstances (R3 G3)."
+  },
+  "boc_methods": {
+   "pre_notice_boc_before": "2025-09-02",
+   "low_output_solar_mw_ac": 1.5,
+   "src": "Notice 2025-42 §6.01-6.03 and §7 (R3 A9, rows G4 and G6)",
+   "status": "verified",
+   "effective": "2025-09-02",
+   "note": "BOC before 2025-09-02 by any method, and solar <= 1.5 MW ac on the 5% test, are outside the Notice. Other 5%-only BOC rests on the 2026-06-06 vacatur (notice_2025_42, contingent)."
+  },
+  "small_facility_full_rate": {
+   "mw_ac_below": 1,
+   "src": "IRC §48E(a)(2), §45Y(a)(2) (R3 A1, row P1)",
+   "status": "verified",
+   "effective": "facilities placed in service after 2024-12-31",
+   "note": "Below 1 MW ac the full (30% / 3.1 c) rate applies without prevailing wage and apprenticeship."
+  },
+  "credit_adders": {
+   "energy_community": {
+    "itc_points_no_pwa": 0.02,
+    "itc_points_pwa": 0.1,
+    "ptc_increase": 0.1,
+    "src": "IRC §48E(a)(3)(A), §45Y(g)(7); P.L. 119-21 §70512/70513 contain no energy-community amendment (R3 A3)",
+    "status": "verified",
+    "effective": "unchanged by OBBBA",
+    "note": "User sets it from the location (2026 list: IRS Notice 2026-39). Off unless the user says it is met."
+   },
+   "domestic_content": {
+    "itc_points_no_pwa": 0.02,
+    "itc_points_pwa": 0.1,
+    "ptc_increase": 0.1,
+    "adjusted_pct_by_boc": [
+     { "boc_before": "2025-06-16", "pct": 0.4 },
+     { "boc_before": "2026-01-01", "pct": 0.45 },
+     { "boc_before": "2027-01-01", "pct": 0.5 },
+     { "boc_before": null, "pct": 0.55 }
+    ],
+    "src": "IRC §48E(a)(3)(B) as amended by P.L. 119-21 §70513(d) (R3 A3)",
+    "status": "verified",
+    "effective": "construction beginning on or after 2025-06-16",
+    "note": "User evidence. The §45Y parallel to the tightened test is unverifiable (R3 A3); offshore wind thresholds are not modelled."
+   },
+   "ptc_adders_combine": {
+    "value": "additive",
+    "src": "R3 A3 ('PTC x1.10' per adder); each adder applied as +10% of the base amount",
+    "status": "assumption",
+    "note": "Both adders give 1.20 x the base rate, not 1.21."
+   },
+   "low_income": {
+    "value": "not applicable to the siting screen",
+    "src": "IRC §48E(h) (R3 A4)",
+    "status": "verified",
+    "note": "Competitive Treasury allocation, facilities under 5 MW ac only; cannot be self-claimed."
+   }
+  },
+  "ptc_term_years": {
+   "value": 10,
+   "src": "IRC §45Y(a)(1) (R3 A2)",
+   "status": "verified",
+   "effective": "existing"
+  },
+  "ptc_escalation": {
+   "value": 0.025,
+   "src": "R3 A2: user inflation input, default the NREL ATB 2025 inflation",
+   "status": "assumption",
+   "note": "The real factor is the GDP deflator; rates after 2026 are estimates."
+  },
+  "credit_choice": {
+   "solar": ["itc", "ptc"],
+   "wind": ["itc", "ptc"],
+   "storage": ["itc"],
+   "src": "R3 A2 (storage has no PTC), A6, §3.2 (choose the higher NPV)",
+   "status": "verified"
+  },
+  "macrs_5yr_half_year": {
+   "value": [0.2, 0.32, 0.192, 0.1152, 0.1152, 0.0576],
+   "src": "IRS Pub. 946 Table A-1, 5-year, half-year convention (R3 §3.2)",
+   "status": "assumption",
+   "note": "Standard table, not re-read in R3. Only reaches the cash flow when bonus depreciation is elected out."
+  }
+ }
+}

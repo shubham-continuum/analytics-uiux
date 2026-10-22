@@ -1,0 +1,94 @@
+/* VENDORED from live Studio ext/63-continuum-drivers.css (snapshot 2026-10-11, sha256 aebbe0d3329302df).
+   DO NOT EDIT: regenerate with plan/vendor_live.py; patches in vendor/live/continuum/patches/. */
+/* ═══════════════════════════════════════════════════════════════════════════
+   ext: 63-continuum-drivers.css — Drivers: congestion by constraint, basis by year (continuum S4 2026-10-06).
+
+   NO NEW HEX: every colour is a Studio token. Facilities take the six series identities in their fixed order
+   (--s1…--s6, the validated set in src/styles.css); past six, a neutral (--s8) — colour stops telling series
+   apart there and the legend counts them. Other is hatched (never a series hue), total-only bars are hollow,
+   ◆ is ink. Type: 12 (answer) · 11 (legend, readout) · 10.5 (notes) · 10 (chart text), inside the panel's
+   13 heading — no other sizes.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+#gsc-root .drv-wrap { min-width: 0; }
+#gsc-root .drv-answer {
+  font-family: var(--mono); font-size: 12px; color: var(--ink-2); padding: 0 0 4px;
+  font-variant-numeric: tabular-nums; line-height: 1.4;
+}
+#gsc-root .drv-svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+/* chart text: 10 px rendered (the viewBox is the slot's width, so 1 unit = 1 px) */
+#gsc-root .drv-ax { font-family: var(--mono); font-size: 10px; fill: var(--ink-3); font-variant-numeric: tabular-nums; }
+#gsc-root .drv-lab { font-family: var(--sans); font-size: 10px; fill: var(--ink-3); }
+#gsc-root .drv-meth { font-family: var(--sans); font-size: 10px; fill: var(--ink-4); letter-spacing: .02em; }
+#gsc-root .drv-m-exact { fill: var(--ink-2); }
+#gsc-root .drv-m-not_attributable { fill: var(--ink-3); font-style: italic; }
+#gsc-root .drv-s-applied { fill: var(--model); }
+#gsc-root .drv-off { fill: var(--ink-2); font-family: var(--mono); }
+#gsc-root .drv-cape { font-family: var(--sans); font-size: 10px; fill: var(--warn); font-weight: 600; cursor: help; }
+
+#gsc-root .drv-grid { stroke: var(--grid-line); stroke-width: 1; }
+#gsc-root .drv-zero { stroke: var(--ink-4); stroke-width: 1; }
+#gsc-root .drv-div { stroke: var(--border-3); stroke-width: 1; stroke-dasharray: 4 3; }
+
+/* facility segments: a hairline of the surface between neighbours so a stack reads as parts */
+#gsc-root .drv-seg { stroke: var(--surface); stroke-width: .75; cursor: crosshair; }
+#gsc-root .drv-c1 { fill: var(--s1); } #gsc-root .drv-c2 { fill: var(--s2); } #gsc-root .drv-c3 { fill: var(--s3); }
+#gsc-root .drv-c4 { fill: var(--s4); } #gsc-root .drv-c5 { fill: var(--s5); } #gsc-root .drv-c6 { fill: var(--s6); }
+#gsc-root .drv-cn { fill: var(--s8); }
+#gsc-root .drv-oth { stroke: var(--ink-3); stroke-width: .75; }
+#gsc-root .drv-hatch-bg { fill: var(--surface); }
+#gsc-root .drv-hatch-ln { stroke: var(--ink-3); stroke-width: 1.6; }
+#gsc-root .drv-tot { fill: var(--sunk); stroke: var(--ink-3); stroke-width: 1.2; stroke-dasharray: 3 2; }
+#gsc-root .drv-seg:hover { stroke: var(--ink); stroke-width: 1.2; }
+#gsc-root .drv-net { fill: var(--ink); stroke: var(--surface); stroke-width: 1.2; cursor: crosshair; }
+#gsc-root .drv-band line { stroke: var(--ink-2); stroke-width: 1; }
+#gsc-root .drv-break { fill: none; stroke: var(--surface); stroke-width: 2.4; }
+
+/* basis lines */
+#gsc-root .drv-line { fill: none; stroke-width: 1.6; }
+#gsc-root .drv-line.drv-l1 { stroke: var(--s1); } #gsc-root .drv-line.drv-l3 { stroke: var(--s3); } #gsc-root .drv-line.drv-l6 { stroke: var(--s6); }
+#gsc-root .drv-line.drv-dash { stroke-dasharray: 5 3; }
+#gsc-root .drv-pt { stroke: var(--surface); stroke-width: 1; cursor: crosshair; }
+#gsc-root .drv-pt.drv-l1 { fill: var(--s1); } #gsc-root .drv-pt.drv-l3 { fill: var(--s3); } #gsc-root .drv-pt.drv-l6 { fill: var(--s6); }
+
+/* the readout under the chart: a DOM line, never a redraw */
+#gsc-root .drv-readout {
+  min-height: 18px; padding: 3px 0; font-family: var(--mono); font-size: 11px; color: var(--ink-2);
+  font-variant-numeric: tabular-nums; border-top: 1px solid var(--border); overflow-wrap: anywhere;
+}
+
+/* legend */
+#gsc-root .drv-legend { display: flex; flex-wrap: wrap; gap: 3px 12px; padding: 4px 0 2px; font-size: 11px; color: var(--ink-3); }
+#gsc-root .drv-li { display: inline-flex; align-items: center; gap: 5px; min-width: 0; }
+#gsc-root .drv-sw { display: inline-block; width: 11px; height: 11px; border-radius: 2px; flex: 0 0 11px; }
+#gsc-root .drv-sw.drv-c1 { background: var(--s1); } #gsc-root .drv-sw.drv-c2 { background: var(--s2); }
+#gsc-root .drv-sw.drv-c3 { background: var(--s3); } #gsc-root .drv-sw.drv-c4 { background: var(--s4); }
+#gsc-root .drv-sw.drv-c5 { background: var(--s5); } #gsc-root .drv-sw.drv-c6 { background: var(--s6); }
+#gsc-root .drv-sw.drv-cn { background: var(--s8); }
+#gsc-root .drv-sw.drv-oth-sw {
+  background: repeating-linear-gradient(45deg, var(--ink-3) 0 1.5px, var(--surface) 1.5px 4px); border: 1px solid var(--ink-3);
+}
+#gsc-root .drv-sw.drv-tot-sw { background: var(--sunk); border: 1px dashed var(--ink-3); }
+#gsc-root .drv-sw.drv-net-sw { width: 8px; height: 8px; flex-basis: 8px; background: var(--ink); transform: rotate(45deg); border-radius: 0; margin: 0 2px; }
+#gsc-root .drv-sw.drv-band-sw { width: 3px; flex-basis: 3px; background: none; border: 0; border-left: 1px solid var(--ink-2);
+  border-top: 1px solid var(--ink-2); border-bottom: 1px solid var(--ink-2); border-radius: 0; }
+#gsc-root .drv-sw.drv-swl { height: 3px; border-radius: 0; }
+#gsc-root .drv-sw.drv-swl.drv-l1 { background: var(--s1); } #gsc-root .drv-sw.drv-swl.drv-l3 { background: var(--s3); }
+#gsc-root .drv-sw.drv-swl.drv-l6 { background: repeating-linear-gradient(90deg, var(--s6) 0 5px, transparent 5px 8px); }
+
+/* notes inside the body (the not-attributable list, the Cape note, what was read) */
+#gsc-root .drv-note { padding: 3px 0 0; font-size: 10.5px; color: var(--ink-4); line-height: 1.45; }
+#gsc-root .drv-capenote { color: var(--ink-3); }
+#gsc-root .drv-wrap .gsc-empty .gsc-btn { margin-top: 6px; }
+
+/* S-nav 2026-10-07 · the basis fan and the PPA bars (Offtake); type on the Continuum's six-size scale */
+#gsc-root .drv-ax, #gsc-root .drv-lab, #gsc-root .drv-meth, #gsc-root .drv-cape, #gsc-root .drv-note { font-size: 11px; }
+#gsc-root .drv-fan-o { opacity: .22; }
+#gsc-root .drv-fan-i { opacity: .5; }
+#gsc-root .drv-fan.drv-l1 rect { fill: var(--s1); } #gsc-root .drv-fan.drv-l3 rect { fill: var(--s3); } #gsc-root .drv-fan.drv-l6 rect { fill: var(--s6); }
+#gsc-root .drv-fan-m { stroke: var(--ink-2); stroke-width: 1.4; }
+#gsc-root .drv-sw.drv-swl.drv-fan-sw { background: linear-gradient(90deg, color-mix(in srgb, var(--ink-3) 30%, transparent) 0 50%, color-mix(in srgb, var(--ink-3) 65%, transparent) 50% 100%); }
+#gsc-root .ppa-bar { stroke: none; }
+#gsc-root .ppa-bar.ppa-run { fill-opacity: .55; stroke: var(--s6); stroke-width: 1; stroke-dasharray: 3 2; }
+#gsc-root .drv-answer { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

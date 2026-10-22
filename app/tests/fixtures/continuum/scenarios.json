@@ -1,0 +1,89 @@
+{
+ "request": {
+  "path": "/api/v2/scenarios",
+  "query": {}
+ },
+ "status": 200,
+ "body": {
+  "applies_to": [
+   "solved",
+   "escalated"
+  ],
+  "base_plan": {
+   "2028": "5yr",
+   "2030": "pcr2030",
+   "2035": "pcr2035",
+   "2040": "pcr2040",
+   "2045": "pcr2040",
+   "2050": "pcr2040"
+  },
+  "cape": {
+   "flags_status": null,
+   "from": "5yr",
+   "rule": "At a bus in run_input_flags.cape_5yr the 2028 Base is PCR 2030 as it is, where held (studio/PRICE-BASIS.md).",
+   "to": "pcr2030",
+   "year": 2028
+  },
+  "dataset_version": "b2d996e970c4",
+  "escalated_years": {
+   "2045": {
+    "run": "pcr2040",
+    "run_year": 2040,
+    "steps": 1
+   },
+   "2050": {
+    "run": "pcr2040",
+    "run_year": 2040,
+    "steps": 2
+   }
+  },
+  "method": "Proxy scenario = Base \u00d7 factor (D-002): High Gas \u00d7 1.10, Low Gas \u00d7 0.90, High Load \u00d7 1.20. Base is the run the Studio price basis reads each year \u2014 2028 the 5yr run (PCR 2030 at a Cape-flagged bus, studio/PRICE-BASIS.md), 2030/2035/2040 the PCR runs, 2045/2050 PCR 2040 \u00d7 cathy.meta.vendor_step per five years. LMP, energy, congestion and loss all scale by the same factor, so LMP = energy + congestion + loss stays exact (components on the settled sign, tools/lmp_components.py). Hourly shapes scale uniformly: every hour \u00d7 the factor. Revenue, capture and spreads are computed downstream from the scaled prices \u2014 so a capture RATIO is unchanged by a proxy while $/MWh capture prices and spreads scale by the factor. Settled history is never scaled: proxies apply to solved and escalated years only.",
+  "never_scaled": [
+   "settled"
+  ],
+  "notice": "High Gas, Low Gas and High Load are proxies (illustrative proxy \u2014 not a PROBE run): Base \u00d7 a fixed factor, not a solved market outcome. They exist to build and check the scenario workflow until PROBE runs land.",
+  "proxy_label": "illustrative proxy \u2014 not a PROBE run",
+  "scenarios": [
+   {
+    "factor": 1.0,
+    "id": "base",
+    "kind": "base",
+    "label": "Base",
+    "note": "The run the Studio price basis reads each year (ext/76 PLAN; studio/PRICE-BASIS.md)."
+   },
+   {
+    "factor": 1.1,
+    "id": "high_gas",
+    "kind": "proxy",
+    "label": "High Gas \u2014 illustrative proxy \u2014 not a PROBE run",
+    "note": "Base \u00d7 1.10 (D-002). Stands in for a PROBE High Gas run until one is held."
+   },
+   {
+    "factor": 0.9,
+    "id": "low_gas",
+    "kind": "proxy",
+    "label": "Low Gas \u2014 illustrative proxy \u2014 not a PROBE run",
+    "note": "Base \u00d7 0.90 (D-002). Stands in for a PROBE Low Gas run until one is held."
+   },
+   {
+    "factor": 1.2,
+    "id": "high_load",
+    "kind": "proxy",
+    "label": "High Load \u2014 illustrative proxy \u2014 not a PROBE run",
+    "note": "Base \u00d7 1.20 (D-002). Stands in for a PROBE High Load run until one is held."
+   }
+  ],
+  "solved_years": [
+   2028,
+   2030,
+   2035,
+   2040
+  ],
+  "vendor_step": 1.0816,
+  "vendor_step_note": null,
+  "wraps": {
+   "/api/v2/prices/hours": "scenario= on a solved source (the Base run for its year at the bus)",
+   "/api/v2/prices/map": "scenario= on market RUN (Base run per year; Cape buses at 2028 read PCR 2030)"
+  }
+ }
+}

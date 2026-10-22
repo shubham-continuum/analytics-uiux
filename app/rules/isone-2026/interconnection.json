@@ -1,0 +1,413 @@
+{
+ "interconnection": {
+  "_about": "S3 (2026-10-06): every entry carries src, status and effective date from v8-isone-complete/research/R1-interconnection-isone.md (the REGISTER §1 rows). Read by rules/isone.js only; the app never types these numbers.",
+  "schedule22": {
+   "_scope": "Large generators (> 20 MW). ISO-NE OATT Schedule 22, Order 2023 compliance accepted in part 2025-04 and in full 2025-08-28 (192 FERC ¶ 61,185).",
+   "profile": {
+    "value": "ISO-NE OATT Schedule 22 (Order 2023 compliance)",
+    "src": "191 FERC ¶ 61,018 (2025-04-04) and 192 FERC ¶ 61,185 (2025-08-28); compiled Sched 22 PDF stamped 9/1/26",
+    "status": "corrected",
+    "effective": "2024-08-12",
+    "note": "eTariff version ID not verified (R1 Q-A); the compiled PDF retrieved 2026-10-06 is the text read."
+   },
+   "small_generator_max_mw": {
+    "value": 20,
+    "unit": "MW",
+    "src": "Sched 22 §1; Sched 23 §1",
+    "status": "verified",
+    "effective": "2024-08-12",
+    "note": "Large Generating Facility = more than 20 MW; 20 MW or less follows Schedule 23."
+   },
+   "initial_deposit": {
+    "value": 50000,
+    "unit": "$",
+    "cash": true,
+    "src": "Sched 22 §3.4.1.1",
+    "status": "verified",
+    "effective": "2024-08-12"
+   },
+   "study_deposit": {
+    "value": 250000,
+    "alt": {
+     "value": 100000,
+     "when": "request already holds NRIS, or converts NR to CNR"
+    },
+    "unit": "$",
+    "cash": true,
+    "src": "Sched 22 §3.4.1.1",
+    "status": "corrected",
+    "effective": "2024-08-12"
+   },
+   "readiness_deposit_initial": {
+    "multiple_of_study_deposit": 2,
+    "forms": [
+     "cash",
+     "letter of credit",
+     "surety bond"
+    ],
+    "src": "Sched 22 §3.4.2(vii)",
+    "status": "corrected",
+    "effective": "2024-08-12",
+    "note": "Only $300k of the $800k entry is cash; the $500k readiness deposit may be an LC or a bond."
+   },
+   "deposit_in_lieu_site_control": {
+    "per_mw": 10000,
+    "min": 500000,
+    "max": 2000000,
+    "applies": "NRIS only, where a regulatory limitation applies",
+    "service": "NRIS",
+    "cash": true,
+    "src": "Sched 22 §3.4.2",
+    "status": "verified",
+    "effective": "2024-08-12",
+    "note": "Cash, in addition to the entry deposits; refundable; 100% site control due within 180 days of the LGIA effective date."
+   },
+   "readiness_deposit_restudy": {
+    "pct_of_network_upgrades": 0.05,
+    "due_days": 20,
+    "src": "Sched 22 §7.5(1)",
+    "status": "verified",
+    "effective": "2024-08-12"
+   },
+   "readiness_deposit_facilities_study": {
+    "pct_of_network_upgrades": 0.1,
+    "due_days": 30,
+    "src": "Sched 22 §8.1",
+    "status": "verified",
+    "effective": "2024-08-12"
+   },
+   "readiness_floor": {
+    "value": "the total readiness deposit never falls below what is already posted: CRD_k = max(CRD paid, x_k × NU)",
+    "src": "Sched 22 §7.5(1)(b), §8.1(3), §3.7, §11.3.1.1 (wording)",
+    "status": "unverifiable",
+    "effective": "2024-08-12",
+    "note": "No clause releases excess readiness deposit before withdrawal or LGIA; whether ISO-NE releases it in practice is open (R1 Q-E)."
+   },
+   "facilities_study_deposit": {
+    "rule": "max(0.25 × estimated facilities-study cost, 250000)",
+    "pct": 0.25,
+    "min": 250000,
+    "src": "Sched 22 §8.1",
+    "status": "verified",
+    "effective": "2024-08-12"
+   },
+   "lgia_deposit": {
+    "pct_of_network_upgrades": 0.2,
+    "less": "readiness deposits already paid",
+    "src": "Sched 22 §11.3.1.1",
+    "status": "verified",
+    "effective": "2024-08-12"
+   },
+   "site_control_at_request": {
+    "value": 1.0,
+    "note": "100% at request. CNRIS has no exception; NRIS may post the deposit in lieu where a regulatory limitation applies.",
+    "src": "Sched 22 §3.4.2",
+    "status": "corrected",
+    "effective": "2024-08-12"
+   },
+   "request_window": {
+    "days": 45,
+    "window_2026": [
+     "2026-10-05",
+     "2026-11-19"
+    ],
+    "next_window": "cluster results meeting (or restudy results meeting) + 60 days, 30 days' public notice",
+    "next_window_after_meeting_days": 60,
+    "src": "Sched 22 §3.4.1; ISO-NE notice",
+    "status": "verified",
+    "effective": "2025-05-03",
+    "note": "Window dates per ISO Newswire 2026-09-18 and the ISO-NE Interconnection Process Guide; transition dates effective 2025-05-03 (ER25-2149)."
+   },
+   "customer_engagement_window_days": {
+    "value": 60,
+    "src": "Sched 22 §3.4.5",
+    "status": "verified",
+    "effective": "2024-08-12"
+   },
+   "cluster_study_days": {
+    "value": 270,
+    "from": "CEW close",
+    "kind": "deadline, not an earliest date",
+    "src": "Sched 22 §7.4",
+    "status": "corrected",
+    "effective": "2024-08-12"
+   },
+   "report_meeting_business_days": {
+    "value": 10,
+    "unit": "business days",
+    "src": "Sched 22 §7.4",
+    "status": "verified",
+    "effective": "2024-08-12",
+    "note": "Business days Mon–Fri; no holiday calendar is held."
+   },
+   "restudy_decision_days": {
+    "value": 30,
+    "unit": "days",
+    "src": "Sched 22 §7.5(3)-(4)",
+    "status": "verified",
+    "effective": "2024-08-12"
+   },
+   "restudy_days": {
+    "value": 90,
+    "repeatable": true,
+    "src": "Sched 22 §7.5(5)",
+    "status": "verified",
+    "effective": "2024-08-12"
+   },
+   "facilities_study_days": {
+    "options": [
+     90,
+     180
+    ],
+    "waivable": "elect within 20 days of the results meeting; only if no shared network upgrade or all sharers agree",
+    "src": "Sched 22 §8.3, §8.5, §7.5",
+    "status": "verified",
+    "effective": "2024-08-12"
+   },
+   "facilities_study_agreement": {
+    "tender_business_days": 5,
+    "execute_days": 30,
+    "src": "Sched 22 §8.1",
+    "status": "verified",
+    "effective": "2024-08-12",
+    "note": "Tendered within 5 business days of the 'no further restudy' notice; executed within 30 days."
+   },
+   "facilities_study_waiver_days": {
+    "value": 20,
+    "unit": "days after the results meeting",
+    "src": "Sched 22 §7.5, §8.1",
+    "status": "verified",
+    "effective": "2024-08-12"
+   },
+   "lgia_tender_days": {
+    "value": 15,
+    "unit": "days after FS comments or waiver notice",
+    "src": "Sched 22 §11.1",
+    "status": "verified",
+    "effective": "2024-08-12"
+   },
+   "withdrawal_penalty": {
+    "rule": "max(study deposit, 2 × allocated study cost | 5% | 10% | 20% of network upgrades by phase), with exemptions",
+    "study_cost_multiple": 2,
+    "none_before": "the initial Cluster Study commences",
+    "src": "Sched 22 §3.7.1",
+    "status": "verified",
+    "effective": "2024-08-12",
+    "note": "Pro forma adopted without modification ([F1] §IV.B.1.j). Paid from the readiness deposit; the unapplied deposit is refunded (§3.7)."
+   },
+   "withdrawal_penalty_exemptions": {
+    "rule": "no penalty if the network-upgrade cost in the most recent Cluster Restudy Report is more than 25% above the preceding report, or the Facilities Study Report more than 100% above the Cluster Study or Restudy Report; nor if the withdrawal does not materially affect any request in the same Cluster",
+    "restudy_increase_gt": 0.25,
+    "facilities_increase_gt": 1.0,
+    "src": "Sched 22 §3.7.1, §3.7.1.1",
+    "status": "corrected",
+    "effective": "2024-08-12",
+    "note": "Strictly more than; the 25% test is measured on a Cluster Restudy Report only (no exemption off the first Cluster Study Report)."
+   },
+   "cost_allocation": {
+    "method": "proportional impact",
+    "impact": "MW_service × max(DFAX_NR, DFAX_CNR)",
+    "dfax_threshold": 0.03,
+    "share": "impact ÷ Σ impact over participants with DFAX > 3%",
+    "multi_element": "a project's impact is the sum over elements of its highest impact on each",
+    "src": "Sched 11 §5; PP5-6 Rev 15 §10.4.4 (effective 2026-10-02)",
+    "status": "corrected",
+    "effective": "2026-10-02"
+   },
+   "screening_thresholds": {
+    "ncis_overload_pct": 0.02,
+    "ncis_flow_increase_pct": 0.02,
+    "ccis_overload_mva": 10,
+    "src": "PP5-6 Rev 15 §3.1.1 Table 3.1.1.1",
+    "status": "verified",
+    "effective": "2026-10-02",
+    "note": "NCIS: record overloads at least 2% above the applicable rating; a project is associated if it raises flow by 2% and its DFAX is above 3%. CCIS: more than 10 MVA above rating, or at least 2%."
+   },
+   "storage_charging_study_basis": {
+    "value": "net shoulder load (17,680 MW); storage charging is not studied at peak",
+    "src": "PP5-6 §9, Table 3.5.1.1",
+    "status": "verified",
+    "effective": "2026-10-02"
+   },
+   "ratings": {
+    "pre_contingency": "Normal",
+    "post_contingency": "LTE (STE limited)",
+    "src": "PP5-6 Table 3.1.1.2",
+    "status": "verified",
+    "effective": "2026-10-02",
+    "note": "Mapping of the DB's Rate A / Rate C columns to Normal / LTE is unverifiable from the DB; label as 'rating as stored'."
+   }
+  },
+  "schedule23": {
+   "_scope": "Small generators (≤ 20 MW). ISO-NE OATT Schedule 23.",
+   "initial_deposit": {
+    "value": 15000,
+    "unit": "$",
+    "src": "Sched 23",
+    "status": "verified",
+    "effective": "2024-08-12"
+   },
+   "study_deposit": {
+    "value": 100000,
+    "alt": {
+     "value": 50000,
+     "when": "NR studied, converting"
+    },
+    "unit": "$",
+    "src": "Sched 23",
+    "status": "verified",
+    "effective": "2024-08-12"
+   },
+   "readiness_deposit_initial": {
+    "multiple_of_study_deposit": 2,
+    "forms": [
+     "cash",
+     "letter of credit",
+     "surety bond"
+    ],
+    "src": "Sched 23 §3.4.2(vii)",
+    "status": "verified",
+    "effective": "2024-08-12"
+   },
+   "deposit_in_lieu_site_control": {
+    "per_mw": 10000,
+    "min": 50000,
+    "max": 200000,
+    "src": "Sched 23",
+    "status": "verified",
+    "effective": "2024-08-12"
+   },
+   "same_as_schedule22": {
+    "value": "clocks, readiness stages (5% / 10% / 20%), withdrawal penalty, cost allocation, site control at request, CNR/NR choice",
+    "src": "Sched 23 §3.4.1, §3.4.5, §7.4, §7.5, §8.1, §3.7.1.1",
+    "status": "verified",
+    "effective": "2024-08-12",
+    "note": "Schedule 23 runs inside the same Cluster Request Window and Cluster Study as Schedule 22 (R1 §9)."
+   }
+  },
+  "proforma": {
+   "_scope": "FERC Order 2023 pro forma LGIP (labelled fallback for transmission providers outside an RTO). Not the ISO-NE rule.",
+   "profile": {
+    "value": "Federal pro forma (FERC Order 2023): not the ISO-NE rule",
+    "src": "Order 2023, 184 FERC ¶ 61,054 (2023-07-28); vault ferc-order-2023-summary.md",
+    "status": "verified",
+    "effective": "2023-07-28",
+    "note": "Order date; each provider's compliance filing sets its own effective date."
+   },
+   "application_fee": {
+    "value": 5000,
+    "unit": "$",
+    "src": "Order 2023 pro forma LGIP §3.4.1 (vault summary)",
+    "status": "verified",
+    "effective": "2023-07-28"
+   },
+   "study_deposit_tiers": {
+    "min_mw_gt": 20,
+    "tiers": [
+     {
+      "below_mw": 80,
+      "base": 35000,
+      "per_mw": 1000
+     },
+     {
+      "below_mw": 200,
+      "value": 150000
+     },
+     {
+      "value": 250000
+     }
+    ],
+    "src": "Order 2023 pro forma LGIP §3.4.1 (vault summary)",
+    "status": "verified",
+    "effective": "2023-07-28",
+    "note": "20 MW and below follows the small-generator procedures (not modelled under this profile)."
+   },
+   "readiness_deposit_initial": {
+    "multiple_of_study_deposit": 2,
+    "src": "Order 2023 pro forma LGIP §3.4.2 (R1 §2)",
+    "status": "verified",
+    "effective": "2023-07-28"
+   },
+   "readiness_stages": {
+    "restudy": 0.05,
+    "facilities_study": 0.1,
+    "lgia": 0.2,
+    "src": "Order 2023 pro forma LGIP §7.5, §8.1, §11.3 (R1 §2)",
+    "status": "verified",
+    "effective": "2023-07-28"
+   },
+   "site_control_at_request": {
+    "value": 0.9,
+    "at_facilities_study": 1.0,
+    "src": "Order 2023 pro forma LGIP §3.4.2 (vault summary)",
+    "status": "verified",
+    "effective": "2023-07-28"
+   },
+   "deposit_in_lieu_site_control": {
+    "per_mw": 10000,
+    "min": 500000,
+    "max": 2000000,
+    "applies": "where a regulatory limitation applies",
+    "src": "Order 2023 pro forma LGIP §3.4.2 (vault summary)",
+    "status": "verified",
+    "effective": "2023-07-28"
+   },
+   "customer_engagement_window_days": {
+    "value": 60,
+    "src": "Order 2023 pro forma LGIP §3.4.5 (R1 §3a)",
+    "status": "verified",
+    "effective": "2023-07-28"
+   },
+   "cluster_study_days": {
+    "value": 150,
+    "src": "Order 2023 pro forma LGIP §7.4 (vault summary)",
+    "status": "verified",
+    "effective": "2023-07-28"
+   },
+   "restudy_days": {
+    "value": 150,
+    "src": "Order 2023 pro forma LGIP §7.5 (vault summary)",
+    "status": "verified",
+    "effective": "2023-07-28"
+   },
+   "facilities_study_days": {
+    "options": [
+     90,
+     180
+    ],
+    "src": "Order 2023 pro forma LGIP §8.3 (vault summary)",
+    "status": "verified",
+    "effective": "2023-07-28"
+   }
+  },
+  "storage_charge_screen": {
+   "_scope": "Battery charge cap screen (S2-EM economics-charge.js): the hours treated as system peak, when charging is screened against the governing charge limit.",
+   "peak_window": {
+    "months": [
+     6,
+     7,
+     8,
+     9
+    ],
+    "months_label": "June–September",
+    "he_start": 14,
+    "he_end": 18,
+    "hours_label": "HE14–HE18 (hour ending, EPT)",
+    "src": "Market Rule 1 §III.13.1.2.2.2.1",
+    "status": "assumption",
+    "effective": "2025-05-03",
+    "note": "The MR1 Summer Intermittent Reliability Hours (HE14–HE18, Jun–Sep; R2 §A2, verified for intermittent QC, tariff version eff. 2025-05-03 ER25-2149) used here as the storage peak-charging screen window. Using them for a charge cap is a GridSense assumption, not an ISO-NE storage rule."
+   }
+  },
+  "thermal_screen": {
+   "_scope": "GAPS §4.4 apparent-power screen. The pf bound is a sensitivity, never a study result.",
+   "pf_min_sensitivity": {
+    "value": 0.95,
+    "src": "FERC Order 827 (±0.95 dynamic reactive range; vault: ENTERGY Sources router A14.1 excerpt); GAPS §4.4",
+    "status": "assumption",
+    "effective": "not held (the vault excerpt carries no order date)",
+    "note": "Used only where Q is not held: loading ≈ |P + DFAX × MW| ÷ (rating × pf). A labelled sensitivity."
+   }
+  }
+ }
+}

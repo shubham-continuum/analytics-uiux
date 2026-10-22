@@ -1,0 +1,42 @@
+{
+ "file": "63-continuum-drivers.js",
+ "why": "Null policy (D-007) on Drivers > Congestion by constraint: a period the Continuum service does not hold (net_mcc null, reason in not_held; e.g. settled DA 2021-24 at buses 100095, 103029, 110762, 111348, 119759) drew NaN SVG coordinates and threw null.replace in readoutText. It now keeps its column as a gap labelled 'not held' (reason on hover), is left out of the axis range, outlier test and answer-line ranges, and is one 'not held' row in the table/CSV, never a 0. Reviewed by Claude 2026-10-14 (fixer devkit-cont, L5 finding).",
+ "edits": [
+  {
+   "find": "    const cols = o.all.map(p => {\n      const parts = partsOf(p);",
+   "replace": "    const cols = o.all.map(p => {\n      /* C3: a period the server does not hold (net_mcc null; its reason in p.not_held) keeps its column but has no\n         parts and no net: a gap labelled \"not held\", never a 0 bar or a NaN coordinate */\n      if (p.net_mcc == null) return { p, nh: true, parts: [], pos: 0, neg: 0, ext: null, scen: scenMark(body, p), cape: !!(p.cape && p.cape.flagged) };\n      const parts = partsOf(p);"
+  },
+  {
+   "find": "    const idx = exts.map((e, i) => [e, i]).sort((a, b) => b[0] - a[0]);",
+   "replace": "    const idx = exts.map((e, i) => [e, i]).filter(x => x[0] != null).sort((a, b) => b[0] - a[0]);  // C3: not held is no extent"
+  },
+  {
+   "find": "    m.cols.forEach((c, i) => { if (out.has(i)) return; lo = Math.min(lo, c.neg, c.p.net_mcc);",
+   "replace": "    m.cols.forEach((c, i) => { if (out.has(i) || c.nh) return; lo = Math.min(lo, c.neg, c.p.net_mcc);"
+  },
+  {
+   "find": "      const ny = sy(p.net_mcc), d = 5;\n      const dm = sv('path', { class: 'drv-net', d: `M${cxp},${ny - d} L${cxp + d},${ny} L${cxp},${ny + d} L${cxp - d},${ny} Z`, 'data-drv-net': p.net_mcc });\n      const dt = sv('title'); dt.textContent = readoutText(c, null); dm.appendChild(dt);\n      hits.set(dm, readoutText(c, null));\n      g.appendChild(dm);",
+   "replace": "      if (c.nh) {  /* C3: not held — the words in the empty column, the server's reason on hover */\n        const ym = (P.t + Hp / 2).toFixed(2);  // vertical, mid-plot: an empty column has room, neighbours never collide\n        const nt = sv('text', { class: 'drv-lab drv-nh', x: cxp, y: ym, transform: `rotate(-90 ${cxp.toFixed(2)} ${ym})`, 'text-anchor': 'middle', 'dominant-baseline': 'middle', 'data-drv-not-held': p.period }, 'not held');\n        const tt = sv('title'); tt.textContent = readoutText(c, null); nt.appendChild(tt);\n        g.appendChild(nt);\n      } else {\n      const ny = sy(p.net_mcc), d = 5;\n      const dm = sv('path', { class: 'drv-net', d: `M${cxp},${ny - d} L${cxp + d},${ny} L${cxp},${ny + d} L${cxp - d},${ny} Z`, 'data-drv-net': p.net_mcc });\n      const dt = sv('title'); dt.textContent = readoutText(c, null); dm.appendChild(dt);\n      hits.set(dm, readoutText(c, null));\n      g.appendChild(dm);\n      }"
+  },
+  {
+   "find": "      const meth = p.method === 'not_attributable' ? 'total only' : p.method;\n      [[yr, 'drv-ax'], [src, 'drv-ax'], [meth, `drv-meth drv-m-${p.method}`]]",
+   "replace": "      const meth = c.nh ? null : p.method === 'not_attributable' ? 'total only' : p.method;  // C3\n      [[yr, 'drv-ax'], [src, 'drv-ax'], [meth, `drv-meth drv-m-${c.nh ? 'not-held' : p.method}`]]"
+  },
+  {
+   "find": "    if (!x) return `${pw} · net MCC ${sgn(p.net_mcc)} $/MWh · ${p.method.replace('_', ' ')}",
+   "replace": "    if (!x && p.net_mcc == null) return `${pw} · not held${p.not_held ? ` — ${p.not_held}` : ''}`;  // C3\n    if (!x) return `${pw} · net MCC ${sgn(p.net_mcc)} $/MWh · ${String(p.method || 'not held').replace('_', ' ')}"
+  },
+  {
+   "find": "      const meth = p.method.replace('_', ' ');",
+   "replace": "      const meth = p.method == null ? 'not held' : p.method.replace('_', ' ');  // C3"
+  },
+  {
+   "find": "      if (p.method === 'not_attributable') {\n        rows.push(base.concat(['total only',",
+   "replace": "      if (c.nh) {  // C3: not held — the server's reason, never a 0\n        rows.push(base.concat(['not held', '', '', 'not held', '', '', '', 'not held', r2, c.scen.word, flag, p.not_held || 'not held by the server']));\n        return;\n      }\n      if (p.method === 'not_attributable') {\n        rows.push(base.concat(['total only',"
+  },
+  {
+   "find": "    const s = m.cols.filter(c => c.p.kind === 'settled').map(c => c.p.net_mcc);\n    const r = m.cols.filter(c => c.p.kind !== 'settled').map(c => c.p.net_mcc);",
+   "replace": "    const s = m.cols.filter(c => c.p.kind === 'settled' && !c.nh).map(c => c.p.net_mcc);  // C3: not held is no range point\n    const r = m.cols.filter(c => c.p.kind !== 'settled' && !c.nh).map(c => c.p.net_mcc);"
+  }
+ ]
+}

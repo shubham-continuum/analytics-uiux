@@ -1,0 +1,115 @@
+/* VENDORED from live Studio ext/61-hourly-timeline.css (snapshot 2026-10-11, sha256 eb48cd6836f170e2).
+   DO NOT EDIT: regenerate with plan/vendor_live.py; patches in vendor/live/continuum/patches/. */
+/* ═══════════════════════════════════════════════════════════════════════════
+   ext: 61-hourly-timeline.css — LMP Continuum "Hourly · history + forecast"
+   and the Prices-stage card 5.41.
+
+   NO NEW HEX. Series colours are the Studio's validated tokens (--s1 settled,
+   --s2…--s6 the runs, --s7 the hub), set per path as var(--sN) so the theme
+   toggle recolours without a redraw. Gaps are hatched in --border-2 on --sunk.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── control bar ─────────────────────────────────────────────────────────── */
+.htl-body { display: flex; flex-direction: column; gap: 6px; }
+.htl-ctl { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; padding: 2px 0 4px; }
+.htl-f { display: inline-flex; align-items: center; gap: 5px; min-width: 0; flex-wrap: wrap; }
+.htl-lab { font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-4); white-space: nowrap; }
+.htl-sel, .htl-num {
+  height: 24px; padding: 0 4px; font: inherit; font-size: 11px; color: var(--ink-2);
+  background: var(--surface); border: 1px solid var(--border-2); border-radius: var(--gsc-panel-r, 4px); max-width: 230px;
+}
+.htl-num { width: 74px; font-family: var(--mono); }
+.htl-sel:focus, .htl-num:focus { outline: 2px solid var(--accent-line); outline-offset: -1px; }
+.htl-runs { display: inline-flex; flex-wrap: wrap; gap: 4px; }
+.htl-run { height: 22px; font-size: 11px; }
+.htl-run[aria-pressed="false"] { color: var(--ink-4); }
+.htl-run[aria-pressed="false"] .htl-sw { opacity: .35; }
+.htl-tg[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); border-color: var(--accent-line); }
+.htl-tg:disabled { opacity: .45; cursor: not-allowed; }
+.htl-act { margin-left: auto; }
+
+/* a swatch: solid for settled, dashed for a solved run; the colour arrives as --c */
+.htl-sw { display: inline-block; width: 16px; height: 0; flex: 0 0 16px; border-top: 2.5px solid var(--c, var(--ink-3)); vertical-align: middle; margin-right: 5px; }
+.htl-sw.dash { border-top-style: dashed; }
+.htl-sw.gap, .htl-sw.hole { height: 10px; border: 1px solid var(--border-2); background: repeating-linear-gradient(45deg, var(--border-2) 0 1px, transparent 1px 4px), var(--sunk); }
+.htl-sw.hole { border-style: dashed; }
+.htl-sw.band { height: 8px; border: 0; background: var(--s1); opacity: .25; }
+
+/* ── notices ─────────────────────────────────────────────────────────────── */
+.htl-notice { display: none; font-size: 11px; line-height: 1.45; color: var(--ink-2); padding: 5px 8px;
+  border: 1px solid var(--warn-line, var(--border-2)); border-left: 3px solid var(--warn, var(--border-3)); border-radius: 4px; background: var(--sunk); }
+.htl-notice.on { display: block; }
+.htl-empty { margin: 2px 0; }
+
+/* ── the chart ───────────────────────────────────────────────────────────── */
+.htl-box { position: relative; width: 100%; min-width: 0; user-select: none; cursor: crosshair; }
+.htl-svg { display: block; overflow: visible; }
+.htl-line { fill: none; stroke-width: 1.15; stroke-linejoin: round; stroke-linecap: butt; vector-effect: non-scaling-stroke; }
+.htl-line.exact { stroke-width: 1.5; }
+.htl-line.hub { stroke-width: 1; }
+.htl-line.ov { stroke-width: .9; }
+.htl-band { stroke: none; fill-opacity: .2; }
+.htl-band.hub { fill-opacity: .1; }
+.htl-band.ov { fill-opacity: .28; }
+.htl-hatch { stroke: var(--border-2); stroke-width: 1.2; }
+.htl-gap { stroke: none; }
+.htl-hole { stroke: var(--border-3); stroke-width: 1; stroke-dasharray: 3 2; }
+.htl-gapl { font-family: var(--mono); font-size: 9.5px; fill: var(--ink-3); paint-order: stroke; stroke: var(--surface); stroke-width: 3px; }
+.htl-div { stroke: var(--ink-3); stroke-width: 1.2; stroke-dasharray: 3 2; }
+.htl-divl { font-family: var(--sans); font-size: 10px; fill: var(--ink-2); paint-order: stroke; stroke: var(--surface); stroke-width: 3px; }
+.htl-zero { stroke: var(--ink-4); }
+.htl-segl { font-family: var(--sans); font-size: 10px; fill: var(--ink-2); }
+.htl-segbar { stroke-width: 2; opacity: .8; }
+.htl-ov { cursor: pointer; margin-top: 2px; }
+.htl-ovbg { fill: var(--sunk); }
+.htl-ovgap { fill: var(--surface); opacity: .75; }
+.htl-brush { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1; }
+
+/* hover readout, crosshair and the drag selection — DOM, so a hover never redraws */
+.htl-tip {
+  position: absolute; pointer-events: none; z-index: 5; opacity: 0; transition: opacity .08s var(--ease, ease);
+  background: var(--raised); border: 1px solid var(--border-3); border-radius: 4px; box-shadow: var(--shadow-sm);
+  padding: 4px 7px; font-family: var(--mono); font-size: 10.5px; line-height: 1.45; color: var(--ink); max-width: 460px;
+}
+.htl-tip.on { opacity: 1; }
+.htl-tip .h { color: var(--ink); font-weight: 600; }
+.htl-tip div:not(.h) { color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.htl-cross { position: absolute; pointer-events: none; z-index: 4; width: 1px; background: var(--ink-4); opacity: 0; }
+.htl-cross.on { opacity: .8; }
+.htl-selr { position: absolute; pointer-events: none; z-index: 3; background: var(--accent-soft); border: 1px solid var(--accent-line); opacity: 0; }
+.htl-selr.on { opacity: 1; }
+
+/* ── legend and stats ────────────────────────────────────────────────────── */
+.htl-lg { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 11px; color: var(--ink-3); padding: 2px 0; }
+.htl-lg > span { display: inline-flex; align-items: center; }
+.htl-k { font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-4); margin: 4px 0 3px; }
+.htl-statwrap .gsc-scroll { max-height: 260px; }
+/* nine columns must fit a 1280 workspace: headers and segment names wrap rather
+   than push the table past the panel */
+.htl-stats th { white-space: normal; vertical-align: bottom; line-height: 1.25; }
+.htl-stats td.t { white-space: normal; min-width: 150px; }
+.htl-stats td { padding: 3px 5px; }
+.htl-stats td.t .htl-sw { width: 12px; flex-basis: 12px; }
+.htl-face { row-gap: 2px; }
+
+/* ── the card on the Prices stage ────────────────────────────────────────── */
+.htl-card { display: flex; flex-direction: column; gap: 6px; }
+.htl-cardbox { width: 100%; min-width: 0; overflow: hidden; }
+.htl-cardfoot { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.htl-cardlg { font-size: 10.5px; color: var(--ink-3); display: inline-flex; align-items: center; flex-wrap: wrap; gap: 2px; }
+.htl-cardlg .htl-sw { margin-left: 6px; }
+.htl-open { margin-left: auto; display: inline-flex; align-items: center; gap: 5px; }
+.htl-open svg { width: 13px; height: 13px; }
+
+/* on this screen the Continuum's scenario strip and its context line would name a
+   selection the chart does not read (the run chips above the chart are the
+   selection here, and the not-held runs are stated among them) */
+#gsc-main:has(> #gsc-screen[data-gsc-current="timeline"]) > #gsc-strip,
+#gsc-main:has(> #gsc-screen[data-gsc-current="timeline"]) #gsc-tabs .gsc-ctx { display: none; }
+.htl-nh { font-size: 10.5px; color: var(--ink-4); align-self: center; padding-left: 4px; border-left: 1px solid var(--border); margin-left: 2px; white-space: nowrap; }
+.htl-clip { font-size: 10.5px; color: var(--ink-3); font-family: var(--mono); }
+
+/* S-nav 2026-10-07 · inside the LMP Continuum: the six-size scale and 32 px targets */
+#gsc-root .htl-lab, #gsc-root .htl-run, #gsc-root .htl-notice, #gsc-root .htl-gapl, #gsc-root .htl-divl, #gsc-root .htl-segl, #gsc-root .htl-lg,
+#gsc-root .htl-k, #gsc-root .htl-cardlg, #gsc-root .htl-nh { font-size: 11px; }
+#gsc-root .htl-run { height: auto; min-height: 32px; }

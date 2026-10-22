@@ -1,0 +1,13 @@
+# One reviewed line per entry: <file>:<stripped line>. Only fixed in-code column lists / expressions; never user input.
+# Reviewed 2026-10-06 (Claude): key in ('tb2','tb4','tb8'); cols from STUDY_COLS / literal column lists; h = _hav('latitude','longitude') literal SQL.
+api_decision.py:put(c.execute(f'SELECT bus_id, {key} FROM mart_bus_tb WHERE market=? AND y=?', ['RT', YEAR]).fetchall(), key)
+api_grid.py:r = busdata.rows(oc, f'SELECT {cols}, "5_year_forecast_avg_lmp_base_case" AS base_lmp FROM headroom_2026_05 WHERE bus_id = ?', [bid])
+api_land.py:st = busdata.rows(c, f'''WITH s AS (SELECT bus_id, substation_name, nominal_kv, county, state_code, latitude, longitude, short_circuit_mva, total_outlets, {h} AS mi
+api_land.py:buses = busdata.rows(c, f'''SELECT bus_id, bus_name, substation_name, nominal_kv, in_powerflow_model, {h} AS mi,
+api_land.py:gens = busdata.rows(c, f'''SELECT gen_name, bus_id, status, count(*) AS units, sum(gen_mw) AS gen_mw, sum(max_capacity_mw) AS max_mw, min({h}) AS mi
+api_land.py:loads = busdata.rows(c, f'''SELECT count(*) AS n, sum(load_mw) AS load_mw, count(load_mw) AS n_mw FROM dim_load WHERE latitude IS NOT NULL AND {h} <= ?''', _p(lat, lon) + [R_GEN])[0]
+api_land.py:queue = busdata.rows(c, f'''SELECT queue_position, request_date, poi_name, max_mw, resource_type, status, projected_is_date, county, state, {h} AS mi
+api_land.py:su = busdata.rows(c, f'''SELECT substation_name, substation_upgrade, nominal_voltage_kv, expected_in_service_year, category, {h} AS mi
+api_land.py:scr = busdata.rows(c, f'''SELECT bus_id, substation_name, nominal_kv, county, state_code, {h} AS mi FROM dim_substation
+busdata.py:'grid': {'headroom': rows(c, 'SELECT bus_id, scenario, direction, headroom_mw FROM fact_headroom'), 'constraints': rows(c, f'SELECT {cols} FROM fact_limiting_element')}}
+plan/build_samples.py:for r in busdata.rows(c, f'SELECT {cols} FROM fact_limiting_element'):

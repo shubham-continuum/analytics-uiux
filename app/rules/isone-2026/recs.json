@@ -1,0 +1,62 @@
+{
+ "recs_ma": {
+  "class1_acp": {
+   "value": 40,
+   "unit": "$/MWh",
+   "src": "225 CMR 14.08(4)(a)2 ($40 from CY2023, no CPI index); R2 §E1",
+   "status": "corrected"
+  },
+  "class1_price_default": {
+   "low": 30,
+   "high": 40,
+   "rule": "user-set within the ACP cap",
+   "src": "R2 §E2",
+   "status": "assumption"
+  },
+  "class1_scope": {
+   "states": ["MA"],
+   "techs": ["solar", "wind", "hybrid"],
+   "rule": "Class I RECs come from RPS Class I generation only; stand-alone storage earns none. GridSense models the Massachusetts market only (the $40 ACP also applies in CT and RI, not modelled)",
+   "src": "225 CMR 14.07; R2 §E1",
+   "status": "verified"
+  },
+  "clean_peak_acp": {
+   "value": 65,
+   "unit": "$/MWh",
+   "src": "225 CMR 21",
+   "status": "verified"
+  },
+  "clean_peak_price_default": {
+   "value_fraction_of_acp": 0.87,
+   "src": "R2 §E2",
+   "status": "assumption"
+  },
+  "clean_peak_multipliers": {
+   "seasonal_summer_winter": 4,
+   "seasonal_other": 1,
+   "monthly_system_peak_hour": 25,
+   "src": "225 CMR 21.05",
+   "status": "verified"
+  },
+  "clean_peak_seasons": {
+   "rows": [
+    { "season": "Spring", "from": "03-01", "to": "05-14", "start_hour": 17, "end_hour": 21, "multiplier": 1 },
+    { "season": "Summer", "from": "05-15", "to": "09-14", "start_hour": 16, "end_hour": 20, "multiplier": 4 },
+    { "season": "Fall", "from": "09-15", "to": "11-30", "start_hour": 16, "end_hour": 20, "multiplier": 1 },
+    { "season": "Winter", "from": "12-01", "to": "02-28", "start_hour": 16, "end_hour": 20, "multiplier": 4 }
+   ],
+   "hour_rule": "hour-beginning: hour h counts when start_hour <= h < end_hour (17-21 = HB17-HB20 = clock 17:00-21:00), as rules/revenue.js applies it",
+   "rule": "Seasonal Peak Periods on business days only; certificates = metered MWh in the window × seasonal multiplier (× 25 in the hour of actual monthly system peak)",
+   "src": "225 CMR 21.05(3)-(6) (text eff. 2024-10-11)",
+   "status": "verified",
+   "note": "DOER emergency amendments of 2026-05-28 not read (R2 open question R5)."
+  },
+  "clean_peak_scope": {
+   "states": ["MA"],
+   "techs": ["storage", "hybrid"],
+   "rule": "Storage must pass the 225 CMR 21.05(1)(a)2 test (co-location with a Qualified RPS Resource of at least 75% of storage nameplate, contractual pairing, or charging in the renewable windows); the Near-term Resource Multiplier is not available at transmission interconnection",
+   "src": "225 CMR 21.05(1)(a), 21.05(6)(h); R2 §E1-E2",
+   "status": "verified"
+  }
+ }
+}

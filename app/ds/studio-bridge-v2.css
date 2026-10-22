@@ -1,0 +1,145 @@
+/* ═══ studio-bridge-v2.css · GridSense v2 visual system (rules) ═══
+   Loads after every inlined stylesheet and just before the design-tokens style block.
+   Colours and sizes come from the tokens block; this file only says how they are used.
+   Restyle only: no rule here changes a number, a label or chart geometry (x, y, width, height, d).
+   `html` prefixes lift specificity just above the inlined rules they replace; !important appears
+   only where the snapshot sets the property inline (style="…") on the element. */
+
+/* ── 0. Size tokens (fallbacks; the tokens block may override) ─────────────────────────────── */
+:root {
+  --row-h: 30px; --mark-line: 2px; --bar-r: 3px; --gap: 2px; --tick-fs: 10.5px; --label-fs: 10.5px;
+  --zebra: rgba(160,185,225,.035); --gm-halo: var(--surface); --gm-unmet: #8a94a5; --gm-label: var(--ink-3);
+}
+
+/* ── 1. Type voice: sans for labels, mono only for identifiers ─────────────────────────────── */
+html .kpi .label, html .gsx-an .kpi .label,
+html .ps-f, html .gsx-an .ps-f,
+html .badge.chip, html .gsx-an .badge.chip {
+  font-family: var(--sans);
+}
+html .badge.chip, html .gsx-an .badge.chip { letter-spacing: .02em; font-weight: 600; }
+html .gm .gm-scale text { font-family: var(--sans); font-size: 10px; }
+
+/* ── 2. Cards ──────────────────────────────────────────────────────────────────────────────── */
+html .gsx-an section.card { border-radius: var(--r-card); }
+/* titles wrap instead of being cut with an ellipsis (audit 19) */
+html .gsx-an section.card.w > .card-h.w-h > h3.w-q,
+html #app.gsf-dense .grid > .w.gsf-empty .w-q {
+  white-space: normal; overflow: visible; text-overflow: clip; text-wrap: balance;
+}
+html .gsx-an .card-answer { color: var(--ink); }
+html .gsx-an .card-f { color: var(--ink-3); }
+
+/* ── 3. KPI tiles (audit 17, 18) ───────────────────────────────────────────────────────────── */
+html .kpi .label, html .gsx-an .kpi .label {
+  font-size: var(--label-fs); font-weight: 600; letter-spacing: .05em; text-transform: uppercase;
+  color: var(--ink-3); white-space: normal; overflow: visible; text-overflow: clip; line-height: 1.25;
+}
+html .kpi .value, html .gsx-an .kpi .value {
+  color: var(--ink); font-variant-numeric: tabular-nums lining-nums; letter-spacing: -.01em;
+}
+html .kpi .value .unit, html .gsx-an .kpi .value .unit { color: var(--ink-3); font-weight: 500; letter-spacing: 0; }
+html .kpi .note, html .gsx-an .kpi .note { color: var(--ink-3); }
+html .kpi::after { display: none; }   /* decorative accent stub: carried no data */
+
+/* ── 4. Charts: text, grid, axes (audit 4, 5, 7, 11) ───────────────────────────────────────── */
+html svg.chart, html .chart-host .chart-canvas { overflow: visible; }   /* edge tick labels were clipped */
+html .chart text {
+  fill: var(--ink-3); font-family: var(--sans); font-size: var(--tick-fs);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+html .chart .glegend text { fill: var(--ink-2); font-size: 10.5px; }
+/* category ticks under bars: 10 px, slightly condensed, so neighbours separate in narrow slots */
+html .chart-host:is([data-type="bar"], [data-type="gbar"], [data-type="stack"]) svg.chart > text[text-anchor="middle"] {
+  font-size: 10px; letter-spacing: -.015em;
+}
+html .chart text.dlabel { fill: var(--ink-2); }
+html .chart text[transform*="rotate"] { fill: var(--ink-4); font-size: 10px; }
+html .chart .axis { stroke: var(--grid-line); stroke-width: 1; shape-rendering: crispEdges; }
+html .chart .axis.zero { stroke: var(--axis); }
+html .chart .cross { stroke: var(--border-3); }
+
+/* ── 5. Chart marks (audit 3, 8, 9, 10) ───────────────────────────────────────────────────── */
+/* lines: 2 px, round joins */
+html .chart .line { stroke-width: var(--mark-line); stroke-linejoin: round; stroke-linecap: round; fill: none; }
+/* bars: square at the baseline, rounded at the data end; the rx attribute is neutralised */
+html .chart rect.bar, html .chart-host[data-type="gbar"] svg.chart > rect, html .chart-host[data-type="bar"] svg.chart > rect {
+  rx: 0; ry: 0;
+  clip-path: inset(0 round var(--bar-r) var(--bar-r) 0 0);
+}
+html .chart rect.negative { clip-path: inset(0 round 0 0 var(--bar-r) var(--bar-r)); }
+html .chart-host[data-type="gantt"] svg.chart rect.bar { rx: var(--bar-r); ry: var(--bar-r); clip-path: none; }
+/* stacked segments and histogram bins: 2 px surface gap, drawn as a stroke (geometry unchanged) */
+html .chart-host[data-type="stack"] svg.chart > rect,
+html .chart-host[data-type="hist"] svg.chart rect.bar {
+  stroke: var(--surface) !important; stroke-width: var(--gap) !important; paint-order: stroke;
+}
+html .chart-host[data-type="stack"] svg.chart > rect { clip-path: none; }
+/* stacked areas: a hairline in the surface colour between layers */
+html .chart-host[data-type="area"] svg.chart path:not(.line) { stroke: var(--surface); stroke-width: 1; }
+/* heat cells: 1 px separators */
+html .chart-host[data-type="heat"] svg.chart rect { stroke: var(--surface); stroke-width: 1; }
+/* scatter and hover dots: a surface halo so overlapping marks separate */
+html .chart-host[data-type="scatter"] svg.chart circle { stroke: var(--surface); stroke-width: 1.25; }
+html .chart .dots circle { stroke: var(--surface); stroke-width: 2; }
+/* legend keys: square-ish swatches that match bar ends */
+html .chart .glegend rect { rx: 2; ry: 2; }
+
+/* ── 6. Tables (audit 14, 15, 16) ──────────────────────────────────────────────────────────── */
+html table.dense { border-collapse: separate; border-spacing: 0; }
+html table.dense th {
+  position: sticky; top: 0; z-index: 1; background: var(--surface-2);
+  height: var(--row-h); padding-block: 0; vertical-align: middle;
+  font-family: var(--sans); font-size: 10.5px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase;
+  color: var(--ink-3); border-bottom: 1px solid var(--border-2);
+}
+html table.dense td {
+  height: var(--row-h); padding-block: 4px; vertical-align: middle; border-bottom: 1px solid var(--border);
+}
+html table.dense tbody tr:nth-child(even) > td { background-color: var(--zebra); }
+html table.dense tbody tr:last-child > td { border-bottom-color: transparent; }
+html table.dense td.num, html table.dense th.num {
+  text-align: right; font-variant-numeric: tabular-nums lining-nums;
+}
+/* "not held": the renderer marks the cell (class="num nh" or data-nh); never reads as a value */
+html table.dense td.nh, html table.dense td[data-nh], html td.num.nh {
+  color: var(--ink-4); font-style: italic; font-weight: 400; letter-spacing: .01em;
+}
+/* long tables scroll inside their card so the sticky header has a scroller; edge shadow cues overflow */
+html .card .table-wrap, html .gsx-an .card .table-wrap {
+  max-height: min(72vh, 560px); overflow: auto;
+  background:
+    linear-gradient(to right, var(--surface) 30%, transparent) left / 24px 100% no-repeat local,
+    linear-gradient(to left, var(--surface) 30%, transparent) right / 24px 100% no-repeat local,
+    radial-gradient(farthest-side at 0 50%, rgba(0,0,0,.28), transparent) left / 10px 100% no-repeat scroll,
+    radial-gradient(farthest-side at 100% 50%, rgba(0,0,0,.28), transparent) right / 10px 100% no-repeat scroll;
+}
+html .chart-host > .chart-table.table-wrap { max-height: none; }
+
+/* ── 7. Maps (audit 20, 21, 22) ───────────────────────────────────────────────────────────── */
+html .gm .gm-land { fill: var(--gm-land); }
+html .gm .gm-county { stroke: var(--gm-county); stroke-width: .5; stroke-dasharray: 2 2; }
+html .gm .gm-state { stroke: var(--gm-state); stroke-width: 1.2; }
+html .gm .gm-slabel, html .gm .gm-clabel {
+  fill: var(--gm-label); opacity: 1; font-family: var(--sans);
+  paint-order: stroke; stroke: var(--gm-halo); stroke-width: 3px; stroke-linejoin: round;
+}
+html .gm .gm-plabel, html .gm .gm-labels text { stroke: var(--gm-halo); fill: var(--ink); }
+html .gm .gm-pts circle { stroke: var(--gm-halo); stroke-width: 1.25; }
+html .gm .gm-pts circle.m-unmet { fill: var(--gm-unmet); }
+html .gm .gm-pts circle.m-unknown { fill: var(--gm-land); stroke: var(--ink-3); stroke-width: 1.25; }
+html .gm .gm-lines line.gm-net { stroke: var(--border-3); }
+/* legend swatches match the marks: hollow ring for Unknown, outline for Outside zones */
+html .gm-legend .gm-sw { box-shadow: 0 0 0 1px var(--gm-halo); }
+html .gm-legend .gm-sw[style*="surface-2"] { background: var(--gm-land) !important; box-shadow: inset 0 0 0 1.5px var(--ink-3); }
+html .gm-legend .gm-sw[style*="var(--border)"] { background: transparent !important; box-shadow: inset 0 0 0 1px var(--ink-4); }
+html .gm-legend .gm-sw[style*="#5a6b85"] { background: var(--gm-unmet) !important; }
+html .gm-legend .gm-li { color: var(--ink-2); }
+
+/* ── 8. Percentile strip (audit 23) ───────────────────────────────────────────────────────── */
+html .ps-svg .ps-track { stroke: var(--border); stroke-width: 1; }
+html .ps-svg .ps-band { fill: var(--ink-3); opacity: .32; }
+html .ps-svg .ps-med { stroke: var(--ink-2); stroke-width: 2; }
+html .ps-svg .ps-ref { stroke: var(--ink); stroke-width: 1.5; stroke-dasharray: 2 2; }
+html .ps-dot { box-shadow: 0 0 0 2px var(--surface); }
+html .ps-f, html .gsx-an .ps-f { font-size: 10.5px; color: var(--ink-3); letter-spacing: 0; }

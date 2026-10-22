@@ -1,0 +1,95 @@
+/* VENDORED from live Studio ext/62-continuum-shape.css (snapshot 2026-10-11, sha256 487b05e880dacb4e).
+   DO NOT EDIT: regenerate with plan/vendor_live.py; patches in vendor/live/patches/. */
+/* ═══════════════════════════════════════════════════════════════════════════
+   ext: 62-continuum-shape.css — Shape + Assumptions panels (continuum S1-S3 2026-10-06).
+   Scoped to .gsc-cs (the three panels ext/62 registers). SKL-091 bar inside them: every target ≥ 32 px, six type
+   sizes only (11 axis/notes · 12 controls/tables · 13 titles · 15 heading · 20 KPI · 28 lead), measured values in
+   mono with tabular figures. Colours are the Studio's tokens; no hex lives here.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.gsc-cs > .gsc-h { min-height: 40px; }
+.gsc-cs > .gsc-h h3 { font-size: 15px; }
+.gsc-cs .gsc-btn, .gsc-cs .gsc-seg button, .gsc-cs select.csh-sel {
+  height: 32px; min-height: 32px; min-width: 32px; font-size: 12px;
+}
+.gsc-cs .gsc-btn { display: inline-flex; align-items: center; gap: 5px; }
+.gsc-cs .gsc-btn.csh-i { justify-content: center; padding: 0; width: 32px; font-family: var(--serif, Georgia, serif); font-style: italic; font-weight: 600; }
+.gsc-cs .gsc-btn.csh-i[aria-expanded="true"] { background: var(--accent-soft); color: var(--accent); }
+.gsc-cs .gsc-seg button { padding: 0 10px; }
+.gsc-cs select.csh-sel { padding: 0 6px; border: 1px solid var(--border-2); border-radius: var(--gsc-panel-r, 4px);
+  background: var(--surface); color: var(--ink-2); font-family: inherit; }
+.gsc-cs .gsc-note, .gsc-cs .gsc-note p, .gsc-cs .gsc-lg, .gsc-cs .badge { font-size: 11px; }
+.gsc-cs .gsc-note p { margin: 0 0 4px; }
+.gsc-cs .gsc-empty b { font-size: 13px; }
+.gsc-cs .gsc-empty p { font-size: 12px; }
+.gsc-cs .gsc-tbl, .gsc-cs .gsc-tbl th, .gsc-cs .gsc-tbl td { font-size: 12px; }
+.gsc-cs .gsc-scen-line { font-size: 11px; }
+/* the assumptions table is the table: no chart to flip to */
+[data-gsc-panel="cs-assume"] [data-gsc-table] { display: none; }
+
+/* toolbar */
+.csh-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; margin: 0 0 8px; }
+.csh-ctl { display: inline-flex; align-items: center; gap: 6px; }
+.csh-lab { font-size: 11px; color: var(--ink-4); letter-spacing: .04em; }
+
+/* price vs generation: one cell per period */
+.csh-grid { display: grid; gap: 10px; align-items: start; }
+.csh-cell { border: 1px solid var(--border); border-radius: var(--gsc-panel-r, 4px); padding: 8px; min-width: 0; }
+.csh-ch { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 32px; }
+.csh-t { font-size: 13px; color: var(--ink); font-weight: 600; }
+.csh-src { font-size: 11px; color: var(--ink-3); margin: 2px 0 4px; display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; }
+.csh-cape { font-size: 11px; }
+.csh-kpi, .csh-kbox, .csh-leadbox { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 8px; }
+.csh-kv { font-size: 20px; font-family: var(--mono); font-variant-numeric: tabular-nums; font-weight: 600; color: var(--ink); }
+.csh-lead { font-size: 28px; font-family: var(--mono); font-variant-numeric: tabular-nums; font-weight: 600; letter-spacing: -.01em; color: var(--ink); }
+.csh-kl { font-size: 11px; color: var(--ink-3); }
+.csh-kz { font-size: 13px; font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--ink-2); }
+.csh-kpis { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 22px; margin: 2px 0 6px; }
+.csh-foot { font-size: 11px; color: var(--ink-4); font-family: var(--mono); line-height: 1.45; margin-top: 2px; }
+.csh-msg { font-size: 13px; color: var(--ink-2); padding: 18px 4px 10px; }
+.csh-msg.csh-loading { color: var(--ink-4); }
+.gsc-cs .gsc-btn.csh-retry { margin: 0 4px 6px; }
+.csh-method { border-top: 1px dashed var(--border); margin-top: 6px; }
+
+/* chart marks */
+.csh-svg { display: block; width: 100%; height: auto; overflow: visible; }
+.csh-svg .csh-ax { font-family: var(--mono); font-size: 11px; fill: var(--ink-4); }
+.csh-svg .csh-flag { fill: var(--warn); }
+.csh-grid-l { stroke: var(--grid-line); stroke-width: 1; }
+.csh-axis { stroke: var(--axis); stroke-width: 1; }
+.csh-zero { stroke: var(--axis); stroke-width: 1; stroke-dasharray: 2 2; }
+.csh-curt { fill: var(--s2); fill-opacity: .5; }
+.csh-line { fill: none; stroke-width: 2; stroke-linejoin: round; }
+.csh-hit { fill: transparent; pointer-events: all; }
+.csh-hit:hover { fill: var(--accent-soft); }
+.csh-cap-line { fill: none; stroke-width: 2; stroke-linejoin: round; }
+.csh-cap-dash { fill: none; stroke-width: 2; stroke-dasharray: 5 4; }
+.csh-pt { stroke-width: 1.6; }
+.csh-ref { stroke: var(--ink-4); stroke-width: 1; stroke-dasharray: 2 3; }
+.csh-div { stroke: var(--border-3); stroke-width: 1; stroke-dasharray: 4 3; }
+
+/* legends */
+.csh-lg { padding: 6px 0 2px; }
+.csh-lg i.csh-curt-key { background: var(--s2); opacity: .5; }
+.csh-lg i.csh-k-solid, .csh-lg i.csh-k-dash { width: 18px; flex: 0 0 18px; height: 0; border-radius: 0; background: none; align-self: center; border-top: 2px solid var(--ink-3); }
+.csh-lg i.csh-k-dash { border-top-style: dashed; }
+.csh-lg i.csh-k-hollow, .csh-lg i.csh-k-part { width: 9px; height: 9px; flex: 0 0 9px; border-radius: 50%; background: none; border: 1.6px solid var(--ink-3); align-self: center; }
+.csh-lg i.csh-k-part { border-style: dotted; }
+
+/* run assumptions */
+.csh-as { max-height: none; }
+.csh-as-tbl { table-layout: fixed; width: 100%; }
+.csh-as-tbl th, .csh-as-tbl td { text-align: left; white-space: normal; vertical-align: top; line-height: 1.4; overflow-wrap: anywhere; }
+.csh-as-tbl th.csh-as-k { width: 13%; }
+.csh-as-tbl th.csh-as-s { width: 21%; }
+.csh-as-tbl td.csh-src-c span { display: block; }
+.csh-as-tbl td.csh-src-c .csh-vin-c { margin-top: 2px; font-style: italic; }
+.csh-as-tbl td.t, .csh-as-tbl th.csh-as-k { color: var(--ink-2); }
+.csh-as-tbl td.csh-c { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.csh-as-tbl td.csh-not-served, .csh-as-tbl td.csh-not-held, .csh-as-tbl td.csh-loading { color: var(--ink-4); font-family: inherit; font-style: italic; }
+.csh-as-tbl td.csh-fail { color: var(--bad); font-family: inherit; }
+.csh-as-tbl td.csh-src-c { color: var(--ink-4); }
+.csh-as-tbl .csh-focus { background: var(--accent-soft); }
+.csh-as-tbl th.csh-focus { color: var(--accent); }
+
+/* S-nav 2026-10-07 · Run assumptions: the Source · vintage column sits behind (i); type on the six-size scale */
+.gsc-cs:not(.csh-src-on) .csh-src-c, .gsc-cs:not(.csh-src-on) .csh-as-s { display: none; }

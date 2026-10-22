@@ -1,0 +1,290 @@
+{
+ "capacity": {
+  "fca_results": {
+   "_unit": "$/kW-month",
+   "rows": [
+    {
+     "auction": "FCA 15",
+     "ccp": "2024/25",
+     "SENE": 3.98,
+     "ROP": 2.611,
+     "NNE_Maine": 2.477
+    },
+    {
+     "auction": "FCA 16",
+     "ccp": "2025/26",
+     "SENE": 2.639,
+     "ROP": 2.591,
+     "NNE_Maine": 2.531
+    },
+    {
+     "auction": "FCA 17",
+     "ccp": "2026/27",
+     "all_zones": 2.59
+    },
+    {
+     "auction": "FCA 18",
+     "ccp": "2027/28",
+     "all_zones": 3.58
+    }
+   ],
+   "src": "ISO-NE key stats, Results of the Annual FCAs; FCA 18 filing ER24-1290 (2024-02-21)",
+   "status": "verified"
+  },
+  "auction_after_fca18": {
+   "value": "Annual Capacity Auction (prompt, sealed-bid), first May 2028 for CCP 2028/29",
+   "accepted": "194 FERC ¶ 61,249, ER26-925 (issued 2026-03-30, effective 2026-03-31)",
+   "seasonal_mri": "CAR-SA: ISO aims to file by end-2026 for CCP 2028/29",
+   "src": "R2 §A1",
+   "status": "verified"
+  },
+  "ccp_calendar": {
+   "last_fca_ccp": "2027/28",
+   "first_aca_ccp": "2028/29",
+   "ccp_start_mmdd": "06-01",
+   "aca_auction_month": "05",
+   "aca_demo_deadline_mmdd": "04-05",
+   "cone_reset_ccp": "2030/31",
+   "rule": "CCP runs 1 Jun to 31 May. No forward auction after FCA 18: the prompt ACA is held in early May before each CCP; a resource must demonstrate commercial operation by the deadline (illustrative 5 April) or it misses that CCP's auction and can only sell through monthly qualification (MRA / bilateral). CCP 2030/31 is the first ACA after the CONE / Net CONE recalculation. No seven-year price lock for new entrants.",
+   "src": "CAR-PD filing ER26-925 §I, §VI.C.2, §VI.D, §VI.E.2 (pp. 3-4, 37-38, 63-64); ER26-3047 at 1-2; R2 §A1-A2",
+   "status": "verified",
+   "note": "The 5 April demonstration deadline is the filing's illustrative calendar."
+  },
+  "price_path_default": {
+   "low": 3.58,
+   "mid": 5.0,
+   "high": 8.0,
+   "escalation": 0,
+   "rule": "flat bands from cited clears (FCA 18; ARA/MRA prices about $5, peak $8 in 2025); user-set; never escalated",
+   "src": "R2 §F1; AMR 2025 §7.2",
+   "status": "assumption"
+  },
+  "qc_solar_default": {
+   "summer": 0.398,
+   "winter": 0,
+   "basis": "fleet current-rule QC 561 of 1,409 MW MCap; replace with a site profile",
+   "src": "CAR-SA impact analysis (Mar 2026) slide 64",
+   "status": "verified"
+  },
+  "qc_storage_default": {
+   "mcap_mw": 3877,
+   "qc_mw": 3862,
+   "basis": "fleet current-rule QC 3,862 of 3,877 MW MCap (PSH + batteries); a 2-h and a 4-h battery of equal MW get the same QC",
+   "src": "CAR-SA impact analysis (Mar 2026) slide 61; R2 §A1",
+   "status": "verified"
+  },
+  "qc_rule_intermittent": {
+   "value": "5-summer average of median net output in HE14–HE18 plus CSC hours; FCA qualified capacity = summer QC",
+   "src": "Market Rule 1 §III.13.1.2.2.2",
+   "status": "verified"
+  },
+  "qc_seasons": {
+   "summer_months": [6, 7, 8, 9],
+   "winter_months": [10, 11, 12, 1, 2, 3, 4, 5],
+   "rule": "Summer Intermittent Reliability Hours Jun–Sep (HE14–HE18); winter Oct–May (HE18–HE19). FCA / ACA qualified capacity of an intermittent resource = summer QC; non-intermittent = lesser of summer and winter QC",
+   "src": "MR1 §III.13.1.2.2.2.1–2, §III.13.1.1.2.5.3; CAR-PD §VI.E.1-2",
+   "status": "verified"
+  },
+  "mric_season_months": {
+   "rule": "CAR-SA prices summer and winter separately; the season split of the seasonal auction is not in R2, so the current QC rule's Jun–Sep / Oct–May months are used",
+   "src": "R2 §A2 (m_s); MR1 §III.13.1.2.2.2",
+   "status": "assumption"
+  },
+  "rmri_preliminary": {
+   "solar": {
+    "summer": 0.241,
+    "winter": 0.071
+   },
+   "wind": {
+    "summer": 0.199,
+    "winter": 0.361
+   },
+   "storage_fleet": {
+    "summer": 0.552,
+    "winter": 0.209
+   },
+   "battery_2h": {
+    "summer": 0.243,
+    "winter": 0.092
+   },
+   "battery_3h": {
+    "summer": 0.373,
+    "winter": 0.142
+   },
+   "battery_4h": {
+    "summer": 0.503,
+    "winter": 0.187
+   },
+   "battery_6h": {
+    "summer": 0.757,
+    "winter": 0.269
+   },
+   "battery_8h": {
+    "summer": 0.911,
+    "winter": 0.356
+   },
+   "hybrid": {
+    "summer": 0.508,
+    "winter": 0.252
+   },
+   "src": "CAR-SA impact analysis slides 61–64",
+   "status": "pending",
+   "note": "Preliminary values; a CAR-SA price is per kW of MRIC, never per kW of QC."
+  }
+ },
+ "pfp": {
+  "ppr": {
+   "value": 3500,
+   "unit": "$/MWh",
+   "effective": "2026-09-01",
+   "history": [
+    2000,
+    3500,
+    5455,
+    9337
+   ],
+   "src": "Market Rule 1 §III.13.7.2.5; R2 §B1",
+   "status": "verified"
+  },
+  "balancing_ratio_cap": {
+   "value": 1.0,
+   "effective": "2026-10-01",
+   "src": "R2 §B1",
+   "status": "contingent",
+   "note": "FERC acceptance of the cap not confirmed."
+  },
+  "csc_interval_min": {
+   "value": 5,
+   "src": "MR1 §III.13.7.2.1 (a CSC exists in any 5-minute interval in which the RCPF sets the reserve price)",
+   "status": "verified"
+  },
+  "stop_loss": {
+   "monthly_starting_price": 14.525,
+   "annual_months_of_net_loss": 3,
+   "unit": "$/kW-month",
+   "monthly_rule": "PfP subtracted from the Capacity Base Payment in an Obligation Month is limited to FCA Starting Price × CSO (excludes PfP for output above CSO)",
+   "annual_rule": "MaxCSO × [3 months × (FCAcp − FCAsp) − 12 months × FCAcp]",
+   "src": "MR1 §III.13.7.3.1-2; ER26-3047 fn 7; FCA 18 filing ER24-1290 (starting price)",
+   "status": "verified",
+   "note": "FCA 18 starting price. FCA 15–17 starting prices and the ACA Offer Price Cap (which replaces it from CCP 2028/29) are not held (R2 open questions R3, R6)."
+  },
+  "formula": "PfP = (1/Y) Σ_events Σ_intervals PPR × (A_t − CSO × min(BR_e, 1)) / 12, with monthly and annual stop-loss",
+  "events": {
+   "_note": "All seven Capacity Scarcity Conditions since 2018-06-01 (system 30-min reserve shortfall). Public interval source: ISO-NE Capacity Scarcity Condition Report CSV. start/end are 5-minute interval-beginning labels, so the window ends 5 minutes after the last label.",
+   "years_observed": 8.33,
+   "observed_from": "2018-06-01",
+   "observed_to": "2026-09-30",
+   "recent_from": "2023-01-01",
+   "rows": [
+    {
+     "date": "2018-09-03",
+     "start": "15:40",
+     "end": "18:15",
+     "intervals": 32,
+     "br": 0.72,
+     "ppr": 2000
+    },
+    {
+     "date": "2022-12-24",
+     "start": "16:40",
+     "end": "18:00",
+     "intervals": 17,
+     "br": 0.67,
+     "ppr": 3500
+    },
+    {
+     "date": "2023-07-05",
+     "start": "18:25",
+     "end": "18:50",
+     "intervals": 6,
+     "br": 0.79,
+     "ppr": 3500
+    },
+    {
+     "date": "2024-06-18",
+     "start": "17:50",
+     "end": "18:15",
+     "intervals": 6,
+     "br": 0.865,
+     "ppr": 3500
+    },
+    {
+     "date": "2024-08-01",
+     "start": "17:45",
+     "end": "19:20",
+     "intervals": 22,
+     "br": 0.896,
+     "ppr": 5455,
+     "note": "Labels 17:45–19:20 span 20 intervals; the ISO slide table gives 110 minutes (22 intervals). The replay weights the 20 labelled intervals to 22."
+    },
+    {
+     "date": "2025-06-24",
+     "start": "17:35",
+     "end": "20:35",
+     "intervals": 37,
+     "br": 1.031,
+     "ppr": 9337
+    },
+    {
+     "date": "2025-11-23",
+     "start": "17:50",
+     "end": "18:15",
+     "intervals": 6,
+     "br": 0.7,
+     "ppr": 9337
+    }
+   ],
+   "src": "ISO-NE OP-4 / CSC reports (URLs in R2 §B3)",
+   "status": "verified"
+  }
+ },
+ "ancillary": {
+  "da_as": {
+   "launch": "2025-03-01",
+   "products": ["DA TMSR", "DA TMNSR", "DA TMOR", "DA EIR"],
+   "strike_adder": 10,
+   "closeout_rule": "close-out per MWh of DA obligation = max(0, hourly Real-Time Hub price − strike); strike = max(forecast hourly RT Hub + $10, 0) or the daily distillate-CT floor if higher",
+   "credits_2025_usd": 264500000,
+   "closeout_2025_usd": 127200000,
+   "src": "MR1 §III.3.2.1(q)(1)-(3), §III.1.8.2; AMR 2025 Table 8-1",
+   "status": "verified",
+   "note": "Hourly RT Hub, not 5-minute node prices. DA A/S design under IMM review (memo 2026-02-04)."
+  },
+  "regulation_2025": {
+   "pool_usd": 18000000,
+   "req_mw_avg": 93.4,
+   "atrr_available_mw": 468,
+   "cap_price_avg": 12.21,
+   "src": "AMR 2025 §8.3, Table 8-2",
+   "status": "verified"
+  },
+  "regulation_base_case": {
+   "rule": "Regulation is a saturated market (468 MW of ATRR for about 93 MW of requirement): 0 in the base case; the sensitivity bound is the pro-rata share MW ÷ (ATRR + MW) of the 2025 pool",
+   "src": "R2 §C2",
+   "status": "assumption"
+  }
+ },
+ "energy_settlement": {
+  "intervals": {
+   "rt_minutes": 5,
+   "da": "hourly",
+   "rule": "RT settles on 5-minute intervals at the node; DA hourly; deviations from DA schedules settle at RT prices; generators are credited the FER Price on DA energy obligations",
+   "src": "MR1 §III.3.2.1, §III.1.10.1, §III.3.2.1(q)(4)(i)",
+   "status": "verified"
+  },
+  "da_premium_2025": {
+   "da_hub": 71.81,
+   "da_lmp": 67.86,
+   "fer": 3.95,
+   "rt_hub": 65.87,
+   "rule": "Mass Hub simple averages; the DA price includes the FER Price, so the LMP-only premium is about $2",
+   "src": "AMR 2025 §4.1 (pp. 97-100)",
+   "status": "corrected"
+  },
+  "hub_hedge": {
+   "rule": "Financial PPA settled at Mass Hub: R_PPA = Σ q × (K − LMP_hub); basis Σ g × (LMP_node − LMP_hub) stays with the seller",
+   "src": "R2 §D2; MR1 §III.2.7-2.8 (hub = average of the hub node set)",
+   "status": "verified"
+  }
+ }
+}

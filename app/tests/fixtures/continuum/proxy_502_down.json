@@ -1,0 +1,6 @@
+{
+ "request": {"path": "/api/v2/continuum/status", "query": {}},
+ "status": 502,
+ "body": {"error": "Continuum service not running", "target": "127.0.0.1:5034"},
+ "_source": "server.py continuum() OSError branch (L0), the One Studio proxy's own answer when :5034 is down"
+}

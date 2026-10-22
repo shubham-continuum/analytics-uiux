@@ -1,0 +1,32 @@
+/* GridSense One Studio: Graph Configurator host (lift plan 14 L3, views/configurator-host.js). Everything is scoped under .gsx-cfg.
+   Provenance: Claude Opus 5.5 (builder G-configurator) · one-studio/design/14-lift-projects-configurator-continuum.md §3 L3 · 2026-10-13 · sign-off pending · v1
+   The drawer, cards and builder panels use the live studio.css classes (.drawer, .dr-h, .cfg, .w-*, .badge, .btn); this file adds the
+   "My analyses" section, the vintage line and the bus picker list. Colours are the live tokens, so dark and light follow the theme. */
+.gsx-cfg.gsx-cfg-mine{margin:18px 0 8px;padding:12px 0 0;border-top:1px solid var(--border);font-size:12px;color:var(--ink-2)}
+.gsx-cfg .gsx-cfg-hd{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:0 0 10px}
+.gsx-cfg .gsx-cfg-hd h2{font-size:14px;font-weight:700;color:var(--ink);margin:0}
+.gsx-cfg .gsx-cfg-hd p{margin:0;font-size:11.5px;color:var(--ink-3);flex:1 1 220px}
+.gsx-cfg .gsx-cfg-add{font:600 11.5px/1 var(--sans);padding:6px 10px;border-radius:5px;border:1px solid var(--border);background:var(--surface);color:var(--ink);cursor:pointer;white-space:nowrap}
+.gsx-cfg .gsx-cfg-add:hover{border-color:var(--accent);color:var(--accent)}
+.gsx-cfg .gsx-cfg-n{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--ink-3);border:1px solid var(--border);border-radius:9px;padding:1px 7px;margin-left:4px}
+.gsx-cfg .gsx-cfg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,420px),1fr));gap:12px}
+.gsx-cfg .gsx-cfg-w{min-width:0;border:1px dashed var(--border-2,var(--border));border-radius:10px;background:var(--surface);padding:10px 12px}
+.gsx-cfg .gsx-cfg-wh{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.gsx-cfg .gsx-cfg-wh h3{font-size:13px;font-weight:650;color:var(--ink);margin:0;flex:1 1 160px;min-width:0;overflow-wrap:anywhere}
+.gsx-cfg .gsx-cfg-id{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;color:var(--ink-3);border:1px solid var(--border);border-radius:4px;padding:1px 5px}
+.gsx-cfg .gsx-cfg-acts{display:flex;gap:6px;flex-wrap:wrap}
+.gsx-cfg .gsx-cfg-badges{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 0}
+.gsx-cfg .gsx-cfg-p{margin:8px 0 6px;color:var(--ink-2);line-height:1.45}
+.gsx-cfg .gsx-cfg-p.empty{color:var(--ink-3)}
+.gsx-cfg .gsx-cfg-body{min-height:40px;overflow-x:auto}
+.gsx-cfg .gsx-cfg-cap,.gsx-cfg .gsx-cfg-where{margin:6px 0 0;font-size:11px;color:var(--ink-3);line-height:1.4}
+.gsx-cfg .gsx-cfg-vin{margin:4px 0 0;font-family:var(--mono);font-size:10px;color:var(--warn,var(--ink-3));line-height:1.4;overflow-wrap:anywhere}
+.gsx-cfg .gsx-cfg-none{margin:0;color:var(--ink-3)}
+.gsx-cfg .btn:focus-visible,.gsx-cfg button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/* bus picker (App.Palette): the live .palette box, with a plain result list */
+.gsx-cfg.palette{flex-direction:column;gap:8px;padding:10px}
+.gsx-cfg.palette .inp{width:100%}
+.gsx-cfg .gsx-cfg-pl{display:flex;flex-direction:column;max-height:50vh;overflow:auto}
+.gsx-cfg .gsx-cfg-pi{text-align:left;padding:6px 8px;border:0;border-radius:6px;background:none;color:var(--ink-2);font:inherit;cursor:pointer}
+.gsx-cfg .gsx-cfg-pi:hover,.gsx-cfg .gsx-cfg-pi:focus-visible{background:var(--surface-2,var(--border))}
+@media (max-width:640px){.gsx-cfg .gsx-cfg-grid{grid-template-columns:1fr}}

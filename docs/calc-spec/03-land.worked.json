@@ -1,0 +1,718 @@
+{
+ "generatedBy": "one-studio-devkit/tools/calc-spec/land.mjs",
+ "inputs": {
+  "app": "one-studio/app (landcore.js, data/land.json, data/samples.json)",
+  "fixtures": "one-studio-devkit/app/fixtures (bus__<id>, x__land__site5__<id>)"
+ },
+ "intensity": {
+  "solar": {
+   "low": 3.6,
+   "base": 5.6,
+   "high": 8.9,
+   "direct": 4.6,
+   "cited": true
+  },
+  "wind": {
+   "low": 30,
+   "base": 85,
+   "high": 140,
+   "direct": 2.5,
+   "cited": true
+  },
+  "bess": {
+   "low": 0.5,
+   "base": 0.8,
+   "high": 1.2,
+   "direct": null,
+   "cited": false
+  },
+  "hybrid": {
+   "low": 4.1,
+   "base": 6.4,
+   "high": 10.1,
+   "direct": null,
+   "cited": false
+  },
+  "dc": {
+   "low": 0.8,
+   "base": 1.5,
+   "high": 2.5,
+   "direct": null,
+   "cited": false
+  }
+ },
+ "hybridEqualsSolarPlusBess": [
+  true,
+  true,
+  true
+ ],
+ "landCostDistinctBands": [
+  "3000/8000/20000"
+ ],
+ "landCostRows": 69,
+ "screens": 166,
+ "annuityFactor_8_2_30": 13.666529,
+ "rulesSiteControl": {
+  "isone": {
+   "value": 1,
+   "note": "100% at request. CNRIS has no exception; NRIS may post the deposit in lieu where a regulatory limitation applies.",
+   "src": "Sched 22 §3.4.2",
+   "status": "corrected",
+   "effective": "2024-08-12"
+  },
+  "proforma": {
+   "value": 0.9,
+   "at_facilities_study": 1,
+   "src": "Order 2023 pro forma LGIP §3.4.2 (vault summary)",
+   "status": "verified",
+   "effective": "2023-07-28"
+  }
+ },
+ "solar111209": {
+  "bus": "111209",
+  "name": "Hatchville",
+  "county": "Barnstable",
+  "state": "MA",
+  "lat": 41.618163,
+  "lon": -70.554289,
+  "sample": "kennebec",
+  "tech": "solar",
+  "exportMW": 100,
+  "importMW": 0,
+  "projectMW": 100,
+  "intensityRow": {
+   "low": 3.6,
+   "base": 5.6,
+   "high": 8.9,
+   "cited": true
+  },
+  "footprint": {
+   "low": 360,
+   "base": 560,
+   "high": 890
+  },
+  "screen": {
+   "radiusMi": 3,
+   "gross": 18093.8,
+   "clear": 9591.8,
+   "blocks": 31,
+   "water": false,
+   "excludedShare": 0.469885,
+   "unscreened": [
+    "habitat"
+   ],
+   "layers": [
+    {
+     "layer": "habitat",
+     "acres": 0,
+     "share": 0,
+     "subtracted": true,
+     "status": "missing",
+     "value": null
+    },
+    {
+     "layer": "protected",
+     "acres": 8392.5,
+     "share": 0.464,
+     "subtracted": true,
+     "status": "ok",
+     "value": 8392.5
+    },
+    {
+     "layer": "energy-community",
+     "acres": 18093.8,
+     "share": 1,
+     "subtracted": false,
+     "status": "ok",
+     "value": 18093.8
+    },
+    {
+     "layer": "airport",
+     "acres": 16190.2,
+     "share": 0.895,
+     "subtracted": false,
+     "status": "ok",
+     "value": 16190.2
+    }
+   ]
+  },
+  "discAcres": 18095.6,
+  "excludedRange": {
+   "low": 8392.5,
+   "high": 8392.5,
+   "sum": 8392.5,
+   "gross": 18093.8
+  },
+  "discSplit": {
+   "gross": 18093.8,
+   "block": 9591.8,
+   "excludedMin": 8392.5,
+   "rest": 109.5
+  },
+  "fit": {
+   "status": "fits",
+   "low": "fits",
+   "base": "fits",
+   "high": "fits",
+   "unscreened": [
+    "habitat"
+   ]
+  },
+  "blockCover": {
+   "low": 26.6439,
+   "base": 17.1282,
+   "high": 10.7773,
+   "status": "fits"
+  },
+  "baseNeedPctOfBlock": 5.84,
+  "landStatus": "fits* (habitat not screened)",
+  "landRate": {
+   "low": 3000,
+   "base": 8000,
+   "high": 20000,
+   "provenance": "assumption"
+  },
+  "costGrid": [
+   {
+    "band": "low",
+    "acres": 360,
+    "costs": [
+     1080000,
+     2880000,
+     7200000,
+     9000000
+    ]
+   },
+   {
+    "band": "base",
+    "acres": 560,
+    "costs": [
+     1680000,
+     4480000,
+     11200000,
+     14000000
+    ]
+   },
+   {
+    "band": "high",
+    "acres": 890,
+    "costs": [
+     2670000,
+     7120000,
+     17800000,
+     22250000
+    ]
+   }
+  ],
+  "purchaseBase": 14000000,
+  "annualLeaseBase": 840000,
+  "landInputs": {
+   "buy": 25000,
+   "lease": 1500,
+   "disc": 8,
+   "years": 30,
+   "esc": 2,
+   "resale": 50,
+   "route": 1.2,
+   "perMile": 2000000,
+   "terminal": 5000000,
+   "crossings": 500000,
+   "siteLat": 41.62616,
+   "siteLon": -70.56229,
+   "control": 60
+  },
+  "leaseVsBuy": {
+   "status": "ok",
+   "missing": [],
+   "af": 13.67,
+   "pvLease": 11479884.04,
+   "buyCost": 14000000,
+   "pvResale": 695641.33,
+   "netBuy": 13304358.67,
+   "buyBound": null,
+   "diff": -1824474.63,
+   "cheaper": "lease",
+   "breakevenLease": 1738.39
+  },
+  "corridor": {
+   "status": "priced",
+   "distanceMi": 0.69,
+   "routeMi": 0.828,
+   "cost": 7155979,
+   "reason": "",
+   "check": 7155979
+  },
+  "corridorNoTerminal": {
+   "status": "partly priced",
+   "cost": 2155979,
+   "reason": "Terminal works not entered: cost is a lower bound"
+  },
+  "stationCoverage": {
+   "rows": 113,
+   "total": 113,
+   "radius": 15,
+   "truncated": false,
+   "label": "within 15 mi"
+  },
+  "havCheck": [
+   {
+    "bus": 111408,
+    "name": "Falmouth Tap",
+    "sqlMi": 1.930717,
+    "jsMi": 1.930717
+   },
+   {
+    "bus": 111403,
+    "name": "Mashpee",
+    "sqlMi": 4.261545,
+    "jsMi": 4.261545
+   },
+   {
+    "bus": 111399,
+    "name": "Mashpee",
+    "sqlMi": 4.261545,
+    "jsMi": 4.261545
+   }
+  ],
+  "stationGroups": 98,
+  "nearestStations": [
+   {
+    "name": "Falmouth Tap",
+    "kv": 115,
+    "buses": 1,
+    "d": 1.931,
+    "status": "Envelope only",
+    "hr": 186.2,
+    "binding": "shoulder|discharge",
+    "perMile": 96.44,
+    "tieLine": 4633722
+   },
+   {
+    "name": "Mashpee",
+    "kv": 115,
+    "buses": 4,
+    "d": 4.262,
+    "status": "Envelope only",
+    "hr": 153,
+    "binding": "summer_peak|discharge",
+    "perMile": 35.9,
+    "tieLine": 10227707
+   },
+   {
+    "name": "Falmouth Tap",
+    "kv": 115,
+    "buses": 3,
+    "d": 4.788,
+    "status": "Envelope only",
+    "hr": 336.7,
+    "binding": "shoulder|discharge",
+    "perMile": 70.32,
+    "tieLine": 11491556
+   }
+  ],
+  "countFits": {
+   "fits": 0,
+   "hold": 93,
+   "doesNotFit": 5,
+   "total": 98
+  },
+  "ownVerdict": {
+   "status": "Envelope only",
+   "label": "Envelope only (Hold)",
+   "hr": 197.8,
+   "binding": "summer_peak|discharge",
+   "export": "Envelope only",
+   "import": "Not requested"
+  },
+  "requestCases": [
+   "summer_peak|discharge→hr_sp_dis",
+   "shoulder|discharge→hr_sh_dis"
+  ],
+  "caseMW": [
+   {
+    "key": "summer_peak|discharge",
+    "mw": 100
+   },
+   {
+    "key": "shoulder|discharge",
+    "mw": 100
+   }
+  ],
+  "lineCostGrid": [
+   {
+    "perMile": 2000000,
+    "cells": [
+     1380000,
+     1587000,
+     1794000,
+     2070000
+    ]
+   },
+   {
+    "perMile": 1000000,
+    "cells": [
+     690000,
+     793500,
+     897000,
+     1035000
+    ]
+   },
+   {
+    "perMile": 4000000,
+    "cells": [
+     2760000,
+     3174000,
+     3588000,
+     4140000
+    ]
+   }
+  ],
+  "siteControl": {
+   "pct": 60,
+   "verdict": "Fail",
+   "required": 100,
+   "cite": "Sched 22 §3.4.2 · corrected"
+  },
+  "siteControl99": "Fail",
+  "siteControlProforma90": "Pass",
+  "scRank": {
+   "below_or_equal": 1013,
+   "of": 2648,
+   "pct": 38.26
+  },
+  "permitWindow": {
+   "items": 9,
+   "dated": 9,
+   "months": 26,
+   "start": "2027-01"
+  }
+ },
+ "hybrid110815": {
+  "bus": "110815",
+  "name": "North Cambridge",
+  "county": "Middlesex",
+  "state": "MA",
+  "lat": 42.391608,
+  "lon": -71.143221,
+  "sample": "hybrid",
+  "tech": "hybrid",
+  "exportMW": 150,
+  "importMW": 75,
+  "projectMW": 150,
+  "intensityRow": {
+   "low": 4.1,
+   "base": 6.4,
+   "high": 10.1,
+   "cited": false
+  },
+  "footprint": {
+   "low": 615,
+   "base": 960,
+   "high": 1515
+  },
+  "screen": {
+   "radiusMi": 3,
+   "gross": 18093.8,
+   "clear": 15711.2,
+   "blocks": 15,
+   "water": false,
+   "excludedShare": 0.13168,
+   "unscreened": [
+    "habitat"
+   ],
+   "layers": [
+    {
+     "layer": "habitat",
+     "acres": 0,
+     "share": 0,
+     "subtracted": true,
+     "status": "missing",
+     "value": null
+    },
+    {
+     "layer": "protected",
+     "acres": 2358.2,
+     "share": 0.13,
+     "subtracted": true,
+     "status": "ok",
+     "value": 2358.2
+    },
+    {
+     "layer": "energy-community",
+     "acres": 0,
+     "share": 0,
+     "subtracted": false,
+     "status": "ok",
+     "value": 0
+    },
+    {
+     "layer": "airport",
+     "acres": 12133.1,
+     "share": 0.671,
+     "subtracted": false,
+     "status": "ok",
+     "value": 12133.1
+    }
+   ]
+  },
+  "discAcres": 18095.6,
+  "excludedRange": {
+   "low": 2358.2,
+   "high": 2358.2,
+   "sum": 2358.2,
+   "gross": 18093.8
+  },
+  "discSplit": {
+   "gross": 18093.8,
+   "block": 15711.2,
+   "excludedMin": 2358.2,
+   "rest": 24.399999999998727
+  },
+  "fit": {
+   "status": "fits",
+   "low": "fits",
+   "base": "fits",
+   "high": "fits",
+   "unscreened": [
+    "habitat"
+   ]
+  },
+  "blockCover": {
+   "low": 25.5467,
+   "base": 16.3658,
+   "high": 10.3704,
+   "status": "fits"
+  },
+  "baseNeedPctOfBlock": 6.11,
+  "landStatus": "fits* (habitat not screened)",
+  "landRate": {
+   "low": 3000,
+   "base": 8000,
+   "high": 20000,
+   "provenance": "assumption"
+  },
+  "costGrid": [
+   {
+    "band": "low",
+    "acres": 615,
+    "costs": [
+     1845000,
+     4920000,
+     12300000,
+     15375000
+    ]
+   },
+   {
+    "band": "base",
+    "acres": 960,
+    "costs": [
+     2880000,
+     7680000,
+     19200000,
+     24000000
+    ]
+   },
+   {
+    "band": "high",
+    "acres": 1515,
+    "costs": [
+     4545000,
+     12120000,
+     30300000,
+     37875000
+    ]
+   }
+  ],
+  "purchaseBase": 24000000,
+  "annualLeaseBase": 1440000,
+  "landInputs": {
+   "buy": 25000,
+   "lease": 1500,
+   "disc": 8,
+   "years": 30,
+   "esc": 2,
+   "resale": 50,
+   "route": 1.2,
+   "perMile": 2000000,
+   "terminal": 5000000,
+   "crossings": 500000,
+   "siteLat": 42.39961,
+   "siteLon": -71.15122,
+   "control": 60
+  },
+  "leaseVsBuy": {
+   "status": "ok",
+   "missing": [],
+   "af": 13.67,
+   "pvLease": 19679801.22,
+   "buyCost": 24000000,
+   "pvResale": 1192527.99,
+   "netBuy": 22807472.01,
+   "buyBound": null,
+   "diff": -3127670.79,
+   "cheaper": "lease",
+   "breakevenLease": 1738.39
+  },
+  "corridor": {
+   "status": "priced",
+   "distanceMi": 0.6872,
+   "routeMi": 0.8247,
+   "cost": 7149349,
+   "reason": "",
+   "check": 7149349
+  },
+  "corridorNoTerminal": {
+   "status": "partly priced",
+   "cost": 2149349,
+   "reason": "Terminal works not entered: cost is a lower bound"
+  },
+  "stationCoverage": {
+   "rows": 245,
+   "total": 245,
+   "radius": 15,
+   "truncated": false,
+   "label": "within 15 mi"
+  },
+  "havCheck": [
+   {
+    "bus": 110754,
+    "name": "North Cambridge",
+    "sqlMi": 0,
+    "jsMi": 0
+   },
+   {
+    "bus": 110755,
+    "name": "North Cambridge",
+    "sqlMi": 0,
+    "jsMi": 0
+   },
+   {
+    "bus": 110940,
+    "name": "North Cambridge",
+    "sqlMi": 0,
+    "jsMi": 0
+   }
+  ],
+  "stationGroups": 132,
+  "nearestStations": [
+   {
+    "name": "North Cambridge",
+    "kv": 345,
+    "buses": 4,
+    "d": 0,
+    "status": "Envelope only",
+    "hr": 3.6,
+    "binding": "shoulder|discharge",
+    "perMile": 7.2,
+    "tieLine": 0
+   },
+   {
+    "name": "STA8025",
+    "kv": 115,
+    "buses": 7,
+    "d": 2.328,
+    "status": "Envelope only",
+    "hr": 245.3,
+    "binding": "shoulder|charge",
+    "perMile": 105.39,
+    "tieLine": 5586324
+   },
+   {
+    "name": "Putnam",
+    "kv": 115,
+    "buses": 3,
+    "d": 2.431,
+    "status": "Envelope only",
+    "hr": 316.7,
+    "binding": "summer_peak|discharge",
+    "perMile": 130.29,
+    "tieLine": 5833811
+   }
+  ],
+  "countFits": {
+   "fits": 0,
+   "hold": 98,
+   "doesNotFit": 34,
+   "total": 132
+  },
+  "ownVerdict": {
+   "status": "Does not fit",
+   "label": "Does not fit (element study)",
+   "hr": 110.9,
+   "binding": "summer_peak|discharge",
+   "export": "Does not fit",
+   "import": "Envelope only"
+  },
+  "requestCases": [
+   "summer_peak|discharge→hr_sp_dis",
+   "shoulder|discharge→hr_sh_dis",
+   "shoulder|charge→hr_sh_chg"
+  ],
+  "caseMW": [
+   {
+    "key": "summer_peak|discharge",
+    "mw": 150
+   },
+   {
+    "key": "shoulder|discharge",
+    "mw": 150
+   },
+   {
+    "key": "shoulder|charge",
+    "mw": 75
+   }
+  ],
+  "lineCostGrid": [
+   {
+    "perMile": 2000000,
+    "cells": [
+     1374400,
+     1580560,
+     1786720,
+     2061600
+    ]
+   },
+   {
+    "perMile": 1000000,
+    "cells": [
+     687200,
+     790280,
+     893360,
+     1030800
+    ]
+   },
+   {
+    "perMile": 4000000,
+    "cells": [
+     2748800,
+     3161120,
+     3573440,
+     4123200
+    ]
+   }
+  ],
+  "siteControl": {
+   "pct": 60,
+   "verdict": "Fail",
+   "required": 100,
+   "cite": "Sched 22 §3.4.2 · corrected"
+  },
+  "siteControl99": "Fail",
+  "siteControlProforma90": "Pass",
+  "scRank": {
+   "below_or_equal": 2245,
+   "of": 2648,
+   "pct": 84.78
+  },
+  "permitWindow": {
+   "items": 13,
+   "dated": 13,
+   "months": 34,
+   "start": "2027-01"
+  }
+ },
+ "hybridAlt": {
+  "asUsed": 960,
+  "solarAtExportPlusBessAtImport": 900
+ }
+}

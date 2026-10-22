@@ -1,0 +1,6 @@
+{
+ "request": {"path": "/api/v2/prices/hours", "query": {}},
+ "status": 404,
+ "body": {"error": "not an allowed Continuum route", "allowed": ["/api/v2/scenarios*", "/api/v2/continuum/*"]},
+ "_source": "server.py continuum() allow-list miss (L0): ext/61's /api/v2/prices/hours is outside the GET allow-list"
+}

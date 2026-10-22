@@ -1,0 +1,7 @@
+# Runtime output: the server's response cache, Python bytecode, test screenshots, OS files
+app/cache/
+__pycache__/
+*.pyc
+app/tests/shots/
+.DS_Store
+node_modules/

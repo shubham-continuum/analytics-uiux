@@ -1,0 +1,1728 @@
+{
+ "generatedAt": "2026-10-14T19:09:38.481Z",
+ "snapshot": "2026-09-29T11:28:42.358871+00:00",
+ "buses": [
+  "100178 Lincolnville",
+  "100179 Cyro Drive",
+  "111209 Hatchville",
+  "111214 Otis",
+  "111403 Mashpee",
+  "114417 Salem Harbor",
+  "hub ISO-NE Internal Hub"
+ ],
+ "basis": {
+  "mode": "historical",
+  "market": "RT",
+  "years": [
+   2025
+  ],
+  "weighting": "duration",
+  "weights": {},
+  "strict": true,
+  "includePartial": false
+ },
+ "solar100_111403": {
+  "metrics": {
+   "bus": "111403 Mashpee",
+   "exportLimit": 152.8,
+   "exportStatus": "Envelope only",
+   "exportCase": "Summer peak · export",
+   "exportValueBasis": "element",
+   "envelopeOnly": [
+    "Shoulder · export"
+   ],
+   "cost": {
+    "status": "No upgrades indicated",
+    "total": 0,
+    "text": "none indicated (unverified)"
+   },
+   "queueMatched": 1,
+   "queueLinkedMW": 487,
+   "queueNotModelled": 0,
+   "queueStatusChecked": true,
+   "queueLinkedTotal": 110,
+   "queueRegisterTotal": 1751,
+   "land": {
+    "status": "fits",
+    "reason": null
+   },
+   "tier": "node at the same substation · load node at 23 kV, bus at 115 kV",
+   "revenue": {
+    "value": 6677122,
+    "capture": 52.3868,
+    "mean": 66.7087,
+    "clippedAt": null,
+    "genMWh": 127458,
+    "spillMWh": null,
+    "spillReason": "not assessed (profile peak 58.5 MW below the 100.0 MW POI): the CF-scaled shape never reaches nameplate, so spill and clipping cannot show"
+   },
+   "captureClearSky": 0.78531,
+   "captureFleet": 0.72331,
+   "fleetUsedRef": 0,
+   "fleetUnfilled": 9,
+   "clip": {
+    "share": null,
+    "reason": "not assessed (profile peak 58.5 MW below the 100.0 MW POI): the CF-scaled shape never reaches nameplate, so spill and clipping cannot show",
+    "evidence": null
+   }
+  },
+  "gates": [
+   {
+    "gate": "Connect",
+    "verdict": "Hold",
+    "why": "Grid: Envelope only; envelope only (vendor-asserted) for Shoulder · export: unverified, D6.1 context, never a pass; light load and minimum load not studied"
+   },
+   {
+    "gate": "Upgrade cost known",
+    "verdict": "Hold",
+    "why": "Grid: No upgrades indicated · none indicated (unverified); unverified (envelope only) for Shoulder · export"
+   },
+   {
+    "gate": "Queue exposure",
+    "verdict": "Hold",
+    "why": "110 of 1,751 requests linked; unlinked requests not assessed. 487 MW linked nearby (1 request(s)), none ahead of the solved case"
+   },
+   {
+    "gate": "Land fit",
+    "verdict": "Hold",
+    "why": "Land: fits on a habitat/protected-only screen (water, urban, wetland and slope not screened): an upper bound"
+   },
+   {
+    "gate": "Revenue evidence",
+    "verdict": "Hold",
+    "why": "Computed, but conditional on the connection"
+   },
+   {
+    "gate": "Capture",
+    "verdict": "Hold",
+    "why": "clear-sky 78.5% · fleet 72.3% vs threshold not set: clear-sky 78.5%, fleet 72.3%: threshold not set (open decision #2, owner Ganesh), so the capture test cannot pass or fail"
+   },
+   {
+    "gate": "Tax credit (45Y/48E)",
+    "verdict": "Hold",
+    "why": "Not decided: an input is not held: Neither limb can be tested: enter the PIS date (Queue COD) or a construction start on or before 2026-07-04."
+   }
+  ],
+  "tally": "0 Fail · 7 Open · 0 Pass (of 7)",
+  "ownExportLimit": 152.8,
+  "captureAtUser70": {
+   "gate": "Capture",
+   "verdict": "Pass",
+   "why": "clear-sky 78.5% · fleet 72.3% vs ≥ 70% (your threshold): clear-sky 78.5%, fleet 72.3%: every basis ≥ 70%",
+   "qualifier": "your threshold"
+  },
+  "openItems": [
+   {
+    "gate": "Connect",
+    "verdict": "Hold",
+    "what": "Obtain an element study for Shoulder · export (envelope only, vendor-asserted)",
+    "where": "Grid › Connection capacity"
+   },
+   {
+    "gate": "Upgrade cost known",
+    "verdict": "Hold",
+    "what": "Confirm the cost for Shoulder · export (envelope only)",
+    "where": "Grid › Upgrade cost allocator"
+   },
+   {
+    "gate": "Queue exposure",
+    "verdict": "Hold",
+    "what": "Check nearby unlinked queue requests by hand (only the linked subset is assessed)",
+    "where": "Queue › Queue & cluster"
+   },
+   {
+    "gate": "Land fit",
+    "verdict": "Hold",
+    "what": "Screen water, urban, wetland and slope before relying on the fit",
+    "where": "Land › Buildable area"
+   },
+   {
+    "gate": "Revenue evidence",
+    "verdict": "Hold",
+    "what": "Revenue is conditional on the connection: clear the Connect gate first",
+    "where": "Economics › Solar & wind revenue"
+   },
+   {
+    "gate": "Capture",
+    "verdict": "Hold",
+    "what": "Agree the capture threshold and which basis governs (open decision #2, owner: Ganesh); until then this gate holds",
+    "where": "Prices › Shape & capture"
+   },
+   {
+    "gate": "Tax credit (45Y/48E)",
+    "verdict": "Hold",
+    "what": "Enter the construction-start (BOC) method and date, the placed-in-service (PIS) date or a Queue COD, and the material-assistance ratio in Economics › Project finance: an input is not held: Neither limb can be tested: enter the PIS date (Queue COD) or a construction start on or before 2026-07-04.",
+    "where": "Economics › Project finance"
+   }
+  ],
+  "memo": {
+   "exportLimit": "152.8 MW · Summer peak · export · thermal N-1 DC screen (Interconnection element study (2026-05 set)) · NR energy-only · Envelope only · Shoulder · export envelope only (vendor-asserted, unverified) · light load and minimum load not studied",
+   "cost": "none indicated (unverified) · envelope only for Shoulder · export: no facility list, so not a proven $0",
+   "land": "fits on a habitat/protected-only screen (water, urban, wetland and slope not screened): an upper bound · land-need figures read from a secondary extraction: verify before client use",
+   "footnotes": [
+    "Export limit: a screening figure from the stored thermal screen (vintage 2026-05), not an interconnection study result; capacity (CNR) service is at most this figure.",
+    "Upgrade cost: from stored facility costs at the request size; cases without a facility list are unverified or a lower bound, never $0.",
+    "Land: Figures were read from secondary extraction of the source documents rather than from the published PDFs. Verify against the papers before any figure reaches a client.",
+    "Every figure is screening evidence on the unified ISO-NE database; unknown is never Pass."
+   ]
+  }
+ },
+ "solar100_100178": {
+  "metrics": {
+   "bus": "100178 Lincolnville",
+   "exportLimit": 67.6,
+   "exportStatus": "Does not fit",
+   "exportCase": "Summer peak · export",
+   "exportValueBasis": "element",
+   "envelopeOnly": [
+    "Shoulder · export"
+   ],
+   "cost": {
+    "status": "Lower bound",
+    "total": 2.49,
+    "text": "≥ $2.49M"
+   },
+   "queueMatched": 0,
+   "queueLinkedMW": null,
+   "queueNotModelled": null,
+   "queueStatusChecked": null,
+   "queueLinkedTotal": 110,
+   "queueRegisterTotal": 1751,
+   "land": {
+    "status": "fits",
+    "reason": null
+   },
+   "tier": "own price node · load node at 34.5 kV, bus at 115 kV",
+   "revenue": {
+    "value": 5665886,
+    "capture": 44.453,
+    "mean": 62.281,
+    "clippedAt": 67.6,
+    "genMWh": 127458,
+    "spillMWh": null,
+    "spillReason": "not assessed (profile peak 59.7 MW below the 67.6 MW POI): the CF-scaled shape never reaches nameplate, so spill and clipping cannot show"
+   },
+   "captureClearSky": 0.71375,
+   "captureFleet": 0.66707,
+   "fleetUsedRef": 0,
+   "fleetUnfilled": 9,
+   "clip": {
+    "share": null,
+    "reason": "not assessed (profile peak 59.7 MW below the 67.6 MW POI): the CF-scaled shape never reaches nameplate, so spill and clipping cannot show",
+    "evidence": null
+   }
+  },
+  "gates": [
+   {
+    "gate": "Connect",
+    "verdict": "Fail",
+    "why": "Grid: Does not fit; envelope only (vendor-asserted) for Shoulder · export: unverified, D6.1 context, never a pass; light load and minimum load not studied"
+   },
+   {
+    "gate": "Upgrade cost known",
+    "verdict": "Hold",
+    "why": "Grid: Lower bound · ≥ $2.49M; unverified (envelope only) for Shoulder · export"
+   },
+   {
+    "gate": "Queue exposure",
+    "verdict": "Hold",
+    "why": "110 of 1,751 requests linked; unlinked requests not assessed. no linked requests within 10 mi"
+   },
+   {
+    "gate": "Land fit",
+    "verdict": "Hold",
+    "why": "Land: fits on a habitat/protected-only screen (water, urban, wetland and slope not screened): an upper bound"
+   },
+   {
+    "gate": "Revenue evidence",
+    "verdict": "Hold",
+    "why": "Computed, but conditional on the connection"
+   },
+   {
+    "gate": "Capture",
+    "verdict": "Hold",
+    "why": "clear-sky 71.4% · fleet 66.7% vs threshold not set: clear-sky 71.4%, fleet 66.7%: threshold not set (open decision #2, owner Ganesh), so the capture test cannot pass or fail"
+   },
+   {
+    "gate": "Tax credit (45Y/48E)",
+    "verdict": "Hold",
+    "why": "Not decided: an input is not held: Neither limb can be tested: enter the PIS date (Queue COD) or a construction start on or before 2026-07-04."
+   }
+  ],
+  "tally": "1 Fail · 6 Open · 0 Pass (of 7)",
+  "ownExportLimit": 67.6,
+  "captureAtUser70": {
+   "gate": "Capture",
+   "verdict": "Hold",
+   "why": "clear-sky 71.4% · fleet 66.7% vs ≥ 70%: clear-sky 71.4%, fleet 66.7%: the bases disagree; the governing basis is open decision #2"
+  },
+  "openItems": [
+   {
+    "gate": "Connect",
+    "verdict": "Fail",
+    "what": "Resize below the binding element limit, or price the upgrade that removes it",
+    "where": "Grid › Connection capacity"
+   },
+   {
+    "gate": "Upgrade cost known",
+    "verdict": "Hold",
+    "what": "Confirm the cost for Shoulder · export (envelope only)",
+    "where": "Grid › Upgrade cost allocator"
+   },
+   {
+    "gate": "Queue exposure",
+    "verdict": "Hold",
+    "what": "Check nearby unlinked queue requests by hand (only the linked subset is assessed)",
+    "where": "Queue › Queue & cluster"
+   },
+   {
+    "gate": "Land fit",
+    "verdict": "Hold",
+    "what": "Screen water, urban, wetland and slope before relying on the fit",
+    "where": "Land › Buildable area"
+   },
+   {
+    "gate": "Revenue evidence",
+    "verdict": "Hold",
+    "what": "Revenue is conditional on the connection: clear the Connect gate first",
+    "where": "Economics › Solar & wind revenue"
+   },
+   {
+    "gate": "Capture",
+    "verdict": "Hold",
+    "what": "Agree the capture threshold and which basis governs (open decision #2, owner: Ganesh); until then this gate holds",
+    "where": "Prices › Shape & capture"
+   },
+   {
+    "gate": "Tax credit (45Y/48E)",
+    "verdict": "Hold",
+    "what": "Enter the construction-start (BOC) method and date, the placed-in-service (PIS) date or a Queue COD, and the material-assistance ratio in Economics › Project finance: an input is not held: Neither limb can be tested: enter the PIS date (Queue COD) or a construction start on or before 2026-07-04.",
+    "where": "Economics › Project finance"
+   }
+  ],
+  "memo": {
+   "exportLimit": "67.6 MW · Summer peak · export · thermal N-1 DC screen (Interconnection element study (2026-05 set)) · NR energy-only · Does not fit · Shoulder · export envelope only (vendor-asserted, unverified) · light load and minimum load not studied",
+   "cost": "≥ $2.49M · envelope only for Shoulder · export: no facility list, so not a proven $0",
+   "land": "fits on a habitat/protected-only screen (water, urban, wetland and slope not screened): an upper bound · land-need figures read from a secondary extraction: verify before client use",
+   "footnotes": [
+    "Export limit: a screening figure from the stored thermal screen (vintage 2026-05), not an interconnection study result; capacity (CNR) service is at most this figure.",
+    "Upgrade cost: from stored facility costs at the request size; cases without a facility list are unverified or a lower bound, never $0.",
+    "Land: Figures were read from secondary extraction of the source documents rather than from the published PDFs. Verify against the papers before any figure reaches a client.",
+    "Every figure is screening evidence on the unified ISO-NE database; unknown is never Pass."
+   ]
+  }
+ },
+ "revenue_111403": {
+  "hours": 8760,
+  "meanShape": 0.236246,
+  "cfInput": 0.15,
+  "lossPct": 3,
+  "exportLimit": 152.8,
+  "byHandAnnual": 6677122,
+  "code": 6677122,
+  "capturePrice": 52.3868,
+  "meanPrice": 66.7087,
+  "potentialMWh": 127458,
+  "deliveredMWh": 127458,
+  "preNameplateMWh": 131400,
+  "realisedCFdelivered": 0.1455,
+  "realisedCFpreLoss": 0.15,
+  "nameplateCapLossMWh": 0
+ },
+ "capture_111403": {
+  "clearSky": {
+   "capture": 52.3868,
+   "avg": 66.7087,
+   "ratio": 0.78531,
+   "missingHours": 0
+  },
+  "fleet": {
+   "capture": 48.2508,
+   "avg": 66.7087,
+   "ratio": 0.72331,
+   "missingHours": 9,
+   "usedRef": 0,
+   "nightZero": 1027,
+   "unfilled": 9
+  },
+  "capturePassCount70": {
+   "pass": 2613,
+   "of": 2613,
+   "text": "2,613 of 2,613 ISO-NE buses reach 70% on the 2025 solar-hour price ratio"
+  }
+ },
+ "thresholds": {
+  "solar": {
+   "capture": {
+    "default": null,
+    "label": "Capture ratio ≥",
+    "unit": "%",
+    "unset": true,
+    "note": "Not set: open decision #2, which capture basis governs (modelled clear-sky or the ISO-NE fleet shape) and what ratio is acceptable, has not been agreed (owner: Ganesh). Enter your own to test against it",
+    "value": null,
+    "source": "not set"
+   },
+   "curtail": {
+    "default": 2,
+    "label": "Curtailment ≤",
+    "unit": "%",
+    "note": "Assumption; ISO curtailment is not held, POI clipping is shown instead",
+    "value": 2,
+    "source": "assumption"
+   },
+   "tb4": {
+    "default": 10,
+    "label": "TB4 spread >",
+    "unit": "$/MWh",
+    "note": "Assumption (spec pack storage gate)",
+    "value": 10,
+    "source": "assumption"
+   },
+   "oppLoss": {
+    "default": 5,
+    "label": "Opportunity loss ≤",
+    "unit": "%",
+    "note": "Assumption: share of battery power the grid limits cannot carry",
+    "value": 5,
+    "source": "assumption"
+   },
+   "dcPrice": {
+    "default": null,
+    "label": "LMP 2030 ≤",
+    "unit": "$/MWh",
+    "note": "Derived: mean LMP 2030 over the buses holding it",
+    "value": null,
+    "source": "not held"
+   },
+   "dcVol": {
+    "default": 25,
+    "label": "Price volatility <",
+    "unit": "$/MWh",
+    "note": "Assumption: standard deviation of the hourly price",
+    "value": 25,
+    "source": "assumption"
+   },
+   "dcOutlets": {
+    "default": 3,
+    "label": "Substation outlets ≥",
+    "unit": "lines",
+    "note": "Assumption: supply redundancy for a large load",
+    "value": 3,
+    "source": "assumption"
+   }
+  },
+  "datacenterPop": {
+   "default": 46.31594104568199,
+   "label": "LMP 2030 ≤",
+   "unit": "$/MWh",
+   "note": "Derived: mean LMP 2030 over the buses holding it",
+   "value": 46.31594104568199,
+   "source": "derived"
+  },
+  "datacenterFixturePop": {
+   "default": 46.25785249085881,
+   "label": "LMP 2030 ≤",
+   "unit": "$/MWh",
+   "note": "Derived: mean LMP 2030 over the buses holding it",
+   "value": 46.25785249085881,
+   "source": "derived"
+  },
+  "datacenterNoPop": {
+   "default": null,
+   "label": "LMP 2030 ≤",
+   "unit": "$/MWh",
+   "note": "Derived: mean LMP 2030 over the buses holding it",
+   "value": null,
+   "source": "not held"
+  },
+  "userOverride": {
+   "default": 10,
+   "label": "TB4 spread >",
+   "unit": "$/MWh",
+   "note": "Assumption (spec pack storage gate)",
+   "value": 12.5,
+   "source": "user"
+  },
+  "lmp2030": {
+   "heldCurrent": 2389,
+   "zerosCurrent": 0,
+   "heldFixture": 2392,
+   "zerosFixture": 3
+  }
+ },
+ "thresholdRows_storage": [
+  {
+   "key": "tb4",
+   "label": "TB4 spread >",
+   "unit": "$/MWh",
+   "value": 12.5,
+   "default": 10,
+   "source": "user",
+   "sourceLabel": "your input",
+   "note": "Assumption (spec pack storage gate)"
+  },
+  {
+   "key": "oppLoss",
+   "label": "Opportunity loss ≤",
+   "unit": "%",
+   "value": 4,
+   "default": 5,
+   "source": "user",
+   "sourceLabel": "your input",
+   "note": "Assumption: share of battery power the grid limits cannot carry"
+  }
+ ],
+ "storage50_111403": {
+  "exportLimit": 152.8,
+  "importLimit": 99.2,
+  "exportStatus": "Envelope only",
+  "importStatus": "Envelope only",
+  "envelopeOnly": [
+   "Shoulder · export",
+   "Shoulder · charge"
+  ],
+  "tb4": 62.7082,
+  "tb4Days": 365,
+  "tb4ByHand": 62.7082,
+  "tb4Pop2025": 62.7082,
+  "oppLoss": {
+   "value": 0,
+   "export": 0,
+   "import": 0,
+   "evidence": "envelope"
+  },
+  "verdict": [
+   {
+    "test": "tb4",
+    "value": 62.7082,
+    "threshold": 10,
+    "verdict": "Pass",
+    "why": "TB4 $62.71/MWh > $10"
+   },
+   {
+    "test": "oppLoss",
+    "value": 0,
+    "threshold": 5,
+    "verdict": "Hold",
+    "why": "0.0% of power not carried, on envelope-only limits (vendor-asserted)"
+   }
+  ],
+  "gates": [
+   {
+    "gate": "Connect",
+    "verdict": "Hold",
+    "why": "Grid: Envelope only / Envelope only (export / charge); envelope only (vendor-asserted) for Shoulder · export, Shoulder · charge: unverified, D6.1 context, never a pass; light load and minimum load not studied"
+   },
+   {
+    "gate": "Upgrade cost known",
+    "verdict": "Hold",
+    "why": "Grid: No upgrades indicated · none indicated (unverified); unverified (envelope only) for Shoulder · export, Shoulder · charge"
+   },
+   {
+    "gate": "Queue exposure",
+    "verdict": "Hold",
+    "why": "110 of 1,751 requests linked; unlinked requests not assessed. 487 MW linked nearby (1 request(s)), none ahead of the solved case"
+   },
+   {
+    "gate": "Land fit",
+    "verdict": "Hold",
+    "why": "Land: fits on a habitat/protected-only screen (water, urban, wetland and slope not screened): an upper bound"
+   },
+   {
+    "gate": "Revenue evidence",
+    "verdict": "Hold",
+    "why": "Energy revenue comparison covers solar, wind and hybrid PV; value storage in Economics › BESS dispatch"
+   },
+   {
+    "gate": "Tax credit (45Y/48E)",
+    "verdict": "Hold",
+    "why": "Not decided: an input is not held: Storage credit depends on the construction-start year: enter the BOC date (or a PIS date)."
+   }
+  ]
+ },
+ "dc300_111209": {
+  "importLimit": 15.3,
+  "importStatus": "Does not fit",
+  "loadCost": {
+   "value": 175405791,
+   "mean": 66.745,
+   "hours": 8760
+  },
+  "byHand": {
+   "value": 175405791,
+   "meanTimes8760": 175405791
+  },
+  "dc": {
+   "lmp2030": 47.2146,
+   "std": 57.4971,
+   "outlets": 3
+  },
+  "hourlySdOnBasis": 57.4939,
+  "verdict": [
+   {
+    "test": "dcPrice",
+    "value": 47.2146,
+    "threshold": 46.3159,
+    "verdict": "Fail",
+    "why": "LMP 2030 $47.21 misses LMP 2030 ≤ $46.32"
+   },
+   {
+    "test": "dcVol",
+    "value": 57.4971,
+    "threshold": 25,
+    "verdict": "Fail",
+    "why": "Price volatility $57.50 misses Price volatility < $25.00"
+   },
+   {
+    "test": "dcOutlets",
+    "value": 3,
+    "threshold": 3,
+    "verdict": "Pass",
+    "why": "Substation outlets 3 meets Substation outlets ≥ 3"
+   }
+  ],
+  "gates": [
+   {
+    "gate": "Connect",
+    "verdict": "Fail",
+    "why": "Grid: Does not fit"
+   },
+   {
+    "gate": "Upgrade cost known",
+    "verdict": "Pass",
+    "why": "Grid: Priced · $18.27M"
+   },
+   {
+    "gate": "Queue exposure",
+    "verdict": "Hold",
+    "why": "110 of 1,751 requests linked; unlinked requests not assessed. no linked requests within 10 mi"
+   },
+   {
+    "gate": "Land fit",
+    "verdict": "Hold",
+    "why": "Land: fits on a habitat/protected-only screen (water, urban, wetland and slope not screened): an upper bound"
+   },
+   {
+    "gate": "Load cost evidence",
+    "verdict": "Hold",
+    "why": "Flat-load energy cost $175.4M/yr at $66.74/MWh, conditional on the connection"
+   }
+  ]
+ },
+ "wind200_100178": {
+  "exportLimit": 67.6,
+  "revenue": 34398902,
+  "shape": "flat",
+  "captureFleet": 1.05491,
+  "clip": {
+   "share": null
+  },
+  "capture": {
+   "gate": "Capture",
+   "verdict": "Hold",
+   "why": "clear-sky not used for wind · fleet 105.5% vs threshold not set: fleet 105.5%: threshold not set (open decision #2, owner Ganesh), so the capture test cannot pass or fail"
+  }
+ },
+ "hybrid150_111403": {
+  "exportLimit": 152.8,
+  "importLimit": 99.2,
+  "revenue": 10015683,
+  "pvOnly": true,
+  "tb4": 62.7082,
+  "verdict": [
+   {
+    "test": "curtail",
+    "value": null,
+    "verdict": "Hold"
+   },
+   {
+    "test": "capture",
+    "value": 72.3306,
+    "verdict": "Hold"
+   },
+   {
+    "test": "tb4",
+    "value": 62.7082,
+    "verdict": "Pass"
+   }
+  ]
+ },
+ "components": [
+  {
+   "bus": "111403 Mashpee",
+   "mean": 66.7087,
+   "energy": 65.6134,
+   "congestion": 0.1048,
+   "loss": 0.9905,
+   "ePlusCPlusL": 66.7087,
+   "hubMean": 65.8835,
+   "hubBasis": 0.8253
+  },
+  {
+   "bus": "100178 Lincolnville",
+   "mean": 62.281,
+   "energy": 65.6134,
+   "congestion": -2.464,
+   "loss": -0.8684,
+   "ePlusCPlusL": 62.281,
+   "hubMean": 65.8835,
+   "hubBasis": -3.6025
+  },
+  {
+   "bus": "111209 Hatchville",
+   "mean": 66.745,
+   "energy": 65.6134,
+   "congestion": 0.1049,
+   "loss": 1.0266,
+   "ePlusCPlusL": 66.745,
+   "hubMean": 65.8835,
+   "hubBasis": 0.8615
+  }
+ ],
+ "componentTies": [],
+ "stress": {
+  "years": [
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "runs": [
+   {
+    "run": "pcr2030",
+    "year": 2030
+   },
+   {
+    "run": "10yr",
+    "year": 2035
+   },
+   {
+    "run": "pcr2035",
+    "year": 2035
+   },
+   {
+    "run": "pcr2040",
+    "year": 2040
+   }
+  ],
+  "rows": [
+   {
+    "label": "Applied basis",
+    "vals": [
+     6677122,
+     5665886,
+     6680546
+    ]
+   },
+   {
+    "label": "2021 actual",
+    "vals": [
+     5342216,
+     5269933,
+     5344605
+    ]
+   },
+   {
+    "label": "2022 actual",
+    "vals": [
+     9890750,
+     9707351,
+     9893245
+    ]
+   },
+   {
+    "label": "2023 actual",
+    "vals": [
+     4257216,
+     4138030,
+     4257985
+    ]
+   },
+   {
+    "label": "2024 actual",
+    "vals": [
+     4385601,
+     4216772,
+     4387033
+    ]
+   },
+   {
+    "label": "2025 actual",
+    "vals": [
+     6677122,
+     5665886,
+     6680546
+    ]
+   },
+   {
+    "label": "pcr2030",
+    "vals": [
+     5119342,
+     4910405,
+     5124024
+    ]
+   },
+   {
+    "label": "10yr",
+    "vals": [
+     6135824,
+     5874264,
+     6145333
+    ]
+   },
+   {
+    "label": "pcr2035",
+    "vals": [
+     5594428,
+     5360918,
+     5600533
+    ]
+   },
+   {
+    "label": "pcr2040",
+    "vals": [
+     5745755,
+     5424590,
+     5752411
+    ]
+   }
+  ],
+  "leaders": {
+   "rows": [
+    {
+     "comparable": true,
+     "leader": 2,
+     "reason": ""
+    },
+    {
+     "comparable": true,
+     "leader": 2,
+     "reason": ""
+    },
+    {
+     "comparable": true,
+     "leader": 2,
+     "reason": ""
+    },
+    {
+     "comparable": true,
+     "leader": 2,
+     "reason": ""
+    },
+    {
+     "comparable": true,
+     "leader": 2,
+     "reason": ""
+    },
+    {
+     "comparable": true,
+     "leader": 2,
+     "reason": ""
+    },
+    {
+     "comparable": true,
+     "leader": 2,
+     "reason": ""
+    },
+    {
+     "comparable": true,
+     "leader": 2,
+     "reason": ""
+    },
+    {
+     "comparable": true,
+     "leader": 2,
+     "reason": ""
+    },
+    {
+     "comparable": true,
+     "leader": 2,
+     "reason": ""
+    }
+   ],
+   "base": 2,
+   "comparable": 9,
+   "other": 0
+  },
+  "ranges": [
+   {
+    "min": 4257216,
+    "max": 9890750,
+    "spread": 5633534,
+    "applied": 6677122,
+    "worst": 4257216,
+    "worstLabel": "2023 actual",
+    "downside": -2419905,
+    "downsidePct": -36.242,
+    "n": 10,
+    "missing": 0
+   },
+   {
+    "min": 4138030,
+    "max": 9707351,
+    "spread": 5569321,
+    "applied": 5665886,
+    "worst": 4138030,
+    "worstLabel": "2023 actual",
+    "downside": -1527856,
+    "downsidePct": -26.966,
+    "n": 10,
+    "missing": 0
+   },
+   {
+    "min": 4257985,
+    "max": 9893245,
+    "spread": 5635260,
+    "applied": 6680546,
+    "worst": 4257985,
+    "worstLabel": "2023 actual",
+    "downside": -2422561,
+    "downsidePct": -36.263,
+    "n": 10,
+    "missing": 0
+   }
+  ],
+  "separation": "Hatchville leads in all 9 comparable settled years and forecast runs (settled years Mashpee 0 · Lincolnville 0 · Hatchville 5; forecast runs Mashpee 0 · Lincolnville 0 · Hatchville 4).",
+  "tiers": [
+   "node at the same substation · load node at 23 kV, bus at 115 kV",
+   "own price node · load node at 34.5 kV, bus at 115 kV",
+   "own price node · load node at 23 kV, bus at 115 kV"
+  ]
+ },
+ "stressDC": {
+  "rows": [
+   {
+    "label": "Applied basis",
+    "vals": [
+     66.7087,
+     62.281,
+     66.745
+    ]
+   },
+   {
+    "label": "2021 actual",
+    "vals": [
+     45.4497,
+     45.0804,
+     45.4653
+    ]
+   },
+   {
+    "label": "2022 actual",
+    "vals": [
+     85.9287,
+     84.2834,
+     85.9485
+    ]
+   },
+   {
+    "label": "2023 actual",
+    "vals": [
+     36.2074,
+     35.5019,
+     36.2121
+    ]
+   },
+   {
+    "label": "2024 actual",
+    "vals": [
+     40.0518,
+     39.1525,
+     40.061
+    ]
+   },
+   {
+    "label": "2025 actual",
+    "vals": [
+     66.7087,
+     62.281,
+     66.745
+    ]
+   },
+   {
+    "label": "pcr2030",
+    "vals": [
+     47.1663,
+     46.4095,
+     47.2146
+    ]
+   },
+   {
+    "label": "10yr",
+    "vals": [
+     57.2508,
+     56.6195,
+     57.3425
+    ]
+   },
+   {
+    "label": "pcr2035",
+    "vals": [
+     53.0343,
+     52.4346,
+     53.0939
+    ]
+   },
+   {
+    "label": "pcr2040",
+    "vals": [
+     57.3531,
+     56.006,
+     57.422
+    ]
+   }
+  ],
+  "ranges": [
+   {
+    "worst": 85.9287,
+    "worstLabel": "2022 actual",
+    "downside": 19.22,
+    "downsidePct": 28.812
+   },
+   {
+    "worst": 84.2834,
+    "worstLabel": "2022 actual",
+    "downside": 22.0024,
+    "downsidePct": 35.328
+   },
+   {
+    "worst": 85.9485,
+    "worstLabel": "2022 actual",
+    "downside": 19.2036,
+    "downsidePct": 28.772
+   }
+  ]
+ },
+ "coverage": [
+  {
+   "concern": "Coordinates",
+   "cells": [
+    "held: 41.627, -70.473",
+    "held: 44.307, -69.114",
+    "held: 41.618, -70.554"
+   ]
+  },
+  {
+   "concern": "Price node",
+   "cells": [
+    "held: node at the same substation · load node at 23 kV, bus at 115 kV",
+    "held: own price node · load node at 34.5 kV, bus at 115 kV",
+    "held: own price node · load node at 23 kV, bus at 115 kV"
+   ]
+  },
+  {
+   "concern": "Settled price history",
+   "cells": [
+    "held: 5 complete RT year(s) of 7",
+    "held: 5 complete RT year(s) of 7",
+    "held: 5 complete RT year(s) of 7"
+   ]
+  },
+  {
+   "concern": "Forecast runs",
+   "cells": [
+    "held: 5 run(s): 5yr, pcr2030, 10yr, pcr2035, pcr2040",
+    "held: 5 run(s): 5yr, pcr2030, 10yr, pcr2035, pcr2040",
+    "held: 5 run(s): 5yr, pcr2030, 10yr, pcr2035, pcr2040"
+   ]
+  },
+  {
+   "concern": "Element study (requested cases)",
+   "cells": [
+    "partial: 1 of 2 cases (Shoulder · export not held)",
+    "partial: 1 of 2 cases (Shoulder · export not held)",
+    "partial: 1 of 2 cases (Shoulder · export not held)"
+   ]
+  },
+  {
+   "concern": "Upgrade cost",
+   "cells": [
+    "partial: No upgrades indicated · none indicated (unverified)",
+    "partial: Lower bound · ≥ $2.49M",
+    "partial: No upgrades indicated · none indicated (unverified)"
+   ]
+  },
+  {
+   "concern": "Land exclusion screen",
+   "cells": [
+    "partial: fits: habitat/protected-only screen",
+    "partial: fits: habitat/protected-only screen",
+    "partial: fits: habitat/protected-only screen"
+   ]
+  },
+  {
+   "concern": "Queue linkage",
+   "cells": [
+    "partial: 1 linked request(s) nearby; only 110 of 1,751 requests carry a bus link",
+    "partial: 0 linked request(s) nearby; only 110 of 1,751 requests carry a bus link",
+    "partial: 0 linked request(s) nearby; only 110 of 1,751 requests carry a bus link"
+   ]
+  }
+ ],
+ "sharedElements": {
+  "counts": [
+   3,
+   14,
+   3
+  ],
+  "minTransfer": [
+   152.8,
+   67.6,
+   197.8
+  ],
+  "exportLimits": [
+   152.8,
+   67.6,
+   197.8
+  ],
+  "rows": [
+   {
+    "facility": "111209 HATCHVILLE 115 111407 FAL TAP 136 115 1",
+    "shared": 2,
+    "transfer": [
+     286.7,
+     null,
+     197.8
+    ]
+   },
+   {
+    "facility": "111215 MASHPEE_137 115 111135 W BARNSTABLE 115 1",
+    "shared": 2,
+    "transfer": [
+     263.2,
+     null,
+     347
+    ]
+   }
+  ]
+ },
+ "position": [
+  {
+   "key": "lmp_2030",
+   "label": "Forecast LMP 2030",
+   "higher": true,
+   "n": 2389,
+   "cells": [
+    {
+     "value": 47.1663,
+     "pct": 75.18,
+     "oriented": 75.18
+    },
+    {
+     "value": 46.4095,
+     "pct": 35.89,
+     "oriented": 35.89
+    },
+    {
+     "value": 47.2146,
+     "pct": 79.59,
+     "oriented": 79.59
+    }
+   ]
+  },
+  {
+   "key": "lmp_rt",
+   "label": "Average RT LMP 2025",
+   "higher": true,
+   "n": 2613,
+   "cells": [
+    {
+     "value": 66.7087,
+     "pct": 88.75,
+     "oriented": 88.75
+    },
+    {
+     "value": 62.281,
+     "pct": 6.98,
+     "oriented": 6.98
+    },
+    {
+     "value": 66.745,
+     "pct": 89.36,
+     "oriented": 89.36
+    }
+   ]
+  },
+  {
+   "key": "solar_ratio",
+   "label": "Solar-weighted ÷ average price 2025",
+   "higher": true,
+   "n": 2613,
+   "cells": [
+    {
+     "value": 0.9248,
+     "pct": 19.48,
+     "oriented": 19.48
+    },
+    {
+     "value": 0.8806,
+     "pct": 6.18,
+     "oriented": 6.18
+    },
+    {
+     "value": 0.9247,
+     "pct": 18.64,
+     "oriented": 18.64
+    }
+   ]
+  },
+  {
+   "key": "tb4",
+   "label": "TB4 spread 2025",
+   "higher": true,
+   "n": 2613,
+   "cells": [
+    {
+     "value": 62.7082,
+     "pct": 81.86,
+     "oriented": 81.86
+    },
+    {
+     "value": 66.4674,
+     "pct": 94.09,
+     "oriented": 94.09
+    },
+    {
+     "value": 62.749,
+     "pct": 83.54,
+     "oriented": 83.54
+    }
+   ]
+  },
+  {
+   "key": "neg",
+   "label": "Negative-price hours 2025",
+   "higher": false,
+   "n": 2613,
+   "cells": [
+    {
+     "value": 74,
+     "pct": 42.9,
+     "oriented": 57.1
+    },
+    {
+     "value": 322,
+     "pct": 94.09,
+     "oriented": 5.91
+    },
+    {
+     "value": 74,
+     "pct": 42.9,
+     "oriented": 57.1
+    }
+   ]
+  },
+  {
+   "key": "cong",
+   "label": "Average congestion component 2025 (signed)",
+   "higher": true,
+   "n": 2613,
+   "cells": [
+    {
+     "value": 0.1048,
+     "pct": 81.21,
+     "oriented": 81.21
+    },
+    {
+     "value": -2.464,
+     "pct": 6.68,
+     "oriented": 6.68
+    },
+    {
+     "value": 0.1049,
+     "pct": 81.52,
+     "oriented": 81.52
+    }
+   ]
+  },
+  {
+   "key": "hr_sp_dis",
+   "label": "Injection headroom · summer peak",
+   "higher": true,
+   "n": 2648,
+   "cells": [
+    {
+     "value": 260.4,
+     "pct": 65.07,
+     "oriented": 65.07
+    },
+    {
+     "value": 304.8,
+     "pct": 72.49,
+     "oriented": 72.49
+    },
+    {
+     "value": 257.9,
+     "pct": 64.6,
+     "oriented": 64.6
+    }
+   ]
+  },
+  {
+   "key": "sc_mva",
+   "label": "Short-circuit strength",
+   "higher": true,
+   "n": 2648,
+   "cells": [
+    {
+     "value": 2520.1,
+     "pct": 39.86,
+     "oriented": 39.86
+    },
+    {
+     "value": 1335.6,
+     "pct": 22.87,
+     "oriented": 22.87
+    },
+    {
+     "value": 2443.5,
+     "pct": 38.24,
+     "oriented": 38.24
+    }
+   ]
+  }
+ ],
+ "positionStrip0": {
+  "held": 8,
+  "better": 6,
+  "notHeld": 0,
+  "best": {
+   "key": "lmp_rt",
+   "label": "Average RT LMP 2025",
+   "o": 88.74856486796786
+  },
+  "worst": {
+   "key": "solar_ratio",
+   "label": "Solar-weighted ÷ average price 2025",
+   "o": 19.479525449674703
+  }
+ },
+ "percentile_solar_ratio_111403": {
+  "value": 0.9248005406334276,
+  "pct": 19.479525449674703,
+  "below": 507,
+  "equal": 4,
+  "n": 2613
+ },
+ "studioNotes_111403": [
+  {
+   "key": "lmp_2025",
+   "label": "Average RT LMP 2025",
+   "studio": 66.71,
+   "unified": 66.70873401826483,
+   "diff": 0.0012659817351590164,
+   "state": "same",
+   "note": ""
+  },
+  {
+   "key": "lmp_2030",
+   "label": "LMP 2030",
+   "studio": 70.68,
+   "unified": 47.16625497864407,
+   "diff": 23.513745021355938,
+   "state": "differs",
+   "note": "Studio sheet column; the unified value is the pcr2030 run mean"
+  },
+  {
+   "key": "lmp_2035",
+   "label": "LMP 2035",
+   "studio": 52.9,
+   "unified": 53.03426316216752,
+   "diff": -0.134263162167521,
+   "state": "same",
+   "note": ""
+  },
+  {
+   "key": "hneg_2025",
+   "label": "Negative-price hours 2025",
+   "studio": 74,
+   "unified": 74,
+   "diff": 0,
+   "state": "same",
+   "note": ""
+  },
+  {
+   "key": "h200_2025",
+   "label": "Hours above $200 2025",
+   "studio": 306,
+   "unified": 306,
+   "diff": 0,
+   "state": "same",
+   "note": ""
+  },
+  {
+   "key": "std_2025",
+   "label": "Price volatility 2025",
+   "studio": 57.47,
+   "unified": 57.46940938991022,
+   "diff": 0.0005906100897803412,
+   "state": "same",
+   "note": ""
+  },
+  {
+   "key": "hr_sp_dis",
+   "label": "Injection headroom · summer peak",
+   "studio": 260.4,
+   "unified": 260.4,
+   "diff": 0,
+   "state": "same",
+   "note": ""
+  },
+  {
+   "key": "hr_sh_chg",
+   "label": "Charging headroom · shoulder",
+   "studio": 99.2,
+   "unified": 99.2,
+   "diff": 0,
+   "state": "same",
+   "note": ""
+  },
+  {
+   "key": "hr_ll_chg",
+   "label": "Withdrawal headroom · large load",
+   "studio": 65.1,
+   "unified": 65.1,
+   "diff": 0,
+   "state": "same",
+   "note": ""
+  },
+  {
+   "key": "sc_mva",
+   "label": "Short-circuit strength",
+   "studio": 25.2,
+   "unified": 2520.1,
+   "diff": -2494.9,
+   "state": "differs",
+   "note": "Studio copy holds the source column, 100× too small (the Studio multiplies on read); the unified DB stores it corrected"
+  },
+  {
+   "key": "outlets",
+   "label": "Substation outlets",
+   "studio": 1,
+   "unified": 1,
+   "diff": 0,
+   "state": "same",
+   "note": ""
+  },
+  {
+   "key": "lmp_2050",
+   "label": "LMP 2050 (vendor)",
+   "studio": 66.94,
+   "unified": null,
+   "diff": null,
+   "state": "excluded",
+   "note": "Not in the unified DB: vendor 2045/2050 were 2040 × 1.0816 per step, a flat escalation, not a simulation"
+  },
+  {
+   "key": "top_constraint",
+   "label": "Top constraint (vendor)",
+   "studio": "Maine-NH Tie 345kV",
+   "unified": null,
+   "diff": null,
+   "state": "excluded",
+   "note": "Not in the unified DB: the vendor names had zero overlap with real constraints (see limiting elements)"
+  },
+  {
+   "key": "top_shadow",
+   "label": "Top shadow price (vendor)",
+   "studio": 178.9,
+   "unified": null,
+   "diff": null,
+   "state": "excluded",
+   "note": "Not in the unified DB (same vendor field as the top constraint)"
+  },
+  {
+   "key": "solar_100MW_2030",
+   "label": "Solar curtailment 100 MW 2030 (vendor)",
+   "studio": 1.2,
+   "unified": null,
+   "diff": null,
+   "state": "excluded",
+   "note": "Not in the unified DB: vendor curtailment ramp, 2,676 of 2,678 flagged unvalidated"
+  }
+ ],
+ "recordDiff": [
+  "Export MW",
+  "Fuel thresholds"
+ ],
+ "queue": {
+  "total": {
+   "value": 1751,
+   "src": "GridSense store register (acquired.queue + acquired.queue_poi_match), read-only",
+   "at": "2026-09-29T16:29:59.708566+00:00"
+  },
+  "text": "110 of 1,751 requests linked"
+ },
+ "costText": [
+  {
+   "status": "Priced",
+   "text": "$12.35M"
+  },
+  {
+   "status": "Lower bound",
+   "text": "≥ $12.35M"
+  },
+  {
+   "status": "Partly priced",
+   "text": "≥ $12.35M"
+  },
+  {
+   "status": "True zero",
+   "text": "$12.35M"
+  },
+  {
+   "status": "No upgrades indicated",
+   "text": "none indicated (unverified)"
+  },
+  {
+   "status": "Not requested",
+   "text": "not requested"
+  },
+  {
+   "status": "Envelope only",
+   "text": "not held"
+  }
+ ],
+ "defaultsFor": {
+  "solar 100/0": {
+   "capex": {
+    "value": 140524000,
+    "src": "rules/isone-2026/defaults.json · NREL ATB 2025 (assumption) · pv_tracking.capex_per_kwac × export kW"
+   },
+   "annualOM": {
+    "value": 2318000,
+    "src": "rules/isone-2026/defaults.json · NREL ATB 2025 (assumption) · pv_tracking.fom_per_kwac_yr × export kW"
+   },
+   "solarCF": {
+    "value": 23.57,
+    "src": "rules/isone-2026/defaults.json · NREL ATB 2025 (assumption) · pv_tracking.cf_by_class 7 (New England is likely class 7-8)"
+   },
+   "discountRate": {
+    "value": 0.077,
+    "src": "rules/isone-2026/defaults.json · Lazard LCOE+ v19.0 (assumption) · finance.wacc_nominal"
+   },
+   "years": {
+    "value": 30,
+    "src": "rules/isone-2026/defaults.json · NREL ATB 2025, ATBe.parquet v1.0.0 rows Tax Rate / WACC Nominal; CRP 30 (R3 C4, §3.1, §4) (assumption) · atb_finance.crp_years"
+   }
+  },
+  "wind 200/0": {
+   "capex": {
+    "value": 364712000,
+    "src": "rules/isone-2026/defaults.json · NREL ATB 2025 (assumption) · wind_onshore.capex_per_kw × export kW"
+   },
+   "annualOM": {
+    "value": 7922000,
+    "src": "rules/isone-2026/defaults.json · NREL ATB 2025 (assumption) · wind_onshore.fom_per_kw_yr × export kW"
+   },
+   "windCF": {
+    "value": 44.45,
+    "src": "rules/isone-2026/defaults.json · NREL ATB 2025 (assumption) · wind_onshore.cf_class4"
+   },
+   "discountRate": {
+    "value": 0.077,
+    "src": "rules/isone-2026/defaults.json · Lazard LCOE+ v19.0 (assumption) · finance.wacc_nominal"
+   },
+   "years": {
+    "value": 30,
+    "src": "rules/isone-2026/defaults.json · NREL ATB 2025, ATBe.parquet v1.0.0 rows Tax Rate / WACC Nominal; CRP 30 (R3 C4, §3.1, §4) (assumption) · atb_finance.crp_years"
+   }
+  },
+  "storage 100/100": {
+   "capex": {
+    "value": 134446000,
+    "src": "rules/isone-2026/defaults.json · NREL ATB 2025 (assumption) · battery_4h.capex_per_kw × discharge kW"
+   },
+   "annualOM": {
+    "value": 4785000,
+    "src": "rules/isone-2026/defaults.json · NREL ATB 2025 (assumption) · battery_4h.fom_per_kw_yr × discharge kW"
+   },
+   "duration": {
+    "value": 4,
+    "src": "rules/isone-2026/defaults.json · NREL ATB 2025 (assumption) · battery_4h (the ATB 4-hour battery)"
+   },
+   "rte": {
+    "value": 85,
+    "src": "rules/isone-2026/defaults.json · NREL ATB 2025 (assumption) · battery_4h.rte"
+   },
+   "discountRate": {
+    "value": 0.077,
+    "src": "rules/isone-2026/defaults.json · Lazard LCOE+ v19.0 (assumption) · finance.wacc_nominal"
+   },
+   "years": {
+    "value": 15,
+    "src": "rules/isone-2026/defaults.json · NREL ATB 2025 (assumption) · battery_4h.life_years"
+   }
+  },
+  "hybrid 150/75": {
+   "capex": {
+    "value": 311620500,
+    "src": "rules/isone-2026/defaults.json · NREL ATB 2025 (assumption) · pv_tracking.capex_per_kwac × export kW + battery_4h.capex_per_kw × charge kW"
+   },
+   "annualOM": {
+    "value": 7065750,
+    "src": "rules/isone-2026/defaults.json · NREL ATB 2025 (assumption) · pv_tracking.fom_per_kwac_yr × export kW + battery_4h.fom_per_kw_yr × charge kW"
+   },
+   "solarCF": {
+    "value": 23.57,
+    "src": "rules/isone-2026/defaults.json · NREL ATB 2025 (assumption) · pv_tracking.cf_by_class 7 (New England is likely class 7-8)"
+   },
+   "duration": {
+    "value": 4,
+    "src": "rules/isone-2026/defaults.json · NREL ATB 2025 (assumption) · battery_4h (the ATB 4-hour battery)"
+   },
+   "rte": {
+    "value": 85,
+    "src": "rules/isone-2026/defaults.json · NREL ATB 2025 (assumption) · battery_4h.rte"
+   },
+   "discountRate": {
+    "value": 0.077,
+    "src": "rules/isone-2026/defaults.json · Lazard LCOE+ v19.0 (assumption) · finance.wacc_nominal"
+   },
+   "years": {
+    "value": 30,
+    "src": "rules/isone-2026/defaults.json · NREL ATB 2025, ATBe.parquet v1.0.0 rows Tax Rate / WACC Nominal; CRP 30 (R3 C4, §3.1, §4) (assumption) · atb_finance.crp_years"
+   }
+  },
+  "datacenter 0/300": {}
+ },
+ "project": {
+  "ok": true,
+  "errors": {},
+  "stated": {
+   "name": "stated",
+   "tech": "stated",
+   "importMW": "n/a",
+   "exportMW": "stated",
+   "cod": "stated",
+   "capex": "default",
+   "annualOM": "default",
+   "discountRate": "default",
+   "years": "default",
+   "solarCF": "default",
+   "siteLat": "default",
+   "siteLon": "default"
+  },
+  "sources": {
+   "capex": "rules/isone-2026/defaults.json · NREL ATB 2025 (assumption) · pv_tracking.capex_per_kwac × export kW",
+   "annualOM": "rules/isone-2026/defaults.json · NREL ATB 2025 (assumption) · pv_tracking.fom_per_kwac_yr × export kW",
+   "discountRate": "rules/isone-2026/defaults.json · Lazard LCOE+ v19.0 (assumption) · finance.wacc_nominal",
+   "years": "rules/isone-2026/defaults.json · NREL ATB 2025, ATBe.parquet v1.0.0 rows Tax Rate / WACC Nominal; CRP 30 (R3 C4, §3.1, §4) (assumption) · atb_finance.crp_years",
+   "solarCF": "rules/isone-2026/defaults.json · NREL ATB 2025 (assumption) · pv_tracking.cf_by_class 7 (New England is likely class 7-8)",
+   "siteLat": "bus coordinate (Mashpee)",
+   "siteLon": "bus coordinate (Mashpee)"
+  },
+  "econ": {
+   "duration": null,
+   "solarCF": 23.57,
+   "windCF": null,
+   "rte": null
+  },
+  "fin": {
+   "cod": 2029,
+   "capex": 140524000,
+   "annualOM": 2318000,
+   "discountRate": 0.077,
+   "years": 30
+  },
+  "toState": {
+   "tech": "solar",
+   "exportMW": 100,
+   "importMW": 0,
+   "nodeId": "111403",
+   "qCod": 2029,
+   "qService": null,
+   "siteLat": 41.626685,
+   "siteLon": -70.472573,
+   "siteSrc": "bus coordinate (Mashpee · 111403)",
+   "inputProv": {
+    "exportMW": {
+     "state": "stated",
+     "src": null,
+     "v": 100
+    },
+    "cod": {
+     "state": "stated",
+     "src": null,
+     "v": 2029
+    },
+    "siteLat": {
+     "state": "default",
+     "src": "bus coordinate (Mashpee · 111403)",
+     "v": 41.626685
+    },
+    "siteLon": {
+     "state": "default",
+     "src": "bus coordinate (Mashpee · 111403)",
+     "v": -70.472573
+    },
+    "capex": {
+     "state": "default",
+     "src": "rules/isone-2026/defaults.json · NREL ATB 2025 (assumption) · pv_tracking.capex_per_kwac × export kW",
+     "v": 140524000
+    },
+    "annualOM": {
+     "state": "default",
+     "src": "rules/isone-2026/defaults.json · NREL ATB 2025 (assumption) · pv_tracking.fom_per_kwac_yr × export kW",
+     "v": 2318000
+    },
+    "solarCF": {
+     "state": "default",
+     "src": "rules/isone-2026/defaults.json · NREL ATB 2025 (assumption) · pv_tracking.cf_by_class 7 (New England is likely class 7-8)",
+     "v": 23.57
+    },
+    "discountRate": {
+     "state": "default",
+     "src": "rules/isone-2026/defaults.json · Lazard LCOE+ v19.0 (assumption) · finance.wacc_nominal",
+     "v": 0.077
+    },
+    "years": {
+     "state": "default",
+     "src": "rules/isone-2026/defaults.json · NREL ATB 2025, ATBe.parquet v1.0.0 rows Tax Rate / WACC Nominal; CRP 30 (R3 C4, §3.1, §4) (assumption) · atb_finance.crp_years",
+     "v": 30
+    }
+   }
+  },
+  "statedCount": {
+   "stated": 4,
+   "total": 8,
+   "fields": [
+    "name",
+    "tech",
+    "exportMW",
+    "cod",
+    "service",
+    "landStatus",
+    "profile",
+    "dcMW"
+   ]
+  },
+  "after150": {
+   "capex": 210786000,
+   "annualOM": 3477000
+  },
+  "stale": {
+   "records": [
+    {
+     "id": "r1",
+     "stale": true,
+     "staleReason": "Export size 100 → 150"
+    },
+    {
+     "id": "r2",
+     "stale": true,
+     "staleReason": "x"
+    }
+   ],
+   "n": 1,
+   "reason": "Export size 100 → 150"
+  },
+  "invalid": "Export size must be > 0 and ≤ 10,000 MW, not 0. The update was not applied."
+ },
+ "econDefaults": {
+  "solarCF": 15,
+  "windCF": 32.5,
+  "lossPct": 3
+ }
+}

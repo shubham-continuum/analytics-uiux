@@ -1,0 +1,22 @@
+/* v8 shell (Antman design, wired live): question header, stage questions, Next panel, light-mode map.
+   Loaded after ds/shared.css, before ds/design-tokens-v2.css. */
+/* question header replaces the live .bhead */
+.board-in>.gsx-question{margin:4px 0 6px}
+/* the current stage carries its question in the strip ("3 · Grid  Can it connect?") */
+#gsf-stages .gsx-sq{margin-left:6px;font-weight:500;color:var(--ink-3);font-size:11.5px}
+#gsf-stages [aria-current="step"] .gsx-sq{color:var(--ink-2)}
+/* Next panel: the shared mk-next look; this resets the v6 bottom-bar styling the section also carries */
+.gsx-an .gsx-next.next-step{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;margin:0;padding:10px 14px;border-radius:8px}
+.gsx-an .gsx-next h2{margin:0;font-size:15px;font-weight:650;color:var(--ink)}
+.gsx-an .gsx-next .mk-next-act{display:flex;gap:8px;align-items:center}
+/* map in the light theme */
+html.light:not(.dark),html[data-theme="light"]:not(.dark){--gm-water:#dfe9f3;--gm-land:#f7f9fb;--gm-lake:#d4e2ef;--gm-river:#b9cde2;--gm-county:rgba(60,80,110,.16);--gm-state:rgba(60,80,110,.45);--gm-nh:#b8c2cf}
+html.light .gm .gm-lines line.gm-net{stroke:#9fb0c6}
+html.light .gm .gm-plabel,html.light .gm .gm-labels text{stroke:var(--gm-land)}
+.gsx-an .gsx-next .mk-primary{background:var(--accent);border:1px solid var(--accent);color:var(--accent-ink,#fff);font-weight:650;min-height:34px;padding:6px 16px;border-radius:7px}
+.gsx-an .gsx-next .mk-primary:hover{filter:brightness(1.08)}
+
+/* Detail level (Screen / Review / Study) in the stage heading: always visible, never only behind the scope chevron. */
+.gsx-question .mk-for{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.gsx-question .mk-depth{display:inline-flex;align-items:center;gap:6px}
+.gsx-question .mk-depth .e{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted,#8a94a6)}

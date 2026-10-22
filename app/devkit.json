@@ -1,0 +1,73 @@
+{
+ "generatedAt": "2026-10-14T14:32:21+00:00",
+ "generator": "one-studio/app/plan/package_devkit.py",
+ "source": "D:\\Ganesh\\02 Products\\GridSense\\one-studio\\app",
+ "appFiles": 487,
+ "appSha256": "5d71304a737144f0c1906606f7cc3a97f9ad27e41794d98f617b97113fd079ac",
+ "fixtureSet": "devkit-20261014-fc2eca577322",
+ "fixtureCount": 517,
+ "fixtureGzBytes": 58122092,
+ "continuumFixtures": 165,
+ "projects": [
+  {
+   "id": "kennebec",
+   "name": "Dummy — Cape Cod Solar (sample)",
+   "dummy": true,
+   "buses": [
+    "111403",
+    "111209",
+    "111348"
+   ]
+  },
+  {
+   "id": "storage",
+   "name": "Dummy — ME Storage 100 MW / 400 MWh (sample)",
+   "dummy": true,
+   "buses": [
+    "103029",
+    "117010"
+   ]
+  },
+  {
+   "id": "hybrid",
+   "name": "Dummy — North Cambridge Solar + Storage 150 + 75 MW (sample)",
+   "dummy": true,
+   "buses": [
+    "110815",
+    "113951"
+   ]
+  },
+  {
+   "id": "campus",
+   "name": "Dummy — ME Data Centre 300 MW (sample)",
+   "dummy": true,
+   "buses": [
+    "103005",
+    "121046",
+    "110762"
+   ]
+  },
+  {
+   "id": "downeast",
+   "name": "Dummy — Maine Wind 200 MW (sample)",
+   "dummy": true,
+   "buses": [
+    "104059",
+    "100179"
+   ]
+  }
+ ],
+ "excluded": [
+  ".pytest_cache",
+  "__pycache__",
+  "cache",
+  "node_modules",
+  "fixtures/ (replaced by the recorded set)",
+  "tests/shots",
+  "*.log",
+  "*.pid",
+  "*.tmp",
+  "*.err",
+  "*.out"
+ ]
+}

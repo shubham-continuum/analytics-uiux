@@ -1,0 +1,33 @@
+/* GridSense One Studio: Project inputs panel (plan 14 §6a, views/project-inputs.js). Everything is scoped under .gsx-pi.
+   Provenance: Claude Opus 5.5 (P2-inputs build agent) · one-studio/design/14-lift-projects-configurator-continuum.md §6a · 2026-10-13 · sign-off pending · v1
+   Colours are the live tokens (as inspector.css), so dark and light follow the theme switch. */
+.gsx-pi{font-size:12px;color:var(--ink-2)}
+.gsx-pi .pi-hd{margin:0 0 10px}
+.gsx-pi .pi-hd h2{font-size:15px;font-weight:700;color:var(--ink);margin:0;line-height:1.25}
+.gsx-pi .pi-hd .lede{font-size:11.5px;color:var(--ink-3);margin:3px 0 0;line-height:1.45}
+.gsx-pi .pi-cnt{float:right;font-family:var(--mono);font-size:10px;color:var(--ink-3);border:1px solid var(--border);border-radius:9px;padding:1px 7px}
+.gsx-pi .pi-ro{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin:0 0 10px;padding:7px 9px;border:1px solid var(--border);border-left:3px solid var(--warn);border-radius:6px;background:var(--surface);color:var(--ink-2)}
+.gsx-pi .pi-dup{font:600 11.5px/1 var(--sans);padding:6px 10px;border-radius:5px;border:1px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer}
+.gsx-pi .pi-dup:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.gsx-pi .pi-grp{display:grid;gap:10px;margin:0 0 14px}
+.gsx-pi .pi-gh{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4);margin:4px 0 0;font-weight:600}
+.gsx-pi .pi-f{display:grid;gap:4px;min-width:0}
+.gsx-pi .pi-e{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-weight:600;color:var(--ink)}
+.gsx-pi .pi-lvl,.gsx-pi .pi-src{font-family:var(--mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;padding:1px 5px;border-radius:3px;border:1px solid var(--border);color:var(--ink-3);font-weight:500}
+.gsx-pi .pi-src{text-transform:none;letter-spacing:0;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gsx-pi .pi-src.stated{color:var(--ok);border-color:var(--ok)}
+.gsx-pi .pi-src.default{color:var(--warn);border-color:var(--warn)}
+.gsx-pi .pi-src.nh{font-style:italic}
+.gsx-pi .pi-w{display:flex;align-items:center;gap:6px;min-width:0}
+.gsx-pi .pi-in,.gsx-pi .pi-sel,.gsx-pi .pi-ta{flex:1;min-width:0;width:100%;box-sizing:border-box;font:12px/1.3 var(--sans);color:var(--ink);background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:5px 7px}
+.gsx-pi .pi-in{font-variant-numeric:tabular-nums}
+.gsx-pi .pi-ta{min-height:56px;resize:vertical}
+.gsx-pi .pi-in:focus-visible,.gsx-pi .pi-sel:focus-visible,.gsx-pi .pi-ta:focus-visible{outline:2px solid var(--accent);outline-offset:-1px}
+.gsx-pi [disabled]{opacity:.7;cursor:not-allowed}
+.gsx-pi .pi-u{flex:none;color:var(--ink-3);font-size:10.5px}
+.gsx-pi .pi-help{color:var(--ink-3);font-size:10.5px;line-height:1.4}
+.gsx-pi .pi-help:empty{display:none}
+.gsx-pi .pi-err{color:var(--bad);font-size:11px;line-height:1.4}
+.gsx-pi .pi-f.bad .pi-in,.gsx-pi .pi-f.bad .pi-sel{border-color:var(--bad)}
+.gsx-pi .pi-empty{color:var(--ink-3);padding:16px 4px;line-height:1.45}
+.gsx-pi .pi-empty b{color:var(--ink);display:block;margin-bottom:3px}

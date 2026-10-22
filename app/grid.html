@@ -1,0 +1,8 @@
+<!doctype html>
+<html lang="en" class="gtb-on gtb-chrome dark"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GridSense Grid · Analyzer</title><script>try{if(localStorage.getItem("gspreview.theme")==="light"){document.documentElement.classList.remove("dark");document.documentElement.classList.add("light");document.documentElement.dataset.theme="light"}}catch(e){}</script><link rel="icon" href="./favicon.svg"><link rel="stylesheet" href="./studio/studio.css"><link rel="stylesheet" href="./app.css"><link rel="stylesheet" href="./studio-bridge.css"><link rel="stylesheet" href="./ds/studio-bridge-v2.css"><link rel="stylesheet" href="./ds/shared.css"><link rel="stylesheet" href="./ds/v8-shell.css"><link rel="stylesheet" href="./ds/design-tokens-v2.css"></head>
+<body class="gsf-on"><div id="app"><p class="loading">Loading the Grid dashboard…</p></div><div id="gsx-overlay" class="gsx-layer"><div id="toast" role="status" aria-live="polite"></div></div>
+<script>window.GS_STANDALONE = true;</script>
+<script type="module">
+import { mount } from './app.js';
+mount({ only: 'grid' }).catch(e => { document.getElementById('app').innerHTML = '<div class="notice error" role="alert" style="margin:40px">Grid could not start: ' + String(e.message).replace(/[<>&]/g, '') + '</div>'; });
+</script></body></html>

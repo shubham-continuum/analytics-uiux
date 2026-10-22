@@ -1,0 +1,14 @@
+import { BASE, pwRequire } from './env.mjs';
+import { createRequire } from 'node:module';
+const require = pwRequire;
+const { chromium } = require('playwright');
+const b = await chromium.launch({ channel: 'chrome' }); const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
+await p.goto(`${BASE}/land.html#tab=area&bus=100095`); await p.waitForSelector('details.trace[data-trace="l-area"]', { timeout: 120000 });
+const t = p.locator('details.trace[data-trace="l-area"]'); await t.evaluate(d => { d.open = true; });
+console.log((await t.innerText()).match(/(Reconciles|Does not reconcile)[^\n]*/g));
+console.log((await p.locator('.kpi').nth(2).innerText()).replace(/\s+/g, ' '));
+await p.goto(`${BASE}/land.html#tab=corridor&bus=100095`); await p.waitForSelector('svg[data-site-map]');
+const m = p.locator('svg[data-site-map]'); await m.scrollIntoViewIfNeeded(); const bb = await m.boundingBox(); await p.mouse.click(bb.x + bb.width * 0.7, bb.y + bb.height * 0.35); await p.waitForTimeout(500);
+const c = p.locator('details.trace[data-trace="l-corridor"]'); await c.evaluate(d => { d.open = true; });
+console.log((await c.innerText()).match(/(Reconciles|Does not reconcile)[^\n]*/g));
+await b.close();

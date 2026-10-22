@@ -1,0 +1,1827 @@
+{
+ "generation": "c3ff531f7ba7b5d3",
+ "oracle": {
+  "dir": "D:\\Ganesh\\02 Products\\GridSense\\one-studio\\app-tools\\live-snapshot\\2026-10-06\\src",
+  "files": {
+   "data-ext.js": {
+    "sha256": "8be88279d1556d76f69504ad076c4c351e8cc1d464973cfd958c443c1fc0b7d5",
+    "pinned": "8be88279d1556d76f69504ad076c4c351e8cc1d464973cfd958c443c1fc0b7d5",
+    "matches_pin": true
+   },
+   "data.js": {
+    "sha256": "11695ac4195d4de3b4b8d918665fd75a61da4933cca6bc799e57a9bf30ffa0e1",
+    "pinned": "11695ac4195d4de3b4b8d918665fd75a61da4933cca6bc799e57a9bf30ffa0e1",
+    "matches_pin": true
+   }
+  }
+ },
+ "decision_cards": [
+  "D-008"
+ ],
+ "classes": [
+  "equal",
+  "unit",
+  "newer",
+  "defect",
+  "unclassed",
+  "missing_live",
+  "missing_unified"
+ ],
+ "fields": {
+  "spine": {
+   "equal": 2678,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 0,
+   "n": 2678,
+   "unit_label": "bus id",
+   "note": "GS_DATA.nodes vs the unified spine (dim_bus ⋈ dim_substation, geolocated)",
+   "cards": [],
+   "classes": {}
+  },
+  "identity.name": {
+   "equal": 2678,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 0,
+   "n": 2678,
+   "unit_label": "text",
+   "note": "GS_DATA.nodes.name vs identity.name",
+   "cards": [],
+   "classes": {}
+  },
+  "identity.kv": {
+   "equal": 2678,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 0,
+   "n": 2678,
+   "unit_label": "kV",
+   "note": "GS_DATA.nodes.kv vs identity.kv",
+   "cards": [],
+   "classes": {}
+  },
+  "identity.state": {
+   "equal": 2678,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 0,
+   "n": 2678,
+   "unit_label": "code",
+   "note": "GS_DATA.nodes.state vs identity.state",
+   "cards": [],
+   "classes": {}
+  },
+  "identity.county": {
+   "equal": 2678,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 0,
+   "n": 2678,
+   "unit_label": "text",
+   "note": "GS_DATA.nodes.county vs identity.county",
+   "cards": [],
+   "classes": {}
+  },
+  "identity.lat": {
+   "equal": 2678,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 0,
+   "n": 2678,
+   "unit_label": "°",
+   "note": "GS_DATA.nodes.lat vs identity.lat",
+   "cards": [],
+   "classes": {}
+  },
+  "identity.lon": {
+   "equal": 2678,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 0,
+   "n": 2678,
+   "unit_label": "°",
+   "note": "GS_DATA.nodes.lon vs identity.lon",
+   "cards": [],
+   "classes": {}
+  },
+  "identity.zone_sheet": {
+   "equal": 2678,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 0,
+   "n": 2678,
+   "unit_label": "zone code",
+   "note": "GS_DATA.nodes.zone vs identity.zone_sheet",
+   "cards": [],
+   "classes": {}
+  },
+  "identity.zone_src": {
+   "equal": 2678,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 0,
+   "n": 2678,
+   "unit_label": "text",
+   "note": "GS_DATA.nodes.zone_source vs identity.zone_src",
+   "cards": [],
+   "classes": {}
+  },
+  "identity.hourly_conf": {
+   "equal": 2593,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 85,
+   "n": 2678,
+   "unit_label": "text",
+   "note": "GS_DATA.nodes.hourly_conf vs identity.hourly_conf",
+   "cards": [],
+   "classes": {
+    "missing_unified": {
+     "D-008 (S2-D): the stored rank-1 node is a same-name node in another town (> 22.03 mi); unified re-links the bus to the nearest node under the geo-proxy rule (tier relinked, distance disclosed) and never prices it through the far node; live still prices it there; a re-linked bus has no own or station series, so this is not held (as for a geo-proxy bus)": {
+      "n": 85,
+      "examples": [
+       {
+        "key": "100001",
+        "live": "shared_substation",
+        "unified": null
+       },
+       {
+        "key": "100115",
+        "live": "shared_substation",
+        "unified": null
+       },
+       {
+        "key": "100132",
+        "live": "exact",
+        "unified": null
+       }
+      ]
+     }
+    }
+   }
+  },
+  "identity.shared_n": {
+   "equal": 2593,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 85,
+   "n": 2678,
+   "unit_label": "buses",
+   "note": "GS_DATA.nodes.shared_n vs identity.shared_n",
+   "cards": [],
+   "classes": {
+    "missing_unified": {
+     "D-008 (S2-D): the stored rank-1 node is a same-name node in another town (> 22.03 mi); unified re-links the bus to the nearest node under the geo-proxy rule (tier relinked, distance disclosed) and never prices it through the far node; live still prices it there; a re-linked bus has no own or station series, so this is not held (as for a geo-proxy bus)": {
+      "n": 85,
+      "examples": [
+       {
+        "key": "100001",
+        "live": 5,
+        "unified": null
+       },
+       {
+        "key": "100115",
+        "live": 3,
+        "unified": null
+       },
+       {
+        "key": "100132",
+        "live": 1,
+        "unified": null
+       }
+      ]
+     }
+    }
+   }
+  },
+  "identity.outlets": {
+   "equal": 2678,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 0,
+   "n": 2678,
+   "unit_label": "count",
+   "note": "GS_DATA.nodes.outlets vs identity.outlets",
+   "cards": [],
+   "classes": {}
+  },
+  "identity.branch_deg": {
+   "equal": 2583,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 95,
+   "missing_unified": 0,
+   "n": 2678,
+   "unit_label": "count",
+   "note": "GS_DATA.nodes.branch_deg vs identity.branch_deg",
+   "cards": [],
+   "classes": {
+    "missing_live": {
+     "a measured zero: the bus is in the powerflow model and no dim_branch end is at it (live prints null for a zero count)": {
+      "n": 95,
+      "examples": [
+       {
+        "key": "100328",
+        "live": null,
+        "unified": 0
+       },
+       {
+        "key": "100566",
+        "live": null,
+        "unified": 0
+       },
+       {
+        "key": "100745",
+        "live": null,
+        "unified": 0
+       }
+      ]
+     }
+    }
+   }
+  },
+  "identity.gen_mw": {
+   "equal": 2678,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 0,
+   "n": 2678,
+   "unit_label": "MW",
+   "note": "GS_DATA.nodes.gen_mw vs identity.gen_mw",
+   "cards": [],
+   "classes": {}
+  },
+  "identity.load_mw": {
+   "equal": 2678,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 0,
+   "n": 2678,
+   "unit_label": "MW",
+   "note": "GS_DATA.nodes.load_mw vs identity.load_mw",
+   "cards": [],
+   "classes": {}
+  },
+  "identity.top_constraint": {
+   "equal": 0,
+   "unit": 0,
+   "newer": 2054,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 624,
+   "n": 2678,
+   "unit_label": "text",
+   "note": "GS_DATA.nodes.top_constraint vs identity.top_constraint",
+   "cards": [],
+   "classes": {
+    "missing_unified": {
+     "live is the vendor Top_Constraint_Name_eco column, which the unified DB excludes (data_quality.top_constraint_name: \"12 names with zero overlap against real constraints\"); unified = mart_bus_profile.first_limit_facility, a real fact_limiting_element facility; null where only a \"No Violations found\" sentinel is held at summer-peak discharge": {
+      "n": 624,
+      "examples": [
+       {
+        "key": "100001",
+        "live": "Burrillville-Sherman 115kV",
+        "unified": null
+       },
+       {
+        "key": "100005",
+        "live": "Mystic-Salem 345kV",
+        "unified": null
+       },
+       {
+        "key": "100006",
+        "live": "Mystic-Salem 345kV",
+        "unified": null
+       }
+      ]
+     }
+    },
+    "newer": {
+     "live is the vendor Top_Constraint_Name_eco column, which the unified DB excludes (data_quality.top_constraint_name: \"12 names with zero overlap against real constraints\"); unified = mart_bus_profile.first_limit_facility, a real fact_limiting_element facility": {
+      "n": 2054,
+      "examples": [
+       {
+        "key": "100002",
+        "live": "Sherman Rd-North 115kV",
+        "unified": "100004 S3023SCAP     345  100092 ALBION ROAD   345  1"
+       },
+       {
+        "key": "100004",
+        "live": "Sherman Rd-North 115kV",
+        "unified": "100004 S3023SCAP     345  100002 ORRINGTON     345  2"
+       },
+       {
+        "key": "100007",
+        "live": "Highgate-Bedford 230kV",
+        "unified": "100089 SOUTH GORHAM  345  100165 SOUTH GORHAM  115  2"
+       }
+      ]
+     }
+    }
+   }
+  },
+  "identity.top_shadow": {
+   "equal": 0,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 2678,
+   "n": 2678,
+   "unit_label": "$/MWh",
+   "note": "GS_DATA.nodes.top_shadow vs identity.top_shadow",
+   "cards": [],
+   "classes": {
+    "missing_unified": {
+     "the vendor Top_Constraint_Shadow_Price_eco column is excluded in the unified DB (data_quality.top_constraint_name) and no per-bus shadow price is held": {
+      "n": 2678,
+      "examples": [
+       {
+        "key": "100001",
+        "live": 162.6,
+        "unified": null
+       },
+       {
+        "key": "100002",
+        "live": 90.9,
+        "unified": null
+       },
+       {
+        "key": "100004",
+        "live": 90.9,
+        "unified": null
+       }
+      ]
+     }
+    }
+   }
+  },
+  "short_circuit": {
+   "equal": 30,
+   "unit": 2648,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 0,
+   "n": 2678,
+   "unit_label": "MVA",
+   "note": "GS_DATA.nodes.sc_mva (raw, the getter multiplies by 100) vs dim_bus.short_circuit_mva (corrected)",
+   "cards": [],
+   "classes": {
+    "unit": {
+     "the published short-circuit column is 100× too small (data_quality.short_circuit_mva); the unified column is corrected and the live getter GS.shortCircuitMVA multiplies by 100 — same figure, equal to the live payload's 2 dp": {
+      "n": 2648,
+      "examples": [
+       {
+        "key": "100001",
+        "live": 41.53,
+        "unified": 4152.9
+       },
+       {
+        "key": "100002",
+        "live": 70.85,
+        "unified": 7084.8
+       },
+       {
+        "key": "100004",
+        "live": 135.9,
+        "unified": 13587.2
+       }
+      ]
+     }
+    }
+   }
+  },
+  "zone": {
+   "equal": 2647,
+   "unit": 0,
+   "newer": 31,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 0,
+   "n": 2678,
+   "unit_label": "zone code",
+   "note": "corrected zone: live zone_fix ∨ GS_DATA zone vs identity.zone",
+   "cards": [],
+   "classes": {
+    "newer": {
+     "live's zone is the operator zone of a same-name node in another town (> 22.03 mi; no co-located link of the bus is in it); unified takes the best-ranked co-located link (coverage.suspect_pnode_links rule)": {
+      "n": 15,
+      "examples": [
+       {
+        "key": "103401",
+        "live": "SEMA",
+        "unified": "RI"
+       },
+       {
+        "key": "103404",
+        "live": "SEMA",
+        "unified": "RI"
+       },
+       {
+        "key": "103428",
+        "live": "SEMA",
+        "unified": "RI"
+       }
+      ]
+     },
+     "unified corrects the sheet zone from a co-located own/station node; live made no correction at this bus": {
+      "n": 16,
+      "examples": [
+       {
+        "key": "104539",
+        "live": "NEMA",
+        "unified": "NH"
+       },
+       {
+        "key": "108447",
+        "live": "ME",
+        "unified": "VT"
+       },
+       {
+        "key": "108857",
+        "live": "ME",
+        "unified": "VT"
+       }
+      ]
+     }
+    }
+   }
+  },
+  "zone_fix": {
+   "equal": 159,
+   "unit": 0,
+   "newer": 31,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 0,
+   "n": 190,
+   "unit_label": "zone code",
+   "note": "the correction map itself: GS_DATA_EXT.zone_fix vs zones.zone_fix",
+   "cards": [],
+   "classes": {
+    "newer": {
+     "live's zone is the operator zone of a same-name node in another town (> 22.03 mi; no co-located link of the bus is in it); unified takes the best-ranked co-located link (coverage.suspect_pnode_links rule)": {
+      "n": 15,
+      "examples": [
+       {
+        "key": "103401",
+        "live": "SEMA",
+        "unified": null
+       },
+       {
+        "key": "103404",
+        "live": "SEMA",
+        "unified": null
+       },
+       {
+        "key": "103428",
+        "live": "SEMA",
+        "unified": null
+       }
+      ]
+     },
+     "unified corrects the sheet zone from a co-located own/station node; live made no correction at this bus": {
+      "n": 16,
+      "examples": [
+       {
+        "key": "104539",
+        "live": null,
+        "unified": "NH"
+       },
+       {
+        "key": "108447",
+        "live": null,
+        "unified": "VT"
+       },
+       {
+        "key": "108857",
+        "live": null,
+        "unified": "VT"
+       }
+      ]
+     }
+    }
+   }
+  },
+  "zones": {
+   "equal": 0,
+   "unit": 0,
+   "newer": 8,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 0,
+   "n": 8,
+   "unit_label": "° · buses",
+   "note": "GS_DATA_EXT.zones label anchors vs zones.zones",
+   "cards": [],
+   "classes": {
+    "newer": {
+     "membership follows the corrected zone (see `zone`): live's anchor is reproduced exactly from unified coordinates on live's zone assignment": {
+      "n": 8,
+      "examples": [
+       {
+        "key": "CT",
+        "live": {
+         "zone": "CT",
+         "lat": 41.5037,
+         "lon": -72.8115,
+         "buses": 450
+        },
+        "unified": {
+         "zone": "CT",
+         "lat": 41.5056,
+         "lon": -72.8054,
+         "buses": 461
+        }
+       },
+       {
+        "key": "ME",
+        "live": {
+         "zone": "ME",
+         "lat": 44.3785,
+         "lon": -69.5961,
+         "buses": 321
+        },
+        "unified": {
+         "zone": "ME",
+         "lat": 44.3892,
+         "lon": -69.5677,
+         "buses": 317
+        }
+       },
+       {
+        "key": "NEMA",
+        "live": {
+         "zone": "NEMA",
+         "lat": 42.3925,
+         "lon": -71.1857,
+         "buses": 367
+        },
+        "unified": {
+         "zone": "NEMA",
+         "lat": 42.4279,
+         "lon": -71.1877,
+         "buses": 367
+        }
+       }
+      ]
+     }
+    }
+   }
+  },
+  "stations": {
+   "equal": 2657,
+   "unit": 0,
+   "newer": 21,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 0,
+   "n": 2678,
+   "unit_label": "buses",
+   "note": "size of the bus's station group: live groups by normalised name (GS.stations), unified by dim_bus.substation_name",
+   "cards": [],
+   "classes": {
+    "newer": {
+     "live merges distinct substations whose names normalise alike (e.g. \"Deerfield\" NH 345 kV with \"Deerfield \" MA; \"Fair Haven\"/\"Fairhaven\"); unified groups on dim_bus.substation_name (04a)": {
+      "n": 21,
+      "examples": [
+       {
+        "key": "104095",
+        "live": 11,
+        "unified": 2
+       },
+       {
+        "key": "104506",
+        "live": 11,
+        "unified": 2
+       },
+       {
+        "key": "108145",
+        "live": 3,
+        "unified": 1
+       }
+      ]
+     }
+    }
+   }
+  },
+  "branches": {
+   "equal": 2787,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 0,
+   "n": 2787,
+   "unit_label": "branch",
+   "note": "GS_DATA_EXT.network.branches vs branches.branches ([from, to, kV], parallel circuits kept)",
+   "cards": [],
+   "classes": {}
+  },
+  "coverage": {
+   "equal": 8,
+   "unit": 0,
+   "newer": 1,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 0,
+   "n": 9,
+   "unit_label": "count",
+   "note": "GS_DATA_EXT.meta.coverage network/zone counts vs meta.coverage",
+   "cards": [],
+   "classes": {
+    "newer": {
+     "the count of the zone_fix map; each differing bus is classed under `zone_fix`": {
+      "n": 1,
+      "examples": [
+       {
+        "key": "zone_fixes",
+        "live": 174,
+        "unified": 180
+       }
+      ]
+     }
+    }
+   }
+  },
+  "loading.n_rows": {
+   "equal": 8445,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 1423,
+   "missing_unified": 0,
+   "n": 9868,
+   "unit_label": "count",
+   "note": "GS_DATA_EXT.loading[bus|case].n_rows vs loading[bus|case].n_rows",
+   "cards": [],
+   "classes": {
+    "missing_live": {
+     "the study ran this case and states \"No Violations found\": unified publishes a measured zero, live omits the key (its grid prints \"not held\" for a case that was run)": {
+      "n": 1423,
+      "examples": [
+       {
+        "key": "100001|summer_peak|discharge",
+        "live": null,
+        "unified": 0
+       },
+       {
+        "key": "100001|summer_peak|injection",
+        "live": null,
+        "unified": 0
+       },
+       {
+        "key": "100005|summer_peak|discharge",
+        "live": null,
+        "unified": 0
+       }
+      ]
+     }
+    }
+   }
+  },
+  "loading.violations_before": {
+   "equal": 8434,
+   "unit": 0,
+   "newer": 11,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 1423,
+   "missing_unified": 0,
+   "n": 9868,
+   "unit_label": "count",
+   "note": "GS_DATA_EXT.loading[bus|case].violations_before vs loading[bus|case].violations_before",
+   "cards": [],
+   "classes": {
+    "missing_live": {
+     "the study ran this case and states \"No Violations found\": unified publishes a measured zero, live omits the key (its grid prints \"not held\" for a case that was run)": {
+      "n": 1423,
+      "examples": [
+       {
+        "key": "100001|summer_peak|discharge",
+        "live": null,
+        "unified": 0
+       },
+       {
+        "key": "100001|summer_peak|injection",
+        "live": null,
+        "unified": 0
+       },
+       {
+        "key": "100005|summer_peak|discharge",
+        "live": null,
+        "unified": 0
+       }
+      ]
+     }
+    },
+    "newer": {
+     "1 element(s) at 100.0448 % of the rating solved against: over 100 % unrounded; live rounded the loading to 0.1 % (100.0) before the > 100 test": {
+      "n": 11,
+      "examples": [
+       {
+        "key": "115743|summer_peak|charge",
+        "live": 0,
+        "unified": 1
+       },
+       {
+        "key": "117301|summer_peak|discharge",
+        "live": 0,
+        "unified": 1
+       },
+       {
+        "key": "117301|summer_peak|injection",
+        "live": 0,
+        "unified": 1
+       }
+      ]
+     }
+    }
+   }
+  },
+  "loading.pre_existing_n": {
+   "equal": 8445,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 1423,
+   "missing_unified": 0,
+   "n": 9868,
+   "unit_label": "count",
+   "note": "GS_DATA_EXT.loading[bus|case].pre_existing_n vs loading[bus|case].pre_existing_n",
+   "cards": [],
+   "classes": {
+    "missing_live": {
+     "the study ran this case and states \"No Violations found\": unified publishes a measured zero, live omits the key (its grid prints \"not held\" for a case that was run)": {
+      "n": 1423,
+      "examples": [
+       {
+        "key": "100001|summer_peak|discharge",
+        "live": null,
+        "unified": 0
+       },
+       {
+        "key": "100001|summer_peak|injection",
+        "live": null,
+        "unified": 0
+       },
+       {
+        "key": "100005|summer_peak|discharge",
+        "live": null,
+        "unified": 0
+       }
+      ]
+     }
+    }
+   }
+  },
+  "pre_issues.sp_dis": {
+   "equal": 2678,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 0,
+   "n": 2678,
+   "unit_label": "count (sheet)",
+   "note": "GS_DATA.nodes.pi_sp_dis vs pre_issues[bus].sp_dis",
+   "cards": [],
+   "classes": {}
+  },
+  "pre_issues.sp_chg": {
+   "equal": 2678,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 0,
+   "n": 2678,
+   "unit_label": "count (sheet)",
+   "note": "GS_DATA.nodes.pi_sp_chg vs pre_issues[bus].sp_chg",
+   "cards": [],
+   "classes": {}
+  },
+  "pre_issues.sh_chg": {
+   "equal": 2678,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 0,
+   "n": 2678,
+   "unit_label": "count (sheet)",
+   "note": "GS_DATA_EXT.storage_headroom.pi_sh_chg vs pre_issues[bus].sh_chg",
+   "cards": [],
+   "classes": {}
+  },
+  "queue.points": {
+   "equal": 1870,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 0,
+   "n": 1870,
+   "unit_label": "per register field",
+   "note": "GS_DATA.queue vs queue.points, by queue_position, every field",
+   "cards": [],
+   "classes": {}
+  },
+  "queue.top_facilities": {
+   "equal": 131,
+   "unit": 0,
+   "newer": 1,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 1,
+   "missing_unified": 2,
+   "n": 135,
+   "unit_label": "per facility field",
+   "note": "GS_DATA.iso.top_facilities vs queue.top_facilities, by facility + contingency",
+   "cards": [],
+   "classes": {
+    "missing_live": {
+     "enters the top 20 once the sentinel row is excluded": {
+      "n": 1,
+      "examples": [
+       {
+        "key": "('104063 ES_391_CMP 345 104143 SCOBIE POND 345 1', 'BF_SCOB_731')",
+        "live": null,
+        "unified": "104063 ES_391_CMP 345 104143 SCOBIE POND 345 1 · BF_SCOB_731"
+       }
+      ]
+     }
+    },
+    "missing_unified": {
+     "a transformer: the vendor kV text \"115/345\" has no numeric fact_limiting_element.kv (null)": {
+      "n": 2,
+      "examples": [
+       {
+        "key": "999996 ORRINGTON T2 115 100002 ORRINGTON 345 2 · BF_ORR_B1CAP.kv",
+        "live": "115/345 ",
+        "unified": null
+       },
+       {
+        "key": "999997 ORRINGTON T1 115 100002 ORRINGTON 345 1 · BF_ORR_65-2.kv",
+        "live": "115/345 ",
+        "unified": null
+       }
+      ]
+     }
+    },
+    "newer": {
+     "live ranks the \"No Violations found\" sentinel as a facility; unified excludes sentinel rows (they are not elements)": {
+      "n": 1,
+      "examples": [
+       {
+        "key": "('No Violations found', '')",
+        "live": {
+         "facility": "No Violations found ",
+         "contingency": null,
+         "fzone": null,
+         "kv": null,
+         "n": 752,
+         "loading": null,
+         "cost_musd": null,
+         "miles": null,
+         "sources": 465
+        },
+        "unified": null
+       }
+      ]
+     }
+    }
+   }
+  },
+  "load_pays.mean_rt": {
+   "equal": 2517,
+   "unit": 0,
+   "newer": 80,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 3,
+   "missing_unified": 3,
+   "n": 2603,
+   "unit_label": "$/MWh",
+   "note": "GS_DATA_EXT.load_pays[bus].mean_rt vs load_pays[bus].mean_rt (settled RT year)",
+   "cards": [],
+   "classes": {
+    "newer": {
+     "D-008 (S2-D): the stored rank-1 node is a same-name node in another town (> 22.03 mi); unified re-links the bus to the nearest node under the geo-proxy rule (tier relinked, distance disclosed) and never prices it through the far node; live still prices it there": {
+      "n": 80,
+      "examples": [
+       {
+        "key": "100001",
+        "live": 65.92,
+        "unified": 55.85
+       },
+       {
+        "key": "100115",
+        "live": 63.85,
+        "unified": 59.59
+       },
+       {
+        "key": "100132",
+        "live": 64.43,
+        "unified": 65.98
+       }
+      ]
+     }
+    },
+    "missing_unified": {
+     "D-008 (S2-D): the stored rank-1 node is a same-name node in another town (> 22.03 mi); unified re-links the bus to the nearest node under the geo-proxy rule (tier relinked, distance disclosed) and never prices it through the far node; live still prices it there; the nearest node holds no complete settled year": {
+      "n": 2,
+      "examples": [
+       {
+        "key": "103039",
+        "live": 65.92,
+        "unified": null
+       },
+       {
+        "key": "103043",
+        "live": 65.92,
+        "unified": null
+       }
+      ]
+     },
+     "partial settled year in the unified DB (3887 hours): not published as a year's flat-load cost; live fell back to 2024, a different year in the same column": {
+      "n": 1,
+      "examples": [
+       {
+        "key": "116167",
+        "live": 39.09,
+        "unified": null
+       }
+      ]
+     }
+    },
+    "missing_live": {
+     "D-008 (S2-D): the stored rank-1 node is a same-name node in another town (> 22.03 mi); unified re-links the bus to the nearest node under the geo-proxy rule (tier relinked, distance disclosed) and never prices it through the far node; live still prices it there; the nearest node holds a complete settled year, the far node did not": {
+      "n": 3,
+      "examples": [
+       {
+        "key": "103099",
+        "live": null,
+        "unified": 59.92
+       },
+       {
+        "key": "103144",
+        "live": null,
+        "unified": 59.92
+       },
+       {
+        "key": "108452",
+        "live": null,
+        "unified": 65.98
+       }
+      ]
+     }
+    }
+   }
+  },
+  "load_pays.cheap_hours_lt20": {
+   "equal": 2517,
+   "unit": 0,
+   "newer": 80,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 3,
+   "missing_unified": 3,
+   "n": 2603,
+   "unit_label": "h",
+   "note": "GS_DATA_EXT.load_pays[bus].cheap_hours_lt20 vs load_pays[bus].cheap_hours_lt20 (settled RT year)",
+   "cards": [],
+   "classes": {
+    "newer": {
+     "D-008 (S2-D): the stored rank-1 node is a same-name node in another town (> 22.03 mi); unified re-links the bus to the nearest node under the geo-proxy rule (tier relinked, distance disclosed) and never prices it through the far node; live still prices it there": {
+      "n": 80,
+      "examples": [
+       {
+        "key": "100001",
+        "live": 272,
+        "unified": 1100
+       },
+       {
+        "key": "100115",
+        "live": 311,
+        "unified": 722
+       },
+       {
+        "key": "100132",
+        "live": 293,
+        "unified": 282
+       }
+      ]
+     }
+    },
+    "missing_unified": {
+     "D-008 (S2-D): the stored rank-1 node is a same-name node in another town (> 22.03 mi); unified re-links the bus to the nearest node under the geo-proxy rule (tier relinked, distance disclosed) and never prices it through the far node; live still prices it there; the nearest node holds no complete settled year": {
+      "n": 2,
+      "examples": [
+       {
+        "key": "103039",
+        "live": 272,
+        "unified": null
+       },
+       {
+        "key": "103043",
+        "live": 272,
+        "unified": null
+       }
+      ]
+     },
+     "partial settled year in the unified DB (3887 hours): not published as a year's flat-load cost; live fell back to 2024, a different year in the same column": {
+      "n": 1,
+      "examples": [
+       {
+        "key": "116167",
+        "live": 1226,
+        "unified": null
+       }
+      ]
+     }
+    },
+    "missing_live": {
+     "D-008 (S2-D): the stored rank-1 node is a same-name node in another town (> 22.03 mi); unified re-links the bus to the nearest node under the geo-proxy rule (tier relinked, distance disclosed) and never prices it through the far node; live still prices it there; the nearest node holds a complete settled year, the far node did not": {
+      "n": 3,
+      "examples": [
+       {
+        "key": "103099",
+        "live": null,
+        "unified": 742
+       },
+       {
+        "key": "103144",
+        "live": null,
+        "unified": 742
+       },
+       {
+        "key": "108452",
+        "live": null,
+        "unified": 265
+       }
+      ]
+     }
+    }
+   }
+  },
+  "load_pays.cheap_share": {
+   "equal": 2549,
+   "unit": 0,
+   "newer": 48,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 3,
+   "missing_unified": 3,
+   "n": 2603,
+   "unit_label": "%",
+   "note": "GS_DATA_EXT.load_pays[bus].cheap_share vs load_pays[bus].cheap_share (settled RT year)",
+   "cards": [],
+   "classes": {
+    "newer": {
+     "D-008 (S2-D): the stored rank-1 node is a same-name node in another town (> 22.03 mi); unified re-links the bus to the nearest node under the geo-proxy rule (tier relinked, distance disclosed) and never prices it through the far node; live still prices it there": {
+      "n": 48,
+      "examples": [
+       {
+        "key": "100001",
+        "live": 3.1,
+        "unified": 12.6
+       },
+       {
+        "key": "100115",
+        "live": 3.6,
+        "unified": 8.2
+       },
+       {
+        "key": "103017",
+        "live": 3.1,
+        "unified": 12.6
+       }
+      ]
+     }
+    },
+    "missing_unified": {
+     "D-008 (S2-D): the stored rank-1 node is a same-name node in another town (> 22.03 mi); unified re-links the bus to the nearest node under the geo-proxy rule (tier relinked, distance disclosed) and never prices it through the far node; live still prices it there; the nearest node holds no complete settled year": {
+      "n": 2,
+      "examples": [
+       {
+        "key": "103039",
+        "live": 3.1,
+        "unified": null
+       },
+       {
+        "key": "103043",
+        "live": 3.1,
+        "unified": null
+       }
+      ]
+     },
+     "partial settled year in the unified DB (3887 hours): not published as a year's flat-load cost; live fell back to 2024, a different year in the same column": {
+      "n": 1,
+      "examples": [
+       {
+        "key": "116167",
+        "live": 14.0,
+        "unified": null
+       }
+      ]
+     }
+    },
+    "missing_live": {
+     "D-008 (S2-D): the stored rank-1 node is a same-name node in another town (> 22.03 mi); unified re-links the bus to the nearest node under the geo-proxy rule (tier relinked, distance disclosed) and never prices it through the far node; live still prices it there; the nearest node holds a complete settled year, the far node did not": {
+      "n": 3,
+      "examples": [
+       {
+        "key": "103099",
+        "live": null,
+        "unified": 8.5
+       },
+       {
+        "key": "103144",
+        "live": null,
+        "unified": 8.5
+       },
+       {
+        "key": "108452",
+        "live": null,
+        "unified": 3.0
+       }
+      ]
+     }
+    }
+   }
+  },
+  "load_pays.hours": {
+   "equal": 0,
+   "unit": 2597,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 3,
+   "missing_unified": 3,
+   "n": 2603,
+   "unit_label": "h",
+   "note": "GS_DATA_EXT.load_pays[bus].hours vs load_pays[bus].hours (settled RT year)",
+   "cards": [],
+   "classes": {
+    "unit": {
+     "counting basis: unified counts observations (8760: the missing spring-forward hour is offset by the repeated autumn hour, held twice in fact_lmp_hourly, as the engine counts them); live counts distinct EPT hour labels (8759)": {
+      "n": 2597,
+      "examples": [
+       {
+        "key": "100001",
+        "live": 8759,
+        "unified": 8760
+       },
+       {
+        "key": "100002",
+        "live": 8759,
+        "unified": 8760
+       },
+       {
+        "key": "100004",
+        "live": 8759,
+        "unified": 8760
+       }
+      ]
+     }
+    },
+    "missing_unified": {
+     "D-008 (S2-D): the stored rank-1 node is a same-name node in another town (> 22.03 mi); unified re-links the bus to the nearest node under the geo-proxy rule (tier relinked, distance disclosed) and never prices it through the far node; live still prices it there; the nearest node holds no complete settled year": {
+      "n": 2,
+      "examples": [
+       {
+        "key": "103039",
+        "live": 8759,
+        "unified": null
+       },
+       {
+        "key": "103043",
+        "live": 8759,
+        "unified": null
+       }
+      ]
+     },
+     "partial settled year in the unified DB (3887 hours): not published as a year's flat-load cost; live fell back to 2024, a different year in the same column": {
+      "n": 1,
+      "examples": [
+       {
+        "key": "116167",
+        "live": 8783,
+        "unified": null
+       }
+      ]
+     }
+    },
+    "missing_live": {
+     "D-008 (S2-D): the stored rank-1 node is a same-name node in another town (> 22.03 mi); unified re-links the bus to the nearest node under the geo-proxy rule (tier relinked, distance disclosed) and never prices it through the far node; live still prices it there; the nearest node holds a complete settled year, the far node did not": {
+      "n": 3,
+      "examples": [
+       {
+        "key": "103099",
+        "live": null,
+        "unified": 8760
+       },
+       {
+        "key": "103144",
+        "live": null,
+        "unified": 8760
+       },
+       {
+        "key": "108452",
+        "live": null,
+        "unified": 8760
+       }
+      ]
+     }
+    }
+   }
+  },
+  "load_pays.year": {
+   "equal": 2597,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 3,
+   "missing_unified": 3,
+   "n": 2603,
+   "unit_label": "year",
+   "note": "GS_DATA_EXT.load_pays[bus].year vs load_pays[bus].year (settled RT year)",
+   "cards": [],
+   "classes": {
+    "missing_unified": {
+     "D-008 (S2-D): the stored rank-1 node is a same-name node in another town (> 22.03 mi); unified re-links the bus to the nearest node under the geo-proxy rule (tier relinked, distance disclosed) and never prices it through the far node; live still prices it there; the nearest node holds no complete settled year": {
+      "n": 2,
+      "examples": [
+       {
+        "key": "103039",
+        "live": 2025,
+        "unified": null
+       },
+       {
+        "key": "103043",
+        "live": 2025,
+        "unified": null
+       }
+      ]
+     },
+     "partial settled year in the unified DB (3887 hours): not published as a year's flat-load cost; live fell back to 2024, a different year in the same column": {
+      "n": 1,
+      "examples": [
+       {
+        "key": "116167",
+        "live": 2024,
+        "unified": null
+       }
+      ]
+     }
+    },
+    "missing_live": {
+     "D-008 (S2-D): the stored rank-1 node is a same-name node in another town (> 22.03 mi); unified re-links the bus to the nearest node under the geo-proxy rule (tier relinked, distance disclosed) and never prices it through the far node; live still prices it there; the nearest node holds a complete settled year, the far node did not": {
+      "n": 3,
+      "examples": [
+       {
+        "key": "103099",
+        "live": null,
+        "unified": 2025
+       },
+       {
+        "key": "103144",
+        "live": null,
+        "unified": 2025
+       },
+       {
+        "key": "108452",
+        "live": null,
+        "unified": 2025
+       }
+      ]
+     }
+    }
+   }
+  },
+  "forecast_delta.a": {
+   "equal": 2386,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 3,
+   "n": 2389,
+   "unit_label": "$/MWh",
+   "note": "GS_DATA_EXT.forecast_delta[bus].a vs forecast_delta[bus].a",
+   "cards": [],
+   "classes": {
+    "missing_unified": {
+     "the pcr2035 node at this bus is unpriced ($0 in every hour; mart_bus_fcst_year min = max = 0): live computed the gap against $0, unified holds no gap": {
+      "n": 3,
+      "examples": [
+       {
+        "key": "100945",
+        "live": 56.45,
+        "unified": null
+       },
+       {
+        "key": "100946",
+        "live": 56.45,
+        "unified": null
+       },
+       {
+        "key": "120147",
+        "live": 57.86,
+        "unified": null
+       }
+      ]
+     }
+    }
+   }
+  },
+  "forecast_delta.b": {
+   "equal": 2386,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 3,
+   "n": 2389,
+   "unit_label": "$/MWh",
+   "note": "GS_DATA_EXT.forecast_delta[bus].b vs forecast_delta[bus].b",
+   "cards": [],
+   "classes": {
+    "missing_unified": {
+     "the pcr2035 node at this bus is unpriced ($0 in every hour; mart_bus_fcst_year min = max = 0): live computed the gap against $0, unified holds no gap": {
+      "n": 3,
+      "examples": [
+       {
+        "key": "100945",
+        "live": 0.0,
+        "unified": null
+       },
+       {
+        "key": "100946",
+        "live": 0.0,
+        "unified": null
+       },
+       {
+        "key": "120147",
+        "live": 0.0,
+        "unified": null
+       }
+      ]
+     }
+    }
+   }
+  },
+  "forecast_delta.delta": {
+   "equal": 2386,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 3,
+   "n": 2389,
+   "unit_label": "$/MWh",
+   "note": "GS_DATA_EXT.forecast_delta[bus].delta vs forecast_delta[bus].delta",
+   "cards": [],
+   "classes": {
+    "missing_unified": {
+     "the pcr2035 node at this bus is unpriced ($0 in every hour; mart_bus_fcst_year min = max = 0): live computed the gap against $0, unified holds no gap": {
+      "n": 3,
+      "examples": [
+       {
+        "key": "100945",
+        "live": 56.45,
+        "unified": null
+       },
+       {
+        "key": "100946",
+        "live": 56.45,
+        "unified": null
+       },
+       {
+        "key": "120147",
+        "live": 57.86,
+        "unified": null
+       }
+      ]
+     }
+    }
+   }
+  },
+  "forecast_delta.delta_pct": {
+   "equal": 2389,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 0,
+   "n": 2389,
+   "unit_label": "%",
+   "note": "GS_DATA_EXT.forecast_delta[bus].delta_pct vs forecast_delta[bus].delta_pct",
+   "cards": [],
+   "classes": {}
+  },
+  "forecast_delta.run_a": {
+   "equal": 2386,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 3,
+   "n": 2389,
+   "unit_label": "run",
+   "note": "GS_DATA_EXT.forecast_delta[bus].run_a vs forecast_delta[bus].run_a",
+   "cards": [],
+   "classes": {
+    "missing_unified": {
+     "the pcr2035 node at this bus is unpriced ($0 in every hour; mart_bus_fcst_year min = max = 0): live computed the gap against $0, unified holds no gap": {
+      "n": 3,
+      "examples": [
+       {
+        "key": "100945",
+        "live": "10yr",
+        "unified": null
+       },
+       {
+        "key": "100946",
+        "live": "10yr",
+        "unified": null
+       },
+       {
+        "key": "120147",
+        "live": "10yr",
+        "unified": null
+       }
+      ]
+     }
+    }
+   }
+  },
+  "forecast_delta.run_b": {
+   "equal": 2386,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 3,
+   "n": 2389,
+   "unit_label": "run",
+   "note": "GS_DATA_EXT.forecast_delta[bus].run_b vs forecast_delta[bus].run_b",
+   "cards": [],
+   "classes": {
+    "missing_unified": {
+     "the pcr2035 node at this bus is unpriced ($0 in every hour; mart_bus_fcst_year min = max = 0): live computed the gap against $0, unified holds no gap": {
+      "n": 3,
+      "examples": [
+       {
+        "key": "100945",
+        "live": "pcr2035",
+        "unified": null
+       },
+       {
+        "key": "100946",
+        "live": "pcr2035",
+        "unified": null
+       },
+       {
+        "key": "120147",
+        "live": "pcr2035",
+        "unified": null
+       }
+      ]
+     }
+    }
+   }
+  },
+  "forecast_delta.year": {
+   "equal": 2386,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 3,
+   "n": 2389,
+   "unit_label": "year",
+   "note": "GS_DATA_EXT.forecast_delta[bus].year vs forecast_delta[bus].year",
+   "cards": [],
+   "classes": {
+    "missing_unified": {
+     "the pcr2035 node at this bus is unpriced ($0 in every hour; mart_bus_fcst_year min = max = 0): live computed the gap against $0, unified holds no gap": {
+      "n": 3,
+      "examples": [
+       {
+        "key": "100945",
+        "live": 2035,
+        "unified": null
+       },
+       {
+        "key": "100946",
+        "live": 2035,
+        "unified": null
+       },
+       {
+        "key": "120147",
+        "live": 2035,
+        "unified": null
+       }
+      ]
+     }
+    }
+   }
+  },
+  "land_cost_proxy": {
+   "equal": 0,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 2678,
+   "n": 2678,
+   "unit_label": "$/acre (assumption)",
+   "note": "GS_DATA_EXT.land_cost_proxy[state|county].base per bus vs land_cost_proxy",
+   "cards": [],
+   "classes": {
+    "missing_unified": {
+     "no land-cost table in the unified DB; the live figure is an assumption band from GridSense_one derived.mart_land_cost_proxy (provenance \"assumption\", source NULL)": {
+      "n": 2678,
+      "examples": [
+       {
+        "key": "100001",
+        "live": 8000,
+        "unified": null
+       },
+       {
+        "key": "100002",
+        "live": 8000,
+        "unified": null
+       },
+       {
+        "key": "100004",
+        "live": 8000,
+        "unified": null
+       }
+      ]
+     }
+    }
+   }
+  },
+  "cathy.tier": {
+   "equal": 2593,
+   "unit": 0,
+   "newer": 85,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 0,
+   "n": 2678,
+   "unit_label": "tier",
+   "note": "live tierOf (cathy.bus_annual / demo / decomp / hourly_conf) vs identity.tier (bridge_bus_pnode)",
+   "cards": [],
+   "classes": {
+    "newer": {
+     "D-008 (S2-D): the stored rank-1 node is a same-name node in another town (> 22.03 mi); unified re-links the bus to the nearest node under the geo-proxy rule (tier relinked, distance disclosed) and never prices it through the far node; live still prices it there": {
+      "n": 85,
+      "examples": [
+       {
+        "key": "100001",
+        "live": "same_substation",
+        "unified": "relinked"
+       },
+       {
+        "key": "100115",
+        "live": "same_substation",
+        "unified": "relinked"
+       },
+       {
+        "key": "100132",
+        "live": "direct",
+        "unified": "relinked"
+       }
+      ]
+     }
+    }
+   }
+  },
+  "cathy.proxy_mi": {
+   "equal": 1136,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 1542,
+   "missing_unified": 0,
+   "n": 2678,
+   "unit_label": "mi",
+   "note": "live proxyMiles (demo_buses / bus_full distance_mi) vs identity.proxy_mi (distance_km → mi)",
+   "cards": [],
+   "classes": {
+    "missing_live": {
+     "D-008 (S2-D): the stored rank-1 node is a same-name node in another town (> 22.03 mi); unified re-links the bus to the nearest node under the geo-proxy rule (tier relinked, distance disclosed) and never prices it through the far node; live still prices it there; unified publishes the re-link distance": {
+      "n": 85,
+      "examples": [
+       {
+        "key": "100001",
+        "live": null,
+        "unified": 0.33
+       },
+       {
+        "key": "100115",
+        "live": null,
+        "unified": 0.0
+       },
+       {
+        "key": "100132",
+        "live": null,
+        "unified": 0.01
+       }
+      ]
+     },
+     "live publishes a proxy distance for the demo / bus_full buses only; unified has it for every geo-proxy bus": {
+      "n": 1457,
+      "examples": [
+       {
+        "key": "100002",
+        "live": null,
+        "unified": 3.48
+       },
+       {
+        "key": "100004",
+        "live": null,
+        "unified": 3.48
+       },
+       {
+        "key": "100007",
+        "live": null,
+        "unified": 0.56
+       }
+      ]
+     }
+    }
+   }
+  },
+  "run_input_flags.mcc_5yr": {
+   "equal": 55,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 5,
+   "n": 60,
+   "unit_label": "$/MWh (ISO-NE sign)",
+   "note": "cape_5yr[bus][2] (5yr MCC, settled sign) vs run_input_flags.mcc_5yr (to_isone_sign)",
+   "cards": [],
+   "classes": {
+    "missing_unified": {
+     "not a Studio spine bus (no geolocated dim_substation row), so mapgrid holds no record for it; its stored 5yr congestion +11.72 flips to -11.72, equal to live": {
+      "n": 3,
+      "examples": [
+       {
+        "key": "111229",
+        "live": -11.72,
+        "unified": null
+       },
+       {
+        "key": "111350",
+        "live": -11.72,
+        "unified": null
+       },
+       {
+        "key": "111351",
+        "live": -11.72,
+        "unified": null
+       }
+      ]
+     },
+     "not a Studio spine bus (no geolocated dim_substation row), so mapgrid holds no record for it; its stored 5yr congestion -12.26 flips to +12.26, equal to live": {
+      "n": 1,
+      "examples": [
+       {
+        "key": "111248",
+        "live": 12.26,
+        "unified": null
+       }
+      ]
+     },
+     "not a Studio spine bus (no geolocated dim_substation row), so mapgrid holds no record for it; its stored 5yr congestion -12.28 flips to +12.28, equal to live": {
+      "n": 1,
+      "examples": [
+       {
+        "key": "111253",
+        "live": 12.28,
+        "unified": null
+       }
+      ]
+     }
+    }
+   }
+  },
+  "run_input_flags.cape_5yr": {
+   "equal": 0,
+   "unit": 0,
+   "newer": 0,
+   "defect": 0,
+   "unclassed": 0,
+   "missing_live": 0,
+   "missing_unified": 60,
+   "n": 60,
+   "unit_label": "flag",
+   "note": "the Cape 5yr OSW flag membership (live cape_5yr keys) vs unified",
+   "cards": [],
+   "classes": {
+    "missing_unified": {
+     "not rebuildable from the unified DB: the flag regresses the 5yr MCC on the run's binding shadow prices, and fact_pcr_binding_hourly holds pcr2030/2035/2040 only (no 5yr rows)": {
+      "n": 60,
+      "examples": [
+       {
+        "key": "111134",
+        "live": 1,
+        "unified": null
+       },
+       {
+        "key": "111135",
+        "live": 1,
+        "unified": null
+       },
+       {
+        "key": "111202",
+        "live": 1,
+        "unified": null
+       }
+      ]
+     }
+    }
+   }
+  }
+ }
+}

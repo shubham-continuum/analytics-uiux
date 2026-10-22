@@ -1,0 +1,66 @@
+{
+ "_provenance": "Copied (read-only) 2026-10-13 by builder C-continuum from the live Studio fixtures tests/fixtures/continuum/api/ (recorded 2026-10-06 by tools/record_continuum_fixtures.py through the Flask test client; no :5034 server was called). Shapes = what the pinned ext/59 api client reads ({request,status,body}). sha256 per file of the copy.",
+ "routes": {
+  "/api/v2/continuum/basis?bus=111209": {
+   "file": "continuum_basis_bus_111209.json",
+   "status": 200,
+   "sha256": "d5477960aec1eab243a3ffcca87163aed59f5c418aeb12522ad1446a52edbdbc"
+  },
+  "/api/v2/continuum/capture?bus=111209": {
+   "file": "continuum_capture_bus_111209.json",
+   "status": 200,
+   "sha256": "cfa288e9fd4b37b87ed1a1ae1b2fd9fe051324c3d63017f0847e31242d47f8da"
+  },
+  "/api/v2/continuum/capture?bus=nowhere": {
+   "file": "continuum_capture_bus_nowhere.json",
+   "status": 400,
+   "sha256": "0291755c6686520b190585336a3d056ceabb46876f6c499d52ecd87d12fa4035"
+  },
+  "/api/v2/continuum/status": {
+   "file": "continuum_status.json",
+   "status": 200,
+   "sha256": "a060c65eb28a28dbe8db33dc3bdaabf6dc9df3190d37d122caf48e706295a63f"
+  },
+  "/api/v2/scenarios": {
+   "file": "scenarios.json",
+   "status": 200,
+   "sha256": "04dec95ef0a91333d49d43cb1979f64ea93c62b756357490dfc981d37cce72f3"
+  },
+  "/api/v2/scenarios/annual?bus=111209&market=RT&measure=lmp": {
+   "file": "scenarios_annual_bus_111209_market_RT_measure_lmp.json",
+   "status": 200,
+   "sha256": "82887955812e97d91b90e7e0a550581eec152483a9388986b1bc37236353ab45"
+  },
+  "/api/v2/scenarios/annual?bus=abc&measure=lmp": {
+   "file": "scenarios_annual_bus_abc_measure_lmp.json",
+   "status": 400,
+   "sha256": "0247ce35037659aa0339e5b98ad40d879d1eb66e1e1115607df5fb51716cba82"
+  },
+  "/api/v2/continuum/congestion-by-constraint?bus=100095": {
+   "file": "continuum_congestion-by-constraint_bus_100095.json",
+   "status": 200,
+   "sha256": "69ed5c311eb074cc625e0c05d3ffb2c86997df27d6e17939b2dc6c676e58a035"
+  },
+  "/api/v2/continuum/congestion-by-constraint?bus=103029": {
+   "file": "continuum_congestion-by-constraint_bus_103029.json",
+   "status": 200,
+   "sha256": "4b12b56a614c56ea324ffafcc22bf7a34decd372919345437c0830dd5b263d58"
+  },
+  "/api/v2/continuum/congestion-by-constraint?bus=110762": {
+   "file": "continuum_congestion-by-constraint_bus_110762.json",
+   "status": 200,
+   "sha256": "a209df62336b02277fcd7dd2dd3fc4f23369cdbab6297feaba0215113c4ee12d"
+  },
+  "/api/v2/continuum/congestion-by-constraint?bus=111348": {
+   "file": "continuum_congestion-by-constraint_bus_111348.json",
+   "status": 200,
+   "sha256": "a3044718b586bbca75227e93bf85bb61fc5e4740069687d5f53d8ffd166065fd"
+  },
+  "/api/v2/continuum/congestion-by-constraint?bus=119759": {
+   "file": "continuum_congestion-by-constraint_bus_119759.json",
+   "status": 200,
+   "sha256": "501ff4ba8c60bbc79db557be7f7aa7ec9b8aa6b3ce7b2328cf71bf243e4f1ba5"
+  }
+ },
+ "_provenance_nullbus": "congestion-by-constraint at buses 100095, 103029, 110762, 111348, 119759 copied 2026-10-14 by fixer devkit-cont from the dev-kit set devkit-20261014-f0457e05edb0 (plan/export_fixtures.py, via the One Studio proxy): their settled periods are not held (net_mcc null) and drove the NaN / null.replace console errors (L5 note). sha256 per file of the copy."
+}

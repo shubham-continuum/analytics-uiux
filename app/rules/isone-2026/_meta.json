@@ -1,0 +1,4 @@
+{
+ "_about": "ISO-NE rule and market constants for GridSense v8. Every value carries its source, effective date and verification status from the 2026-10-06 research (v8-isone-complete/research/R1-R3 + REGISTER.md). status: verified | corrected (verified value that differs from the external review) | assumption (a cited default the user can change) | pending (rule not yet in force) | contingent (legal status unsettled) | unverifiable. The app shows the source on every figure that uses these.",
+ "version": "2026-10-06"
+}

@@ -1,0 +1,18 @@
+{
+ "_about": "REGISTER.md numbers that are not values (dates, ranges, labels, derived sums). Reviewed 2026-10-06 by Claude; each needs a reason. A real value missing from the JSON is NEVER listed here: fix the JSON.",
+ "exceptions": {
+  "Entry cost (S22): $300k": "derived: initial_deposit 50k + study_deposit 250k (cash part), computed by the queue calculator",
+  "Entry cost (S22): $800k": "derived: 50k + 250k + readiness 2 x 250k",
+  "Request window, 2026: 11": "date fragment of '11-19' (window 2026-10-05 to 2026-11-19)",
+  "Request window, 2026: 19": "date fragment of '11-19'",
+  "FCA history: 18": "label 'FCA 15-18'",
+  "Market after FCA 18: 29": "label 'CCP 2028/29'",
+  "PfP events: 7": "count of the events[] list in capacity_pfp, not a stored scalar",
+  "PfP events: 126": "sum of intervals over events[], derived",
+  "5% safe harbor: 42": "label 'Notice 2025-42'",
+  "Storage phase-out: 35": "year label '2035' in '2034 / 35 / 36+'",
+  "Storage phase-out: 36": "year label '2036+'",
+  "Capex / FOM / CF: 7": "label 'NE classes 7-8'",
+  "S23 deposits: $315k": "derived: 15k + 100k + 2 x 100k (S3, computed by rules/isone.js entryCost)"
+ }
+}

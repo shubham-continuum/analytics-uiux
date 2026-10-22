@@ -1,0 +1,14 @@
+{
+ "request": {
+  "path": "/api/v2/scenarios/annual",
+  "query": {
+   "bus": "abc",
+   "measure": "lmp"
+  }
+ },
+ "status": 400,
+ "body": {
+  "error": "bus must be a bus number; got 'abc'",
+  "field": "bus"
+ }
+}

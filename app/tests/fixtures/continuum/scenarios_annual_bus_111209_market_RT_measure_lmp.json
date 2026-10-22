@@ -1,0 +1,485 @@
+{
+ "request": {
+  "path": "/api/v2/scenarios/annual",
+  "query": {
+   "bus": "111209",
+   "measure": "lmp",
+   "market": "RT"
+  }
+ },
+ "status": 200,
+ "body": {
+  "bus": 111209,
+  "cape_flag": {
+   "flagged": true,
+   "note": "5-year run input: 2,905 MW offshore wind on Cape Cod in 2028 (Commonwealth, Park City) \u2014 not in the ISO-NE queue for 2028; treat with caution. At this bus the constraints under the loss of Carver\u2013W Barnstable 345 kV (111133\u2013111134) carry +15.66 $/MWh of the 5-year run's +15.91 $/MWh mean congestion component (82 % of it; + is a premium over the system energy price, \u2212 a discount)."
+  },
+  "dataset_version": "b2d996e970c4",
+  "history": [
+   {
+    "hours": 8783,
+    "market": "RT",
+    "source": "settled",
+    "value": 23.7447,
+    "year": 2020
+   },
+   {
+    "hours": 8760,
+    "market": "RT",
+    "source": "settled",
+    "value": 45.4653,
+    "year": 2021
+   },
+   {
+    "hours": 8760,
+    "market": "RT",
+    "source": "settled",
+    "value": 85.9485,
+    "year": 2022
+   },
+   {
+    "hours": 8760,
+    "market": "RT",
+    "source": "settled",
+    "value": 36.2121,
+    "year": 2023
+   },
+   {
+    "hours": 8784,
+    "market": "RT",
+    "source": "settled",
+    "value": 40.061,
+    "year": 2024
+   },
+   {
+    "hours": 8760,
+    "market": "RT",
+    "source": "settled",
+    "value": 66.745,
+    "year": 2025
+   },
+   {
+    "hours": 4655,
+    "market": "RT",
+    "source": "settled",
+    "value": 78.9008,
+    "year": 2026
+   }
+  ],
+  "history_market": "RT",
+  "measure": "lmp",
+  "method": "Proxy scenario = Base \u00d7 factor (D-002): High Gas \u00d7 1.10, Low Gas \u00d7 0.90, High Load \u00d7 1.20. Base is the run the Studio price basis reads each year \u2014 2028 the 5yr run (PCR 2030 at a Cape-flagged bus, studio/PRICE-BASIS.md), 2030/2035/2040 the PCR runs, 2045/2050 PCR 2040 \u00d7 cathy.meta.vendor_step per five years. LMP, energy, congestion and loss all scale by the same factor, so LMP = energy + congestion + loss stays exact (components on the settled sign, tools/lmp_components.py). Hourly shapes scale uniformly: every hour \u00d7 the factor. Revenue, capture and spreads are computed downstream from the scaled prices \u2014 so a capture RATIO is unchanged by a proxy while $/MWh capture prices and spreads scale by the factor. Settled history is never scaled: proxies apply to solved and escalated years only.",
+  "notice": "High Gas, Low Gas and High Load are proxies (illustrative proxy \u2014 not a PROBE run): Base \u00d7 a fixed factor, not a solved market outcome. They exist to build and check the scenario workflow until PROBE runs land.",
+  "proxy_label": "illustrative proxy \u2014 not a PROBE run",
+  "scenarios": [
+   {
+    "factor": 1.0,
+    "id": "base",
+    "kind": "base",
+    "label": "Base",
+    "note": "The run the Studio price basis reads each year (ext/76 PLAN; studio/PRICE-BASIS.md).",
+    "values": [
+     {
+      "basis": "solved",
+      "cape": {
+       "applied": true,
+       "from": {
+        "run": "5yr",
+        "year": 2028
+       },
+       "rule": "studio/PRICE-BASIS.md \u00b7 ext/76 CAPE",
+       "to": {
+        "run": "pcr2030",
+        "year": 2030
+       },
+       "word": "PCR 2030 used for 2028 \u2014 5-year run input under review (2,905 MW offshore wind on Cape Cod not in the 2028 queue)"
+      },
+      "factor": 1.0,
+      "hours": 8712,
+      "kind": "base",
+      "note": null,
+      "run": "pcr2030",
+      "run_year": 2030,
+      "steps": 0,
+      "value": 47.2146,
+      "year": 2028
+     },
+     {
+      "basis": "solved",
+      "cape": null,
+      "factor": 1.0,
+      "hours": 8712,
+      "kind": "base",
+      "note": null,
+      "run": "pcr2030",
+      "run_year": 2030,
+      "steps": 0,
+      "value": 47.2146,
+      "year": 2030
+     },
+     {
+      "basis": "solved",
+      "cape": null,
+      "factor": 1.0,
+      "hours": 8736,
+      "kind": "base",
+      "note": null,
+      "run": "pcr2035",
+      "run_year": 2035,
+      "steps": 0,
+      "value": 53.0939,
+      "year": 2035
+     },
+     {
+      "basis": "solved",
+      "cape": null,
+      "factor": 1.0,
+      "hours": 8736,
+      "kind": "base",
+      "note": null,
+      "run": "pcr2040",
+      "run_year": 2040,
+      "steps": 0,
+      "value": 57.422,
+      "year": 2040
+     },
+     {
+      "basis": "escalated",
+      "cape": null,
+      "factor": 1.0,
+      "hours": 8736,
+      "kind": "base",
+      "note": "pcr2040 \u00d7 vendor_step 1.0816 ^ 1 (cathy.meta.vendor_step)",
+      "run": "pcr2040",
+      "run_year": 2040,
+      "steps": 1,
+      "value": 62.1076,
+      "year": 2045
+     },
+     {
+      "basis": "escalated",
+      "cape": null,
+      "factor": 1.0,
+      "hours": 8736,
+      "kind": "base",
+      "note": "pcr2040 \u00d7 vendor_step 1.0816 ^ 2 (cathy.meta.vendor_step)",
+      "run": "pcr2040",
+      "run_year": 2040,
+      "steps": 2,
+      "value": 67.1756,
+      "year": 2050
+     }
+    ]
+   },
+   {
+    "factor": 1.1,
+    "id": "high_gas",
+    "kind": "proxy",
+    "label": "High Gas \u2014 illustrative proxy \u2014 not a PROBE run",
+    "note": "Base \u00d7 1.10 (D-002). Stands in for a PROBE High Gas run until one is held.",
+    "values": [
+     {
+      "basis": "solved",
+      "cape": {
+       "applied": true,
+       "from": {
+        "run": "5yr",
+        "year": 2028
+       },
+       "rule": "studio/PRICE-BASIS.md \u00b7 ext/76 CAPE",
+       "to": {
+        "run": "pcr2030",
+        "year": 2030
+       },
+       "word": "PCR 2030 used for 2028 \u2014 5-year run input under review (2,905 MW offshore wind on Cape Cod not in the 2028 queue)"
+      },
+      "factor": 1.1,
+      "hours": 8712,
+      "kind": "proxy",
+      "note": null,
+      "run": "pcr2030",
+      "run_year": 2030,
+      "steps": 0,
+      "value": 51.936,
+      "year": 2028
+     },
+     {
+      "basis": "solved",
+      "cape": null,
+      "factor": 1.1,
+      "hours": 8712,
+      "kind": "proxy",
+      "note": null,
+      "run": "pcr2030",
+      "run_year": 2030,
+      "steps": 0,
+      "value": 51.936,
+      "year": 2030
+     },
+     {
+      "basis": "solved",
+      "cape": null,
+      "factor": 1.1,
+      "hours": 8736,
+      "kind": "proxy",
+      "note": null,
+      "run": "pcr2035",
+      "run_year": 2035,
+      "steps": 0,
+      "value": 58.4033,
+      "year": 2035
+     },
+     {
+      "basis": "solved",
+      "cape": null,
+      "factor": 1.1,
+      "hours": 8736,
+      "kind": "proxy",
+      "note": null,
+      "run": "pcr2040",
+      "run_year": 2040,
+      "steps": 0,
+      "value": 63.1642,
+      "year": 2040
+     },
+     {
+      "basis": "escalated",
+      "cape": null,
+      "factor": 1.1,
+      "hours": 8736,
+      "kind": "proxy",
+      "note": "pcr2040 \u00d7 vendor_step 1.0816 ^ 1 (cathy.meta.vendor_step)",
+      "run": "pcr2040",
+      "run_year": 2040,
+      "steps": 1,
+      "value": 68.3184,
+      "year": 2045
+     },
+     {
+      "basis": "escalated",
+      "cape": null,
+      "factor": 1.1,
+      "hours": 8736,
+      "kind": "proxy",
+      "note": "pcr2040 \u00d7 vendor_step 1.0816 ^ 2 (cathy.meta.vendor_step)",
+      "run": "pcr2040",
+      "run_year": 2040,
+      "steps": 2,
+      "value": 73.8932,
+      "year": 2050
+     }
+    ]
+   },
+   {
+    "factor": 0.9,
+    "id": "low_gas",
+    "kind": "proxy",
+    "label": "Low Gas \u2014 illustrative proxy \u2014 not a PROBE run",
+    "note": "Base \u00d7 0.90 (D-002). Stands in for a PROBE Low Gas run until one is held.",
+    "values": [
+     {
+      "basis": "solved",
+      "cape": {
+       "applied": true,
+       "from": {
+        "run": "5yr",
+        "year": 2028
+       },
+       "rule": "studio/PRICE-BASIS.md \u00b7 ext/76 CAPE",
+       "to": {
+        "run": "pcr2030",
+        "year": 2030
+       },
+       "word": "PCR 2030 used for 2028 \u2014 5-year run input under review (2,905 MW offshore wind on Cape Cod not in the 2028 queue)"
+      },
+      "factor": 0.9,
+      "hours": 8712,
+      "kind": "proxy",
+      "note": null,
+      "run": "pcr2030",
+      "run_year": 2030,
+      "steps": 0,
+      "value": 42.4931,
+      "year": 2028
+     },
+     {
+      "basis": "solved",
+      "cape": null,
+      "factor": 0.9,
+      "hours": 8712,
+      "kind": "proxy",
+      "note": null,
+      "run": "pcr2030",
+      "run_year": 2030,
+      "steps": 0,
+      "value": 42.4931,
+      "year": 2030
+     },
+     {
+      "basis": "solved",
+      "cape": null,
+      "factor": 0.9,
+      "hours": 8736,
+      "kind": "proxy",
+      "note": null,
+      "run": "pcr2035",
+      "run_year": 2035,
+      "steps": 0,
+      "value": 47.7845,
+      "year": 2035
+     },
+     {
+      "basis": "solved",
+      "cape": null,
+      "factor": 0.9,
+      "hours": 8736,
+      "kind": "proxy",
+      "note": null,
+      "run": "pcr2040",
+      "run_year": 2040,
+      "steps": 0,
+      "value": 51.6798,
+      "year": 2040
+     },
+     {
+      "basis": "escalated",
+      "cape": null,
+      "factor": 0.9,
+      "hours": 8736,
+      "kind": "proxy",
+      "note": "pcr2040 \u00d7 vendor_step 1.0816 ^ 1 (cathy.meta.vendor_step)",
+      "run": "pcr2040",
+      "run_year": 2040,
+      "steps": 1,
+      "value": 55.8969,
+      "year": 2045
+     },
+     {
+      "basis": "escalated",
+      "cape": null,
+      "factor": 0.9,
+      "hours": 8736,
+      "kind": "proxy",
+      "note": "pcr2040 \u00d7 vendor_step 1.0816 ^ 2 (cathy.meta.vendor_step)",
+      "run": "pcr2040",
+      "run_year": 2040,
+      "steps": 2,
+      "value": 60.458,
+      "year": 2050
+     }
+    ]
+   },
+   {
+    "factor": 1.2,
+    "id": "high_load",
+    "kind": "proxy",
+    "label": "High Load \u2014 illustrative proxy \u2014 not a PROBE run",
+    "note": "Base \u00d7 1.20 (D-002). Stands in for a PROBE High Load run until one is held.",
+    "values": [
+     {
+      "basis": "solved",
+      "cape": {
+       "applied": true,
+       "from": {
+        "run": "5yr",
+        "year": 2028
+       },
+       "rule": "studio/PRICE-BASIS.md \u00b7 ext/76 CAPE",
+       "to": {
+        "run": "pcr2030",
+        "year": 2030
+       },
+       "word": "PCR 2030 used for 2028 \u2014 5-year run input under review (2,905 MW offshore wind on Cape Cod not in the 2028 queue)"
+      },
+      "factor": 1.2,
+      "hours": 8712,
+      "kind": "proxy",
+      "note": null,
+      "run": "pcr2030",
+      "run_year": 2030,
+      "steps": 0,
+      "value": 56.6575,
+      "year": 2028
+     },
+     {
+      "basis": "solved",
+      "cape": null,
+      "factor": 1.2,
+      "hours": 8712,
+      "kind": "proxy",
+      "note": null,
+      "run": "pcr2030",
+      "run_year": 2030,
+      "steps": 0,
+      "value": 56.6575,
+      "year": 2030
+     },
+     {
+      "basis": "solved",
+      "cape": null,
+      "factor": 1.2,
+      "hours": 8736,
+      "kind": "proxy",
+      "note": null,
+      "run": "pcr2035",
+      "run_year": 2035,
+      "steps": 0,
+      "value": 63.7127,
+      "year": 2035
+     },
+     {
+      "basis": "solved",
+      "cape": null,
+      "factor": 1.2,
+      "hours": 8736,
+      "kind": "proxy",
+      "note": null,
+      "run": "pcr2040",
+      "run_year": 2040,
+      "steps": 0,
+      "value": 68.9064,
+      "year": 2040
+     },
+     {
+      "basis": "escalated",
+      "cape": null,
+      "factor": 1.2,
+      "hours": 8736,
+      "kind": "proxy",
+      "note": "pcr2040 \u00d7 vendor_step 1.0816 ^ 1 (cathy.meta.vendor_step)",
+      "run": "pcr2040",
+      "run_year": 2040,
+      "steps": 1,
+      "value": 74.5292,
+      "year": 2045
+     },
+     {
+      "basis": "escalated",
+      "cape": null,
+      "factor": 1.2,
+      "hours": 8736,
+      "kind": "proxy",
+      "note": "pcr2040 \u00d7 vendor_step 1.0816 ^ 2 (cathy.meta.vendor_step)",
+      "run": "pcr2040",
+      "run_year": 2040,
+      "steps": 2,
+      "value": 80.6107,
+      "year": 2050
+     }
+    ]
+   }
+  ],
+  "sign": "Every congestion figure is on ISO-NE's settlement convention, LMP = energy + congestion + loss: a negative congestion component prices the node below the system energy price (a generation pocket), a positive one is a premium over it. Settled rows are published as stored. Every PROBE run (5yr, 10yr, pcr2030/2035/2040) stores LMP = energy - congestion + loss, so its congestion is negated at read and its energy recomputed as LMP - congestion - loss; the PCR table's stored energy column (built the other way) is not read.",
+  "source": "history: uni.mart_bus_year (settled, as stored); solved: uni.mart_bus_fcst_year annual means through tools/lmp_components.py; escalated: \u00d7 cathy.meta.vendor_step",
+  "unit": "$/MWh",
+  "vendor_step": 1.0816,
+  "years": [
+   2028,
+   2030,
+   2035,
+   2040,
+   2045,
+   2050
+  ]
+ }
+}

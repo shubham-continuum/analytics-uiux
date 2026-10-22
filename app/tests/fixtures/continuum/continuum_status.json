@@ -1,0 +1,111 @@
+{
+ "request": {
+  "path": "/api/v2/continuum/status",
+  "query": {}
+ },
+ "status": 200,
+ "body": {
+  "cache": {
+   "basis": {
+    "currsize": 0,
+    "hits": 0,
+    "maxsize": 512,
+    "misses": 0
+   },
+   "capture": {
+    "currsize": 0,
+    "hits": 0,
+    "maxsize": 512,
+    "misses": 0
+   },
+   "congestion": {
+    "currsize": 0,
+    "hits": 0,
+    "maxsize": 512,
+    "misses": 0
+   },
+   "price_vs_generation": {
+    "currsize": 0,
+    "hits": 0,
+    "maxsize": 512,
+    "misses": 0
+   }
+  },
+  "constraint_periods": [
+   "DA2021",
+   "DA2022",
+   "DA2023",
+   "DA2024",
+   "DA2025",
+   "DA2026",
+   "RT2023",
+   "RT2024",
+   "RT2025",
+   "RT2026"
+  ],
+  "row_counts": {
+   "aggs": 9,
+   "basis_stats": 20799,
+   "capture_run": 12077,
+   "cong_period": 19418,
+   "cong_rows": 80506,
+   "dst": 6,
+   "fleet_hod": 2352,
+   "fleet_hour": 769200,
+   "fleet_units": 97,
+   "meta": 15,
+   "run_agg_hour": 393336,
+   "run_hod": 289848,
+   "run_unpriced": 69,
+   "settled_capture": 8722,
+   "settled_coverage": 12,
+   "settled_fuel_hour": 49185,
+   "settled_hod": 418656,
+   "settled_kpi": 8722,
+   "settled_nodes": 754,
+   "settled_shape_hod": 576,
+   "stage_log": 9,
+   "unit_hod": 4008,
+   "unit_list": 167,
+   "universe": 2678
+  },
+  "runs": {
+   "10yr": 2035,
+   "5yr": 2028,
+   "pcr2030": 2030,
+   "pcr2035": 2035,
+   "pcr2040": 2040
+  },
+  "settled_years": [
+   2021,
+   2022,
+   2023,
+   2024,
+   2025,
+   2026
+  ],
+  "stage_seconds": {
+   "congestion_runs": 71.4,
+   "congestion_settled": 119.6,
+   "dims": 0.8,
+   "fleet": 5.9,
+   "kpi": 1.6,
+   "runs": 149.9,
+   "settled": 265.0,
+   "settled_shape": 0.1,
+   "units": 2.9
+  },
+  "view": "continuum marts status",
+  "views_file": "D:\\Ganesh\\02 Products\\GridSense\\analytics-portfolio-canvas-2026-09-11\\data\\derived\\continuum_views.duckdb",
+  "vintage": {
+   "builder": "continuum-views 1.1 (2026-10-06, D-008 gates)",
+   "stale": false,
+   "stale_reason": null,
+   "store_file": "GridSense_one.duckdb",
+   "store_mtime": "2026-09-17T01:21:14",
+   "store_size": "20195586048",
+   "views_built_at": "2026-10-06T07:16:19",
+   "views_file": "continuum_views.duckdb"
+  }
+ }
+}

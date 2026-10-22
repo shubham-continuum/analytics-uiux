@@ -1,0 +1,22 @@
+{
+ "file": "31-map-grid.js",
+ "why": "Null policy (D-007): a missing grid value reads 'not held', never '—'; the nil styling and its reason tooltip follow the new text; filtering by 'not held' matches missing cells. Reviewed by Claude 2026-10-06.",
+ "edits": [
+  {
+   "find": "    if (col.type === 'gate') return v ? `${v.clear}/${v.total}` : '—';\n    if (v == null || v === '') return '—';",
+   "replace": "    if (col.type === 'gate') return v ? `${v.clear}/${v.total}` : 'not held';\n    if (v == null || v === '') return 'not held';"
+  },
+  {
+   "find": "          if (t === '—') { c.classList.add('nil'); c.title = whyNil(col, row); }",
+   "replace": "          if (t === 'not held') { c.classList.add('nil'); c.title = whyNil(col, row); }"
+  },
+  {
+   "find": "      if (v == null) return q === '-' || q === '—';\n      const m = q.match(",
+   "replace": "      if (v == null) return q === '-' || q === '—' || q.toLowerCase() === 'not held';\n      const m = q.match("
+  },
+  {
+   "find": "    if (v == null) return q === '-' || q === '—';\n    return String(v).toLowerCase()",
+   "replace": "    if (v == null) return q === '-' || q === '—' || q.toLowerCase() === 'not held';\n    return String(v).toLowerCase()"
+  }
+ ]
+}

@@ -1,0 +1,58 @@
+{
+ "defaults_atb2025": {
+  "_about": "NREL ATB 2025 (atb_year 2025, Moderate, R&D case, CRP 30), national averages in 2023 $; New England multiplier unverifiable. Values for 2026. These are PRESETS: rules/finance.js applies them only when the user picks a named preset, and every field then carries the preset's name and source.",
+  "pv_tracking": {
+   "capex_per_kwac": 1405.24,
+   "fom_per_kwac_yr": 23.18,
+   "cf_by_class": {
+    "5": 0.2652,
+    "7": 0.2357,
+    "8": 0.2267
+   },
+   "degradation_embedded": true,
+   "src": "NREL ATB 2025",
+   "status": "assumption",
+   "note": "New England is likely classes 7–8 (verify with NSRDB GHI). Class 7 and 8 CF are the 2024 base-year values (R3 §4); class 5 is 2026."
+  },
+  "wind_onshore": {
+   "capex_per_kw": 1823.56,
+   "fom_per_kw_yr": 39.61,
+   "cf_class4": 0.4445,
+   "src": "NREL ATB 2025",
+   "status": "assumption"
+  },
+  "battery_4h": {
+   "capex_per_kw": 1344.46,
+   "fom_per_kw_yr": 47.85,
+   "rte": 0.85,
+   "life_years": 15,
+   "fom_includes_augmentation": true,
+   "src": "NREL ATB 2025",
+   "status": "assumption"
+  },
+  "finance": {
+   "wacc_nominal": 0.077,
+   "debt_share": 0.6,
+   "debt_rate": 0.08,
+   "equity_rate": 0.12,
+   "src": "Lazard LCOE+ v19.0",
+   "status": "assumption"
+  },
+  "atb_finance": {
+   "inflation": 0.025,
+   "tax_rate": 0.2574,
+   "crp_years": 30,
+   "wacc_nominal_with_credits": 0.0658,
+   "wacc_nominal_no_credits": 0.0563,
+   "src": "NREL ATB 2025, ATBe.parquet v1.0.0 rows Tax Rate / WACC Nominal; CRP 30 (R3 C4, §3.1, §4)",
+   "status": "assumption",
+   "note": "Tax rate is blended federal + state; New England state rates unverified (R3 open question 9). ATB WACC is a contracted-asset benchmark, low for a merchant ISO-NE site."
+  },
+  "discount_sensitivity": {
+   "low": 0.06,
+   "high": 0.1,
+   "src": "R3 §3.3 (Lazard v19.0 grid)",
+   "status": "assumption"
+  }
+ }
+}

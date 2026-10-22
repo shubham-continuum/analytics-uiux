@@ -1,0 +1,10 @@
+{
+ "file": "app-configurator.js",
+ "why": "Lift plan 14 L3 (builder G-configurator, 2026-10-13): the drawer reads `row.querySelector('svg')` on its icon markup, so an empty icon (the shim's App.icon returns '') throws on open. The live icon set (patch F2) is handed in on the load-time view (GSX.icon); without it the code is the live code (App.icon).",
+ "edits": [
+  {
+   "find": "  const icon = n => App.icon(n);",
+   "replace": "  const icon = n => (GSX && GSX.icon ? GSX.icon(n) : App.icon(n)); /* One Studio patch F3 */"
+  }
+ ]
+}

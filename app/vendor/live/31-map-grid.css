@@ -1,0 +1,398 @@
+/* VENDORED from live Studio ext/31-map-grid.css (snapshot 2026-10-06, sha256 4172eb3121c087b7).
+   DO NOT EDIT: regenerate with plan/vendor_live.py; patches in vendor/live/patches/. */
+/* ═══════════════════════════════════════════════════════════════════════════
+   ext: 31-map-grid.css — the map dock and the bottom data grid.
+
+   Every colour is one of Shubham's tokens or a `--gsx-*` token declared here and
+   validated. Nothing is a raw hex at a use site.
+
+   The two `--gsx-*` families and where they came from
+   ───────────────────────────────────────────────────
+   --gsx-price-1…7   THE STUDIO'S OWN SEQUENTIAL RAMP, --h1…--h7, unchanged. Used
+                     for the price layer (point colour on lmp_2030). Re-validated
+                     rather than assumed — see studio/MAP-GRID-ADDED.md for the run.
+
+   --gsx-kv-1…4      The four kV classes. NOT one of his categorical series sets:
+                     kV is an ORDERED variable and --s1…--s8 are deliberately
+                     iso-lightness (L* 42.9–60.9 on dark), so no four of them
+                     separate in greyscale and the two best-looking sets also
+                     collapse under deuteranopia. Both rejected candidates are
+                     recorded in MAP-GRID-ADDED.md with their numbers.
+
+                     What ships is an ordered low-chroma ramp (C* 4–9) in a warm
+                     taupe family: order goes on line weight AND on lightness, so
+                     the two channels agree, the network survives greyscale, and
+                     it stays ΔE00 15.5 (dark) / 17.8 (light) clear of the blue
+                     price ramp — the blue-on-blue trap the workspace palette note
+                     warns about. The network is the floor, not a series.
+
+   Marks over the network are his: --accent (selection), --s4 (queue), --s5 (pin).
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root{
+  /* layout — the brief's tokens */
+  --gsx-map-w:40%;
+  --gsx-grid-h:220px;
+  --gsx-row-h:26px;
+  --gsx-gap:6px;
+
+  /* price — the Studio's own --h1…--h7, dark→bright on the dark ground */
+  --gsx-price-1:var(--h1); --gsx-price-2:var(--h2); --gsx-price-3:var(--h3);
+  --gsx-price-4:var(--h4); --gsx-price-5:var(--h5); --gsx-price-6:var(--h6);
+  --gsx-price-7:var(--h7);
+
+  /* kV classes, recessive → prominent: <100 · 100–199 · 200–344 · 345+ */
+  --gsx-kv-1:#4A4640; --gsx-kv-2:#6A645B; --gsx-kv-3:#8E8779; --gsx-kv-4:#B8B0A0;
+
+  /* marks */
+  --gsx-node:var(--ink-4);
+  --gsx-sel:var(--accent);
+  --gsx-queue:var(--s4);
+  --gsx-pin:var(--s5);
+
+  /* ── the siting ramps (§5b), dark ground --sunk #0c1320 ─────────────────
+     Every set validated in studio/MAP-LAYERS.md §3: monotone L*, even steps,
+     ends ΔE00 ≥ 40, adjacent ΔE00 ≥ 8, monotone under protan/deutan/tritan.
+     On dark the high class is the BRIGHT end; on light it is the DARK end, so
+     the class a reader looks for is always the one with the most contrast. */
+  /* seq — viridis 0.10→1.00 (grid, rank, queue, land) */
+  --gsx-seq-1:#482475; --gsx-seq-2:#3C528A; --gsx-seq-3:#2A788E; --gsx-seq-4:#239C88;
+  --gsx-seq-5:#44BF70; --gsx-seq-6:#9ED83F; --gsx-seq-7:#FDE725;
+  /* warm — inferno 0.20→1.00 (price, congestion, load cost) */
+  --gsx-warm-1:#420A68; --gsx-warm-2:#781C6C; --gsx-warm-3:#AF315B; --gsx-warm-4:#DD513A;
+  --gsx-warm-5:#F68716; --gsx-warm-6:#F9C736; --gsx-warm-7:#FCFFA4;
+  /* div — blue (below 0) · neutral · orange (above 0), lightness rising outward */
+  --gsx-div-1:#44D0FF; --gsx-div-2:#28A6F2; --gsx-div-3:#2F7DB3; --gsx-div-4:#525654;
+  --gsx-div-5:#A16B41; --gsx-div-6:#D78D52; --gsx-div-7:#FFB26C;
+  /* biv — 3 × 3, row-major from (low, low): columns = first KPI (teal),
+     rows = second KPI (rose); both high is the brightest cell */
+  --gsx-biv-1:#424242; --gsx-biv-2:#39767B; --gsx-biv-3:#00ADBA;
+  --gsx-biv-4:#935F65; --gsx-biv-5:#9F99A2; --gsx-biv-6:#9ED5E4;
+  --gsx-biv-7:#E77A8B; --gsx-biv-8:#FCBACB; --gsx-biv-9:#FFFBFF;
+  /* cat — the CA validated palette's four CVD-separable hues (blue, teal,
+     ochre, rose). Violet is left out: it collapses onto blue under protanopia
+     (ΔE00 0.7), measured. */
+  --gsx-cat-1:#3E6DD8; --gsx-cat-2:#159A8A; --gsx-cat-3:#C77700; --gsx-cat-4:#CE3A5B;
+  /* cat8 — five to eight classes (the eight zones): the same four hues at two
+     lightness levels, lighter first; min ΔE00 26.4, CVD 7.7, every hue ≥ 2.2:1 */
+  --gsx-cat8-1:#7D96F9; --gsx-cat8-2:#6FC2B4; --gsx-cat8-3:#F3A34A; --gsx-cat8-4:#F47286;
+  --gsx-cat8-5:#004CB1; --gsx-cat8-6:#007567; --gsx-cat8-7:#9C5400; --gsx-cat8-8:#A3003B;
+  /* overlays */
+  --gsx-bind:#34D1E8;             /* limiting facilities — ΔE00 ≥ 40 from the warm ramp */
+  --gsx-halo:rgba(0,0,0,.55);
+  --gsx-missing:rgba(255,255,255,.55);
+  --gsx-zone-edge:rgba(12,19,32,.95);
+  --gsx-flag-anom:#CE3A5B; --gsx-flag-zone:#3E6DD8; --gsx-flag-syn:#C77700;
+}
+html.light,html[data-theme="light"]:not(.dark){
+  --gsx-kv-1:#CAC6BE; --gsx-kv-2:#A49D91; --gsx-kv-3:#7A7367; --gsx-kv-4:#4E483E;
+  /* light ground --sunk #eef3fa */
+  --gsx-seq-1:#9ED83F; --gsx-seq-2:#55C369; --gsx-seq-3:#22A884; --gsx-seq-4:#258B8D;
+  --gsx-seq-5:#316C8E; --gsx-seq-6:#3F4B89; --gsx-seq-7:#482475;
+  --gsx-warm-1:#FABE2D; --gsx-warm-2:#F58417; --gsx-warm-3:#DD513A; --gsx-warm-4:#B23359;
+  --gsx-warm-5:#7F1E6B; --gsx-warm-6:#4D0D6A; --gsx-warm-7:#160B39;
+  --gsx-div-1:#0066AF; --gsx-div-2:#0088CC; --gsx-div-3:#77AADB; --gsx-div-4:#D0CBCC;
+  --gsx-div-5:#CE9B77; --gsx-div-6:#B3723E; --gsx-div-7:#8F4D11;
+  --gsx-biv-1:#EBEBEB; --gsx-biv-2:#8BC9CC; --gsx-biv-3:#00A6AE;
+  --gsx-biv-4:#E8B0B9; --gsx-biv-5:#95929C; --gsx-biv-6:#357380;
+  --gsx-biv-7:#DD728A; --gsx-biv-8:#915B6F; --gsx-biv-9:#464254;
+  --gsx-cat8-1:#6581E1; --gsx-cat8-2:#59AC9F; --gsx-cat8-3:#DA8E35; --gsx-cat8-4:#DC5C71;
+  --gsx-cat8-5:#003FA0; --gsx-cat8-6:#006658; --gsx-cat8-7:#8B4600; --gsx-cat8-8:#91002E;
+  --gsx-bind:#0B7F75;
+  --gsx-halo:rgba(15,23,42,.45);
+  --gsx-missing:rgba(15,23,42,.55);
+  --gsx-zone-edge:rgba(238,243,250,.95);
+}
+
+/* ── the docks ────────────────────────────────────────────────────────────
+   The frame agent owns #gsx-map-dock and #gsx-grid-dock. When they are absent
+   this module makes them itself, as siblings of #app (the host wipes #app's
+   children on every paint, so a dock inside it would not survive), and pushes
+   #app over. `body.gsx-fallback` is set only in that case and is removed the
+   moment the real docks appear. */
+.gsx-dock{display:flex;flex-direction:column;min-width:0;min-height:0;background:var(--surface);
+  color:var(--ink);font-family:var(--sans);font-size:12.5px;overflow:hidden}
+.gsx-dock.gsx-map{border-right:1px solid var(--border)}
+.gsx-dock.gsx-grid{border-top:1px solid var(--border)}
+
+/* The pane fills its dock whichever built it. `ext/30`'s `.gsf-host` is
+   position:relative with overflow:auto, and the fallback dock is position:fixed,
+   so one absolute rule sits correctly in both and never invents a scrollbar. */
+#gsx-map-dock,#gsx-grid-dock{position:relative}
+body.gsx-fallback #gsx-map-dock,body.gsx-fallback #gsx-grid-dock{position:fixed}
+.gsx-pane{position:absolute;inset:0;display:flex;flex-direction:column;
+  min-width:0;min-height:0;overflow:hidden;color:var(--ink);
+  font-family:var(--sans);font-size:12.5px}
+
+body.gsx-fallback #app.app.sapp{position:fixed;top:0;left:var(--gsx-map-w);right:0;
+  bottom:var(--gsx-grid-h);width:auto;height:auto}
+body.gsx-fallback #gsx-map-dock{position:fixed;left:0;top:0;width:var(--gsx-map-w);
+  bottom:var(--gsx-grid-h);z-index:30}
+body.gsx-fallback #gsx-grid-dock{position:fixed;left:0;right:0;bottom:0;
+  height:var(--gsx-grid-h);z-index:30}
+
+/* ── map ──────────────────────────────────────────────────────────────── */
+.gsx-map-stage{position:relative;flex:1;min-height:0;background:var(--sunk);cursor:grab;
+  touch-action:none;overflow:hidden}
+.gsx-map-stage.dragging{cursor:grabbing}
+.gsx-map-stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.gsx-map-stage canvas.fx{pointer-events:none}
+
+.gsx-zone-lab{position:absolute;transform:translate(-50%,-50%);pointer-events:none;
+  font-size:10px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--ink-3);text-shadow:0 0 6px var(--sunk),0 0 3px var(--sunk);white-space:nowrap}
+.gsx-zone-lab span{display:block;font-size:9px;font-weight:400;letter-spacing:.02em;
+  text-transform:none;color:var(--ink-4)}
+
+/* layer panel, top-left, collapsible */
+.gsx-layers{position:absolute;left:8px;top:8px;z-index:4;background:var(--raised);
+  border:1px solid var(--border-2);border-radius:var(--r-ctl);box-shadow:var(--shadow-sm);
+  min-width:132px;max-width:190px;overflow:hidden}
+.gsx-layers-h{display:flex;align-items:center;gap:6px;padding:5px 7px;cursor:pointer;
+  font-size:10px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);
+  background:none;border:0;width:100%;text-align:left;font-family:inherit}
+.gsx-layers-h b{flex:1;font-weight:600}
+.gsx-layers-h i{font-style:normal;color:var(--ink-4)}
+.gsx-layers-b{padding:2px 6px 6px;border-top:1px solid var(--border)}
+.gsx-layers.off .gsx-layers-b{display:none}
+.gsx-lay{display:flex;align-items:center;gap:6px;padding:3px 2px;cursor:pointer;
+  font-size:11.5px;color:var(--ink-2);user-select:none}
+.gsx-lay:hover{color:var(--ink)}
+.gsx-lay input{margin:0;width:12px;height:12px;accent-color:var(--accent);flex:none}
+.gsx-lay em{font-style:normal;color:var(--ink-4);font-size:10px;margin-left:auto;
+  font-family:var(--mono)}
+.gsx-legend{border-top:1px solid var(--border);margin-top:4px;padding-top:5px;
+  font-size:10px;color:var(--ink-4)}
+.gsx-legend .r{display:flex;align-items:center;gap:5px;margin-bottom:2px}
+.gsx-legend .sw{width:16px;height:3px;border-radius:2px;flex:none}
+.gsx-legend .ramp{display:flex;height:6px;border-radius:2px;overflow:hidden;margin:2px 0}
+.gsx-legend .ramp i{flex:1}
+.gsx-legend .ends{display:flex;justify-content:space-between;font-family:var(--mono);font-size:9.5px}
+
+/* ── the siting layers (§5b) ─────────────────────────────────────────────
+   The panel grows a KPI legend and the view controls; it scrolls inside the
+   stage rather than growing past it. */
+.gsx-layers{max-width:212px;width:212px;max-height:calc(100% - 16px);display:flex;flex-direction:column}
+.gsx-layers.off{width:auto;min-width:0}
+.gsx-layers-b{overflow-y:auto;overflow-x:hidden;min-height:0;scrollbar-width:thin}
+.gsx-lays{border-top:1px solid var(--border);margin-top:5px;padding-top:3px}
+.gsx-lay.off{opacity:.5;cursor:not-allowed}
+
+.gsx-klegend{font-size:10.5px;color:var(--ink-3);padding-top:4px}
+.gsx-klegend:empty{display:none}
+.gsx-klegend .lh{display:flex;align-items:baseline;gap:5px;flex-wrap:wrap;margin-bottom:2px}
+.gsx-klegend .lh b{font-size:11.5px;font-weight:600;color:var(--ink);line-height:1.25}
+.gsx-klegend .lh .u{font-family:var(--mono);font-size:10px;color:var(--ink-4)}
+.gsx-klegend .bdg{font-size:9px;padding:0 5px;border-radius:var(--r-pill);border:1px solid currentColor;line-height:14px}
+.gsx-klegend .bdg.asm,.gsx-klegend .bdg.syn{color:var(--gsx-cat-3)}
+.gsx-klegend .ls{font-size:9.5px;color:var(--ink-4);line-height:1.3;margin:1px 0 3px}
+.gsx-klegend .ls.why{color:var(--ink-3)}
+.gsx-klegend .ls.edges{font-family:var(--mono);font-size:9px}
+.gsx-klegend .sub{display:flex;align-items:center;gap:5px;margin-top:5px;padding-top:4px;border-top:1px solid var(--border);
+  font-size:9.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-4)}
+.gsx-klegend .r{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--ink-3);margin:1px 0}
+.gsx-klegend .r .kc{margin-left:auto;font-family:var(--mono);font-size:9.5px;color:var(--ink-4)}
+.gsx-klegend .bins{display:flex;flex-direction:column;gap:1px;margin:2px 0}
+.gsx-klegend .bin{display:flex;align-items:center;gap:6px;width:100%;padding:1px 3px;border:1px solid transparent;
+  border-radius:4px;background:none;font:inherit;font-size:10.5px;color:var(--ink-2);cursor:pointer;text-align:left}
+.gsx-klegend .bin:hover{background:var(--tint);border-color:var(--border-2)}
+.gsx-klegend .bin.on{background:var(--accent-soft);border-color:var(--accent-line);color:var(--ink)}
+.gsx-klegend .bin .rg{flex:1;min-width:0;font-family:var(--mono);font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gsx-klegend .bin .kc{font-family:var(--mono);font-size:9.5px;color:var(--ink-4)}
+.gsx-klegend .bin.miss{margin-top:2px}
+.gsx-klegend .sw{display:inline-block;width:12px;height:10px;border-radius:2px;flex:none;
+  box-shadow:inset 0 0 0 1px var(--gsx-halo)}
+.gsx-klegend .sw.hollow{background:none;border-radius:50%;width:9px;height:9px;box-shadow:inset 0 0 0 1.2px var(--gsx-missing)}
+.gsx-klegend .sw.tri{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;
+  border-bottom:9px solid currentColor;background:none !important;box-shadow:none}
+.gsx-klegend .sw.line{height:3px;border-radius:2px;box-shadow:none}
+.gsx-klegend .sw.ring{background:none !important;border-radius:50%;width:9px;height:9px;box-shadow:none;border:1.5px solid}
+/* the swatch's colour is its background; the triangle and ring take it as
+   currentColor instead, so the same inline style drives all three */
+.gsx-klegend .sw.tri,.gsx-klegend .sw.ring{color:inherit}
+.gsx-klegend .biv{display:grid;grid-template-columns:auto auto;grid-template-rows:auto auto;gap:2px 4px;
+  align-items:center;margin:4px 0 2px}
+.gsx-klegend .biv .ya{grid-column:1;grid-row:1;writing-mode:vertical-rl;transform:rotate(180deg);font-size:9.5px;
+  color:var(--ink-3);white-space:nowrap}
+.gsx-klegend .biv .bg{grid-column:2;grid-row:1;display:flex;flex-direction:column;gap:2px}
+.gsx-klegend .biv .xa{grid-column:2;grid-row:2;font-size:9.5px;color:var(--ink-3)}
+.gsx-klegend .biv .br{display:flex;gap:2px}
+.gsx-klegend .biv .bc{width:30px;height:22px;border:1px solid transparent;border-radius:3px;padding:0;cursor:pointer;
+  display:flex;align-items:center;justify-content:center}
+.gsx-klegend .biv .bc span{font-family:var(--mono);font-size:8.5px;color:#fff;
+  text-shadow:0 0 3px rgba(0,0,0,.9),0 0 2px rgba(0,0,0,.9)}
+.gsx-klegend .biv .bc.on{outline:2px solid var(--accent);outline-offset:1px}
+
+.gsx-ctl{display:flex;flex-direction:column;gap:4px;border-top:1px solid var(--border);margin-top:5px;padding-top:5px}
+.gsx-ctl .f{display:flex;align-items:center;gap:6px;font-size:10.5px;color:var(--ink-3)}
+.gsx-ctl .f > span{flex:none;width:52px}
+.gsx-ctl select,.gsx-ctl input[type=number]{flex:1;min-width:0;font:inherit;font-size:10.5px;padding:1px 3px;
+  border-radius:4px;border:1px solid var(--border-2);background:var(--sunk);color:var(--ink-2)}
+.gsx-ctl input[type=range]{flex:1;min-width:0;accent-color:var(--accent)}
+.gsx-ctl .seg{display:flex;border:1px solid var(--border-2);border-radius:4px;overflow:hidden}
+.gsx-ctl .seg button{flex:1;font:inherit;font-size:10px;padding:2px 0;background:var(--surface-2);color:var(--ink-3);
+  border:0;border-right:1px solid var(--border);cursor:pointer}
+.gsx-ctl .seg button:last-child{border-right:0}
+.gsx-ctl .seg button[aria-pressed="true"]{background:var(--accent-soft);color:var(--ink)}
+.gsx-ctl .crow{display:flex;gap:4px}
+.gsx-ctl .crow .seg{flex:1}
+.gsx-ctl .crow select{flex:none;width:38px}
+
+/* the preset chips, one row above the map; scroll sideways, never wrap */
+.gsx-presets{display:flex;gap:4px;padding:4px 7px;overflow-x:auto;overflow-y:hidden;flex:none;
+  border-bottom:1px solid var(--border);background:var(--chrome);scrollbar-width:none}
+.gsx-presets::-webkit-scrollbar{display:none}
+.gsx-chip{flex:none;font:inherit;font-size:10.5px;padding:1px 8px;border-radius:var(--r-pill);white-space:nowrap;
+  border:1px solid var(--border-2);background:var(--surface-2);color:var(--ink-3);cursor:pointer}
+.gsx-chip:hover{color:var(--ink);border-color:var(--border-3)}
+.gsx-chip[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent-line);color:var(--ink)}
+
+/* hover card: the active KPIs */
+.gsx-hover .gsx-hk{margin-top:3px;padding-top:3px;border-top:1px solid var(--border)}
+.gsx-hover .gsx-hk .sw{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:4px;vertical-align:0}
+
+/* toolbar + corner note */
+.gsx-map-bar{display:flex;align-items:center;gap:var(--gsx-gap);padding:4px 7px;
+  border-bottom:1px solid var(--border);background:var(--chrome);flex:none;min-height:28px}
+.gsx-map-bar b{font-size:10px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--ink-3)}
+.gsx-map-bar .n{font-family:var(--mono);font-size:10.5px;color:var(--ink-4)}
+.gsx-btn{font:inherit;font-size:10.5px;padding:2px 7px;border-radius:var(--r-ctl);
+  border:1px solid var(--border-2);background:var(--surface-2);color:var(--ink-2);cursor:pointer}
+.gsx-btn:hover{border-color:var(--border-3);color:var(--ink)}
+.gsx-btn[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent-line);
+  color:var(--ink)}
+.gsx-note{position:absolute;right:8px;bottom:6px;z-index:3;pointer-events:none;
+  font-size:9.5px;color:var(--ink-4);background:color-mix(in srgb,var(--sunk) 82%,transparent);
+  padding:2px 6px;border-radius:var(--r-pill)}
+
+/* hover card */
+.gsx-hover{position:absolute;z-index:5;pointer-events:none;background:var(--raised);
+  border:1px solid var(--border-2);border-radius:var(--r-ctl);box-shadow:var(--shadow);
+  padding:5px 8px;font-size:11px;max-width:230px;line-height:1.35}
+.gsx-hover b{display:block;font-size:12px;color:var(--ink)}
+.gsx-hover .kv{display:flex;justify-content:space-between;gap:10px;color:var(--ink-3)}
+.gsx-hover .kv span:last-child{font-family:var(--mono);color:var(--ink-2)}
+
+/* ── grid ─────────────────────────────────────────────────────────────── */
+.gsx-grid-bar{display:flex;align-items:center;gap:var(--gsx-gap);padding:4px 7px;
+  border-bottom:1px solid var(--border);background:var(--chrome);flex:none;min-height:28px}
+.gsx-grid-bar b{font-size:10px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--ink-3)}
+.gsx-grid-bar .n{font-family:var(--mono);font-size:10.5px;color:var(--ink-4)}
+.gsx-grid-bar .sp{flex:1}
+
+/* ONE SCROLL CONTAINER: the header is INSIDE .gsx-body and sticks to its top.
+   `width:max-content` so its ground covers the whole row when the column set is
+   wider than the dock, `min-width:100%` so it still spans the dock when it is
+   not. A column set the dock cannot hold scrolls the grid sideways — it never
+   pushes a header cell past the dock and off the screen, which is what put
+   div.hrow at right=1342 on a 1,280 px viewport. */
+.gsx-head{position:sticky;top:0;z-index:3;width:max-content;min-width:100%;
+  background:var(--chrome-2);border-bottom:1px solid var(--border-2)}
+.gsx-head .hrow{display:flex;min-width:max-content}
+.gsx-hc{flex:none;box-sizing:border-box;padding:0 5px;border-right:1px solid var(--border)}
+.gsx-hc button{display:flex;align-items:baseline;gap:3px;width:100%;text-align:left;font:inherit;
+  font-size:10px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-3);
+  background:none;border:0;padding:4px 0 2px;cursor:pointer}
+.gsx-hc button .t{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gsx-hc button:hover{color:var(--ink)}
+.gsx-hc button .s{flex:none;color:var(--accent)}
+/* the unit rides beside the label in its own element, never uppercased
+   ("$/MWh" is not "$/MWH"), and is part of the measured floor */
+.gsx-hc button .u,.gsx-measure button .u{flex:none;white-space:nowrap;font-weight:500;letter-spacing:0;
+  text-transform:none;color:var(--ink-4);font-size:9.5px}
+.gsx-hc button .u:empty{display:none}
+.gsx-hc button .u.sparse{color:var(--warn,var(--ink-3))}
+/* the floor-measurer: laid out once per new label, removed at once */
+.gsx-hc.gsx-measure{position:absolute;left:0;top:0;visibility:hidden;pointer-events:none;width:max-content}
+.gsx-hc.gsx-measure button{width:max-content}
+.gsx-hc.gsx-measure button .t{flex:none;overflow:visible}
+.gsx-hc input{width:100%;box-sizing:border-box;font:inherit;font-size:10.5px;
+  font-family:var(--mono);padding:1px 4px;margin-bottom:3px;border-radius:3px;
+  border:1px solid var(--border);background:var(--sunk);color:var(--ink-2)}
+.gsx-hc input:focus{outline:none;border-color:var(--accent-line);background:var(--surface)}
+.gsx-hc input::placeholder{color:var(--ink-4);opacity:.7}
+.gsx-hc.num button .t,.gsx-hc.num input{text-align:right}
+
+.gsx-body{flex:1;min-height:0;overflow-y:auto;overflow-x:auto;outline:none;position:relative;
+  scrollbar-width:thin}
+.gsx-spacer{position:relative;min-width:max-content}
+.gsx-rows{position:absolute;left:0;top:0;right:0;min-width:max-content;will-change:transform}
+.gsx-r{display:flex;height:var(--gsx-row-h);line-height:var(--gsx-row-h);min-width:max-content;
+  border-bottom:1px solid var(--border);cursor:pointer;color:var(--ink-2)}
+.gsx-r:hover{background:var(--tint)}
+.gsx-r.on{background:var(--accent-soft);color:var(--ink);box-shadow:inset 2px 0 0 var(--accent)}
+.gsx-r.cur{box-shadow:inset 2px 0 0 var(--accent-2)}
+.gsx-c{flex:none;box-sizing:border-box;padding:0 5px;white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis;border-right:1px solid var(--border)}
+.gsx-c.num{text-align:right;font-family:var(--mono);font-size:11px}
+.gsx-c.nil{color:var(--ink-4);cursor:help}
+/* a zone the operator's pnode table corrected: the value is the corrected one,
+   the mark says a correction was made and the tooltip names both */
+.gsx-c.fixed::after{content:"*";margin-left:2px;color:var(--accent)}
+.gsx-empty{padding:14px 10px;color:var(--ink-3);font-size:12px}
+.gsx-empty b{display:block;color:var(--ink);margin-bottom:2px}
+
+.gsx-gate{display:inline-flex;gap:2px;vertical-align:middle}
+.gsx-gate i{width:4px;height:4px;border-radius:50%;background:var(--border-3);display:block;
+  margin-top:11px}
+.gsx-gate i.y{background:var(--ink-3)}
+
+@media (prefers-reduced-motion:reduce){
+  .gsx-map-stage canvas.fx{opacity:.85}
+}
+
+/* the co-located stack: 2,678 buses sit on 1,242 coordinates, so a click into a
+   substation has to say how many buses it is stepping through */
+.gsx-hover .gsx-stack{margin-top:3px;padding-top:3px;border-top:1px solid var(--border);
+  color:var(--ink-4);font-size:10px;line-height:1.3}
+
+/* ── the column chooser ──────────────────────────────────────────────────
+   A popover on <body>: the grid dock is 220 px and clips its children. Fixed,
+   opened above the Columns button, never wider than the window. */
+.gsx-chooser{position:fixed;z-index:60;display:flex;flex-direction:column;min-height:0;
+  background:var(--raised);color:var(--ink);border:1px solid var(--border-2);
+  border-radius:var(--r-ctl);box-shadow:var(--shadow);font-family:var(--sans);font-size:12px;
+  overflow:hidden}
+.gsx-chooser[hidden]{display:none}
+.gsx-chooser .hd{display:flex;align-items:center;gap:8px;padding:7px 9px;border-bottom:1px solid var(--border);
+  background:var(--chrome)}
+.gsx-chooser .hd b{font-size:10px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3)}
+.gsx-chooser .hd .n{font-family:var(--mono);font-size:10.5px;color:var(--ink-4);min-width:0;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gsx-chooser .hd .sp{flex:1}
+.gsx-chooser .q{margin:7px 9px;padding:4px 7px;font:inherit;font-size:12px;border-radius:var(--r-ctl);
+  border:1px solid var(--border-2);background:var(--sunk);color:var(--ink)}
+.gsx-chooser .q:focus{outline:none;border-color:var(--accent-line)}
+.gsx-chooser .bd{display:flex;flex:1;min-height:0;border-top:1px solid var(--border)}
+.gsx-chooser .cap{font-size:9.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ink-4);padding:6px 8px 3px}
+.gsx-chooser .sh{flex:0 0 38%;display:flex;flex-direction:column;min-height:0;border-right:1px solid var(--border)}
+.gsx-chooser .sh ol{list-style:none;margin:0;padding:0 4px 6px;overflow:auto;flex:1;min-height:0}
+.gsx-chooser .sh li{display:flex;align-items:center;gap:6px;padding:3px 4px;border-radius:4px;cursor:grab;
+  color:var(--ink-2);border-top:2px solid transparent;border-bottom:2px solid transparent}
+.gsx-chooser .sh li:hover,.gsx-chooser .sh li:focus{background:var(--tint);outline:none}
+.gsx-chooser .sh li.drag{opacity:.45}
+.gsx-chooser .sh li.before{border-top-color:var(--accent)}
+.gsx-chooser .sh li.after{border-bottom-color:var(--accent)}
+.gsx-chooser .sh li .grip{font-style:normal;color:var(--ink-4);font-size:10px;letter-spacing:-2px}
+.gsx-chooser .sh li span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gsx-chooser .sh li em{font-style:normal;font-family:var(--mono);font-size:10px;color:var(--ink-4)}
+.gsx-chooser .sh li .rm{font:inherit;border:0;background:none;color:var(--ink-4);cursor:pointer;padding:0 3px}
+.gsx-chooser .sh li .rm:hover{color:var(--ink)}
+.gsx-chooser .all{flex:1;overflow:auto;min-height:0;padding:0 4px 8px}
+.gsx-chooser .fam + .fam{border-top:1px solid var(--border);margin-top:3px}
+.gsx-chooser .opt{display:flex;align-items:center;gap:6px;padding:2px 4px;border-radius:4px;cursor:pointer;
+  color:var(--ink-2)}
+.gsx-chooser .opt:hover{background:var(--tint)}
+.gsx-chooser .opt input{margin:0;accent-color:var(--accent);flex:none}
+.gsx-chooser .opt .lb{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gsx-chooser .opt .un{font-style:normal;font-family:var(--mono);font-size:10px;color:var(--ink-4)}
+.gsx-chooser .opt .tag{font-size:9.5px;color:var(--ink-4);border:1px solid var(--border-2);
+  border-radius:var(--r-pill);padding:0 5px;white-space:nowrap}
+.gsx-chooser .opt .cov{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--ink-3);
+  min-width:40px;text-align:right}
+.gsx-chooser .opt .cov.sparse{color:var(--warn,var(--ink-2));font-weight:600}
+.gsx-chooser .opt.off{opacity:.55;cursor:not-allowed}
+.gsx-chooser .none{padding:12px 8px;color:var(--ink-3)}

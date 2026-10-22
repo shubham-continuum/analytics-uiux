@@ -1,0 +1,115 @@
+/* VENDORED from live Studio ext/64-continuum-value.css (snapshot 2026-10-11, sha256 9442a025d8cfc3f1).
+   DO NOT EDIT: regenerate with plan/vendor_live.py; patches in vendor/live/patches/. */
+/* ext 64 — the LMP Continuum's Value screen (continuum S5-S6 2026-10-06).
+   Type scale on these panels: 11 (axis, notes, chips), 12 (labels, values, controls), 20 (KPI) — with the host's
+   13 heading, 10 face and 10.5 note that makes six sizes. Every own control is 32 px tall (SKL-091 §4). */
+.gscv { display: flex; flex-direction: column; gap: 8px; min-width: 0; font-size: 12px; color: var(--ink-2); }
+.gscv-row { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: flex-end; }
+.gscv-field { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; min-width: 0; }
+.gscv-lbl { font-size: 11px; color: var(--ink-3); width: 100%; }
+.gscv-seg { display: inline-flex; border: 1px solid var(--border-2); border-radius: var(--gsc-panel-r, 4px); overflow: hidden; }
+.gscv-seg button { border: 0; border-left: 1px solid var(--border); background: var(--surface); color: var(--ink-3);
+  font: inherit; font-size: 12px; height: 32px; min-width: 32px; padding: 0 10px; cursor: pointer; }
+.gscv-seg button:first-child { border-left: 0; }
+.gscv-seg button[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.gscv-seg button:hover { color: var(--ink); }
+.gscv-seg button:disabled { opacity: .45; cursor: not-allowed; }
+.gscv-in, .gscv-sel { height: 32px; box-sizing: border-box; padding: 0 8px; font: inherit; font-size: 12px; color: var(--ink-2);
+  background: var(--surface); border: 1px solid var(--border-2); border-radius: var(--gsc-panel-r, 4px); font-family: var(--mono);
+  font-variant-numeric: tabular-nums; }
+.gscv-in { width: 92px; }
+.gscv-btn { height: 32px; min-width: 32px; padding: 0 12px; border: 1px solid var(--border-2); border-radius: var(--gsc-panel-r, 4px);
+  background: var(--surface); color: var(--ink-2); font: inherit; font-size: 12px; cursor: pointer; }
+.gscv-btn:hover { border-color: var(--border-3); color: var(--ink); }
+.gscv-btn.pri { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.gscv-act { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.gscv-note { font-size: 11px; color: var(--ink-4); line-height: 1.45; }
+.gscv-err { font-size: 11px; color: var(--bad, #b42318); margin-left: 6px; }
+.gscv-err:empty { display: none; }
+.gscv-why { width: 100%; font-size: 11px; color: var(--ink-3); }
+.gscv-answer { font-size: 12px; color: var(--ink-2); font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+/* KPI tiles: the value leads, 20 px against an 11 px label */
+.gscv-kpis { display: flex; flex-wrap: wrap; gap: 8px; }
+.gscv-kpi { display: flex; flex-direction: column; gap: 2px; padding: 6px 10px; min-width: 150px; border: 1px solid var(--border);
+  border-radius: var(--gsc-panel-r, 4px); background: var(--sunk); }
+.gscv-kl { font-size: 11px; color: var(--ink-3); letter-spacing: .02em; }
+.gscv-kv { font-size: 20px; font-weight: 600; color: var(--ink); font-family: var(--mono); font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+.gscv-ks { font-size: 11px; color: var(--ink-4); }
+
+/* legend */
+.gscv-legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 11px; color: var(--ink-3); }
+.gscv-legend span { display: inline-flex; align-items: center; gap: 5px; }
+.gscv-legend i { width: 11px; height: 11px; border-radius: 2px; display: inline-block; flex: 0 0 11px; }
+.gscv-legend i.gscv-line { height: 0; width: 18px; flex-basis: 18px; border-top: 2px solid currentColor; border-radius: 0; background: none !important; }
+.gscv-legend i.gscv-k-solid { background: var(--ink-3); }
+.gscv-legend i.gscv-k-dash { background: color-mix(in srgb, var(--ink-3) 45%, transparent); border: 1.5px dashed var(--ink-3); box-sizing: border-box; }
+.gscv-legend i.gscv-k-hollow { background: none; border: 1.5px solid var(--ink-3); box-sizing: border-box; }
+
+/* charts: drawn at the slot's own pixel width, so 11 px here is 11 px on screen */
+.gscv-svg { display: block; overflow: visible; max-width: 100%; }
+.gscv-ax { font-family: var(--mono); font-size: 11px; fill: var(--ink-4); }
+.gscv-nh { fill: var(--ink-3); }
+.gscv-cape { fill: var(--warn, #b54708); }
+.gscv-grid { stroke: var(--grid-line); stroke-width: 1; }
+.gscv-zero { stroke: var(--axis); stroke-width: 1; }
+.gscv-bar { fill: currentColor; stroke: currentColor; stroke-width: 0; }
+.gscv-bar.gscv-solved { fill-opacity: .5; stroke-width: 1.2; stroke-dasharray: 3 2; }
+.gscv-bar.gscv-hollow { fill: none; stroke-width: 1.2; }
+.gscv-net { fill: none; stroke: var(--ink); stroke-width: 1.8; }
+.gscv-net.gscv-net-dash { stroke-dasharray: 5 3; }
+.gscv-netpt { fill: var(--ink); stroke: var(--surface); stroke-width: 1; }
+.gscv-netpt.gscv-netpt-h { fill: var(--surface); stroke: var(--ink); stroke-width: 1.4; }
+.gscv-handover { stroke: var(--ink-3); stroke-width: 1; stroke-dasharray: 2 3; }
+.gscv-notes { display: flex; flex-direction: column; gap: 3px; font-size: 11px; color: var(--ink-4); line-height: 1.45; }
+.gscv-seam { color: var(--ink-2); }
+.gscv-tworun { font-size: 11px; color: var(--ink-3); font-family: var(--mono); }
+
+/* tables */
+.gscv-tw { min-width: 0; overflow-x: auto; }
+.gscv-t { width: 100%; border-collapse: collapse; font-size: 12px; color: var(--ink-2); }
+.gscv-t th { font-size: 11px; font-weight: 600; color: var(--ink-3); text-align: left; padding: 4px 6px; border-bottom: 1px solid var(--border-2); white-space: nowrap; }
+.gscv-t td { padding: 4px 6px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.gscv-t .n { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.gscv-t tr.self td { font-weight: 600; color: var(--ink); }
+.gscv-src { font-size: 11px; color: var(--ink-3); max-width: 340px; }
+.gscv-u { font-size: 11px; color: var(--ink-4); margin-left: 4px; }
+.gscv-in-l { display: block; }
+.gscv-chip { display: inline-block; font-size: 11px; padding: 0 5px; border-radius: 4px; border: 1px solid var(--border-2); white-space: nowrap; }
+.gscv-chip.a { color: var(--gsr-ochre, #8a5a00); border-color: var(--gsr-ochre-line, #C77700); background: var(--gsr-ochre-bg, #fff6e6); }
+.gscv-chip.u { color: var(--gsr-user, #1d4ed8); border-color: var(--accent-line, #93c5fd); background: var(--gsr-user-bg, rgba(37,99,235,.08)); }
+
+/* S6 */
+.gscv-netvals { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 6px; }
+.gscv-nv { display: flex; flex-direction: column; gap: 1px; padding: 4px 8px; border-left: 2px solid var(--border-2); }
+.gscv-nv-l { font-size: 11px; color: var(--ink-3); }
+.gscv-nv-v { font-size: 12px; font-weight: 600; color: var(--ink); font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.gscv-nv-s { font-size: 11px; color: var(--ink-4); }
+.gscv-netword { display: flex; flex-direction: column; gap: 2px; font-size: 11px; color: var(--ink-3); line-height: 1.45; }
+/* cost basis 2026-10-07: the compact cost-basis line under the network figure */
+.gscv-costbasis { font-style: italic; color: var(--ink-3); }
+.gscv-bracket { font-family: var(--mono); color: var(--ink-2); }
+.gscv-rankgrid { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 12px; align-items: start; }
+.gscv-map { display: block; }
+.gscv-mapbg { fill: var(--sunk); stroke: var(--border); }
+.gscv-dot { fill: var(--s1); stroke: var(--surface); stroke-width: 1.5; }
+.gscv-dot.self { fill: var(--s2); }
+@media (max-width: 1100px) { .gscv-rankgrid { grid-template-columns: 1fr; } }
+.gscv-life { fill: var(--accent); fill-opacity: .05; }
+.gscv-rank td { white-space: nowrap; }
+.gscv-rank td.gscv-nt { max-width: 220px; overflow: hidden; text-overflow: ellipsis; color: var(--ink-3); }
+
+/* S-nav 2026-10-07 · the asset is the project's (stated, not chosen); the ranking over every costed bus scrolls inside its
+   table (a table, never a chart, may scroll) and lands on this bus's row */
+.gscv-fixed { display: inline-flex; align-items: center; min-height: 32px; padding: 0 10px; font-size: 12px; color: var(--ink-2);
+  border: 1px dashed var(--border-2); border-radius: var(--gsc-panel-r, 4px); }
+.gscv-rankscroll { max-height: 264px; overflow-y: auto; }
+.gscv-rankscroll .gscv-t th { position: sticky; top: 0; background: var(--surface); z-index: 1; }
+.gscv-answer { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 13px; }
+/* the fill note is the seg's title and a line for assistive tech: the case's controls stay on one row at 1440 */
+[data-gscv-fillnote] { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+/* cost-basis publish 2026-10-08 · the five case tiles share one row at 1280 and 1440 (the Network upgrade tile was alone
+   on a second row): equal tracks, a tile's words wrap inside it; the "not held" reason line keeps the full row */
+.gscv-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+.gscv-kpis > .gscv-kpi { min-width: 0; }
+.gscv-kpis > .gscv-why, .gscv-kpis > .gscv-note { grid-column: 1 / -1; }

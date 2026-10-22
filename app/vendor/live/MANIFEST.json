@@ -1,0 +1,436 @@
+{
+ "snapshots": {
+  "2026-10-06": "app-tools/live-snapshot/2026-10-06",
+  "2026-10-11": "app-tools/live-snapshot/2026-10-11"
+ },
+ "decision": "D-007 A",
+ "files": {
+  "31-map-grid.js": {
+   "snapshot": "2026-10-06",
+   "source": "ext/31-map-grid.js",
+   "source_sha256": "f9dbc10dd1f2f73e9548d7d21e708fdd890cad3f50c684622f8bd96c1c74dec6",
+   "patches": [
+    "P1-grid-not-held",
+    "P2-map-not-held"
+   ],
+   "result_sha256": "5854afc1193705ec0244e3139d28ababf9c3db59ec2c2366876fb016b7f8b906",
+   "loaded": true
+  },
+  "31-map-grid.css": {
+   "snapshot": "2026-10-06",
+   "source": "ext/31-map-grid.css",
+   "source_sha256": "4172eb3121c087b73127092ad22bbaeafdba6a442ffb58a94d294473d44d69bb",
+   "patches": [],
+   "result_sha256": "fcbce1c117d0feb3779609a871aff867e32fcec3f147de97cc726d47f017d566",
+   "loaded": true
+  },
+  "32-basemap.js": {
+   "snapshot": "2026-10-06",
+   "source": "ext/32-basemap.js",
+   "source_sha256": "206e53e83f5fd29aa96e1abd73f010427e7c1b48c6d8464c76c58be200e33cca",
+   "patches": [],
+   "result_sha256": "fefd503110126b95c883ac6a39b2557d45d677f9fb13df4d04495491b2707d73",
+   "loaded": true
+  },
+  "32-basemap.css": {
+   "snapshot": "2026-10-06",
+   "source": "ext/32-basemap.css",
+   "source_sha256": "6772c32c7ae734fd3c2a253f4244f83ada097f6a7efea2b33d1f39443d29ce33",
+   "patches": [],
+   "result_sha256": "a6b2e197dc2fb10e931e26c6118f148f0d27acab0c3fbd14b326aa47e35387fe",
+   "loaded": true
+  },
+  "app-gs-model.js": {
+   "snapshot": "2026-10-11",
+   "source": "src/app.js",
+   "source_sha256": "b8df3283abd46150bb5bce3369140318ef21b8bc8f1fdece6321688340dd1317",
+   "lines": [
+    82,
+    488
+   ],
+   "markers": {
+    "start": "   GridSense Analytics \u2014 data model (GS).",
+    "end": "   GridSense Analytics \u2014 chart renderers (Charts)."
+   },
+   "section_sha256": "56d5e1f7115cdfea80cbcbac299b3c2a8b1a331462052d7e5ce82f608dd78eea",
+   "patches": [],
+   "result_sha256": "6ca1f82451e4fd1e57b278726f3b1fbbe400c57ecce67d11e17f4c4249045ced",
+   "loaded": false,
+   "loader": "live-runtime.js"
+  },
+  "app-charts.js": {
+   "snapshot": "2026-10-11",
+   "source": "src/app.js",
+   "source_sha256": "b8df3283abd46150bb5bce3369140318ef21b8bc8f1fdece6321688340dd1317",
+   "lines": [
+    489,
+    818
+   ],
+   "markers": {
+    "start": "   GridSense Analytics \u2014 chart renderers (Charts).",
+    "end": "   GridSense Analytics \u2014 application shell, state, widget host."
+   },
+   "section_sha256": "87e05186f22bc084a0834e970bb499142d765c60314956ee21b0d63a2803ca6e",
+   "patches": [],
+   "result_sha256": "7b8a75846fdeb09403bbc9c2b1e5892dd223476f6b97918e07043c31076f25e5",
+   "loaded": false,
+   "loader": "live-runtime.js"
+  },
+  "app-project-store.ref.js": {
+   "snapshot": "2026-10-11",
+   "source": "src/app.js",
+   "source_sha256": "b8df3283abd46150bb5bce3369140318ef21b8bc8f1fdece6321688340dd1317",
+   "lines": [
+    903,
+    996
+   ],
+   "markers": {
+    "start": "  /* \u2500\u2500 state \u2500\u2500",
+    "end": "  /* \u2500\u2500 node picker (command palette)"
+   },
+   "section_sha256": "174fd2c6678bc224b290d205222e5bd23cb5e2c524fefb1fa399262092cc5d17",
+   "patches": [],
+   "result_sha256": "e791481aee91a0953ba5f8db22cd093b5104dde83ca2f575b211167f57a54616",
+   "loaded": false
+  },
+  "app-configurator.js": {
+   "snapshot": "2026-10-11",
+   "source": "src/app.js",
+   "source_sha256": "b8df3283abd46150bb5bce3369140318ef21b8bc8f1fdece6321688340dd1317",
+   "lines": [
+    5535,
+    6315
+   ],
+   "markers": {
+    "start": "   GridSense Analytics \u2014 Graph Configurator (configurator.js).",
+    "end": null
+   },
+   "section_sha256": "f410d5aa0cfc11d0aa1f488259662beb5f8102cd05a97405152eb1f5b558f04a",
+   "patches": [],
+   "result_sha256": "baa67bc469f45b095c88be3e6804be0e47bfbaf479453bd5f5af737b520b9576",
+   "loaded": false
+  },
+  "59-continuum-core.js": {
+   "snapshot": "2026-10-11",
+   "source": "ext/59-continuum-core.js",
+   "source_sha256": "98bc8436799623a53e194593e31f29174554739dc5130f07d97a7bbc367b3424",
+   "patches": [],
+   "result_sha256": "b5e62a159f96551ba336953609a42fcbbf5fc74f076cba217f517c9e03c2853c",
+   "loaded": false
+  },
+  "60-cathy.js": {
+   "snapshot": "2026-10-11",
+   "source": "ext/60-cathy.js",
+   "source_sha256": "a5bf00430f9d1a13968527858181ead6d85b7eb8537fe5f501829774cee66077",
+   "patches": [],
+   "result_sha256": "4842c982bbe16a2b4cbb5522ba5474d5c5849cb8e7b6390ad5283bba5eea7e90",
+   "loaded": false
+  },
+  "60-cathy.css": {
+   "snapshot": "2026-10-11",
+   "source": "ext/60-cathy.css",
+   "source_sha256": "af96b900b55c654c7b33d1ec4d4f0a2e64fa248403f0c0a79e49b8f1a6850afc",
+   "patches": [],
+   "result_sha256": "b63e690cbc7d8d8bd8e0aa80222d49d84576d02d75340292beea9e55bd84049a",
+   "loaded": false
+  },
+  "61-hourly-timeline.js": {
+   "snapshot": "2026-10-11",
+   "source": "ext/61-hourly-timeline.js",
+   "source_sha256": "b80cd80111cb309853caeee5d71d4cb8ada8786cc8377fd7f91e5ca9ee30a172",
+   "patches": [],
+   "result_sha256": "d6bfaec21dc1c56198a3a66c1d6b8a70c21fd25c2cff0b5c75c8e2f972496f9d",
+   "loaded": false
+  },
+  "61-hourly-timeline.css": {
+   "snapshot": "2026-10-11",
+   "source": "ext/61-hourly-timeline.css",
+   "source_sha256": "eb48cd6836f170e2972fc4ee3107b5df7727d6ea6026a87b8a7bd635ddec8e18",
+   "patches": [],
+   "result_sha256": "531187f93f142f656ab3dd91a735d4bda009fec611fa0d9f32c5b498bc1adbb2",
+   "loaded": false
+  },
+  "62-continuum-shape.js": {
+   "snapshot": "2026-10-11",
+   "source": "ext/62-continuum-shape.js",
+   "source_sha256": "7019c92f27a948166847f9ba4b9abb164d6aca2b7dc1f29c3d282d69c35918e8",
+   "patches": [],
+   "result_sha256": "e2614953f382e9daf80eaaedf8badf1cecbe8b35684f809da5c8a78ad0939611",
+   "loaded": false
+  },
+  "62-continuum-shape.css": {
+   "snapshot": "2026-10-11",
+   "source": "ext/62-continuum-shape.css",
+   "source_sha256": "487b05e880dacb4eed45a91f531f3d02026ad74baca3ffe2b9bde507fb39d512",
+   "patches": [],
+   "result_sha256": "cd7de7417a5729d42ac7fc45baa23d31e1d03d98338f0048f340c992dc1cfcc8",
+   "loaded": false
+  },
+  "63-continuum-drivers.js": {
+   "snapshot": "2026-10-11",
+   "source": "ext/63-continuum-drivers.js",
+   "source_sha256": "0dab3fffa213f41f18d76c4a86a9493e0eed016277e7c84178c1cc819fa80346",
+   "patches": [],
+   "result_sha256": "7bcdf456583645f61c037bd28ccfe294ec60270a385059af21800de4d97b859e",
+   "loaded": false
+  },
+  "63-continuum-drivers.css": {
+   "snapshot": "2026-10-11",
+   "source": "ext/63-continuum-drivers.css",
+   "source_sha256": "aebbe0d3329302dfae59577cbdc76bdb152f74e5f11d1a448fc30c717a8f5a95",
+   "patches": [],
+   "result_sha256": "8954c3336a0b7829b7abeb1526b5d61a6ff517a2606d1ce3d09d6695f257a904",
+   "loaded": false
+  },
+  "64-continuum-value.js": {
+   "snapshot": "2026-10-11",
+   "source": "ext/64-continuum-value.js",
+   "source_sha256": "1eb5c989f00fb56026633f29b54431d3f60700ce4be185fc58d3ecbc6e2cdc80",
+   "patches": [],
+   "result_sha256": "9b96dfe4a74489cffda8276865764c7a97d23858f9b3a6dbf72da48447f8a8dd",
+   "loaded": false
+  },
+  "64-continuum-value.css": {
+   "snapshot": "2026-10-11",
+   "source": "ext/64-continuum-value.css",
+   "source_sha256": "9442a025d8cfc3f118f785164a148c64a45a3bc6439117760d03b41109ce1326",
+   "patches": [],
+   "result_sha256": "0357663145517edf44dc253ba7e1da78d66873152d2939e4e92b7694062b0765",
+   "loaded": false
+  },
+  "68-continuum-emissions.js": {
+   "snapshot": "2026-10-11",
+   "source": "ext/68-continuum-emissions.js",
+   "source_sha256": "f87c30cbbba313b8fa89c1217d7731b705c8a131fe4d2accd7206b898eff9028",
+   "patches": [],
+   "result_sha256": "343d8b0c701227b799a67c4b2de831e34d92651aa2737abcb1d2face460d5c0e",
+   "loaded": false
+  },
+  "68-continuum-emissions.css": {
+   "snapshot": "2026-10-11",
+   "source": "ext/68-continuum-emissions.css",
+   "source_sha256": "0a1002a8a861efa18f05d2a19ca2f8bc8491b6ffc0c3732958a108b088e6b629",
+   "patches": [],
+   "result_sha256": "3d63c119287d69490f3e2e6f7cc49060b1adc5adea6625064a7e647c4f39bff2",
+   "loaded": false
+  },
+  "app-data.json": {
+   "snapshot": "2026-10-11",
+   "source": "src/data.js",
+   "source_sha256": "11695ac4195d4de3b4b8d918665fd75a61da4933cca6bc799e57a9bf30ffa0e1",
+   "unwrap": "window.GS_DATA=",
+   "columns": 453,
+   "vintage": "ISONE_GridSense.duckdb (3.0 GB) + ISONE_GridSense_agg.duckdb (2.0 GB) \u00b7 extract built 2026-09-20 05:47",
+   "patches": [],
+   "result_sha256": "a9f375def1fb830b1a7c005f09fff032d48f4e293958b90389358bf7a61e541c",
+   "loaded": false,
+   "loader": "live-runtime.js"
+  }
+ },
+ "patches": {
+  "P1-grid-not-held": {
+   "file": "31-map-grid.js",
+   "why": "Null policy (D-007): a missing grid value reads 'not held', never '\u2014'; the nil styling and its reason tooltip follow the new text; filtering by 'not held' matches missing cells. Reviewed by Claude 2026-10-06.",
+   "sha256": "ed92474d4be26a47e5c66b7b36552f4c325757bc0c5590eca6f219edb2fce6cb",
+   "edits": 4
+  },
+  "P2-map-not-held": {
+   "file": "31-map-grid.js",
+   "why": "Null policy (D-007): map tooltip and map value labels read 'not held' for a missing value. Reviewed by Claude 2026-10-06.",
+   "sha256": "560aa12bce894058d5ad4abdd199b5de8194d55ef3e817d46cb3fcc25bbafb5c",
+   "edits": 2
+  }
+ },
+ "continuum": {
+  "snapshot": "2026-10-11",
+  "dir": "vendor/live/continuum",
+  "order": [
+   "59-continuum-core.js",
+   "60-cathy.js",
+   "60-cathy.css",
+   "61-hourly-timeline.js",
+   "61-hourly-timeline.css",
+   "62-continuum-shape.js",
+   "62-continuum-shape.css",
+   "63-continuum-drivers.js",
+   "63-continuum-drivers.css",
+   "64-continuum-value.js",
+   "64-continuum-value.css",
+   "68-continuum-emissions.js",
+   "68-continuum-emissions.css"
+  ],
+  "loader": "views/continuum.js",
+  "files": {
+   "59-continuum-core.js": {
+    "source": "ext/59-continuum-core.js",
+    "source_sha256": "98bc8436799623a53e194593e31f29174554739dc5130f07d97a7bbc367b3424",
+    "patches": [],
+    "result_sha256": "76e5cfb7d0742e720ad18baa4bb80035afe171efd8114841db3e7620a64a6a18"
+   },
+   "60-cathy.js": {
+    "source": "ext/60-cathy.js",
+    "source_sha256": "a5bf00430f9d1a13968527858181ead6d85b7eb8537fe5f501829774cee66077",
+    "patches": [
+     "C1-host-mount"
+    ],
+    "result_sha256": "86f863acef88770f74c8189ce50c26362ef01162ef18d1846ff9c77387b12f9c"
+   },
+   "60-cathy.css": {
+    "source": "ext/60-cathy.css",
+    "source_sha256": "af96b900b55c654c7b33d1ec4d4f0a2e64fa248403f0c0a79e49b8f1a6850afc",
+    "patches": [
+     "C2-host-css"
+    ],
+    "result_sha256": "2c97839963b7f9f3f09eb13278453758f222387477754c7c2504d9f651bbf8ee"
+   },
+   "61-hourly-timeline.js": {
+    "source": "ext/61-hourly-timeline.js",
+    "source_sha256": "b80cd80111cb309853caeee5d71d4cb8ada8786cc8377fd7f91e5ca9ee30a172",
+    "patches": [],
+    "result_sha256": "b49ed00b88a3991115c5346c42ce3cdd17f14283ab122f3c3d9f5bb241218797"
+   },
+   "61-hourly-timeline.css": {
+    "source": "ext/61-hourly-timeline.css",
+    "source_sha256": "eb48cd6836f170e2972fc4ee3107b5df7727d6ea6026a87b8a7bd635ddec8e18",
+    "patches": [],
+    "result_sha256": "ce779e2603426da8730239998869dcbc766a318e468f0ca6e66be550082222d3"
+   },
+   "62-continuum-shape.js": {
+    "source": "ext/62-continuum-shape.js",
+    "source_sha256": "7019c92f27a948166847f9ba4b9abb164d6aca2b7dc1f29c3d282d69c35918e8",
+    "patches": [],
+    "result_sha256": "735be36fa5c17ec13237bdb8a6396f85473d749e97f0022da93c7b5bf8faf57c"
+   },
+   "62-continuum-shape.css": {
+    "source": "ext/62-continuum-shape.css",
+    "source_sha256": "487b05e880dacb4eed45a91f531f3d02026ad74baca3ffe2b9bde507fb39d512",
+    "patches": [],
+    "result_sha256": "b97d4b6b74000f9510447c8b206e434bb8968e5656392b8615c183d680a62a1e"
+   },
+   "63-continuum-drivers.js": {
+    "source": "ext/63-continuum-drivers.js",
+    "source_sha256": "0dab3fffa213f41f18d76c4a86a9493e0eed016277e7c84178c1cc819fa80346",
+    "patches": [
+     "C3-drivers-not-held"
+    ],
+    "result_sha256": "b9ceb2e5bb1d01cd5de2ab4d27ea0ce300423ea4377b06fef5d0d3074109de88"
+   },
+   "63-continuum-drivers.css": {
+    "source": "ext/63-continuum-drivers.css",
+    "source_sha256": "aebbe0d3329302dfae59577cbdc76bdb152f74e5f11d1a448fc30c717a8f5a95",
+    "patches": [],
+    "result_sha256": "a9f130d9c710b0b94c769b253fe1c2f76787d8a62258d505e96d9e79eee13b7f"
+   },
+   "64-continuum-value.js": {
+    "source": "ext/64-continuum-value.js",
+    "source_sha256": "1eb5c989f00fb56026633f29b54431d3f60700ce4be185fc58d3ecbc6e2cdc80",
+    "patches": [],
+    "result_sha256": "1159f712a2bc7b1289d5f956d95bfc0ba6b2995c69a2dd185dd35d27bed401b3"
+   },
+   "64-continuum-value.css": {
+    "source": "ext/64-continuum-value.css",
+    "source_sha256": "9442a025d8cfc3f118f785164a148c64a45a3bc6439117760d03b41109ce1326",
+    "patches": [],
+    "result_sha256": "db0d1375c7a37b0163b7c7b3a1e7799151becaf6c69534c337281759bc067919"
+   },
+   "68-continuum-emissions.js": {
+    "source": "ext/68-continuum-emissions.js",
+    "source_sha256": "f87c30cbbba313b8fa89c1217d7731b705c8a131fe4d2accd7206b898eff9028",
+    "patches": [],
+    "result_sha256": "45c7af2060da00adf3133369c5a143ae7743b32ab9ad5db6a9943576fc6adeba"
+   },
+   "68-continuum-emissions.css": {
+    "source": "ext/68-continuum-emissions.css",
+    "source_sha256": "0a1002a8a861efa18f05d2a19ca2f8bc8491b6ffc0c3732958a108b088e6b629",
+    "patches": [],
+    "result_sha256": "9384efeb57d4f1e3c1f8b09b45672cb5d35b56eae76426ca0c78386968f4a3f0"
+   }
+  },
+  "patches": {
+   "C1-host-mount": {
+    "file": "60-cathy.js",
+    "why": "One Studio hosts the Continuum on its own stage (views/continuum.js sets window.GSX_CONTINUUM_HOST): paint into that host, never into #gsf-ws (the live full-workspace takeover hid One Studio's board); put the gsc-on class on the host, not #app; the host owns the tab (no second tab button in the header) and the map dock is left as the reader set it. With no host set, the live behaviour is unchanged. Reviewed by Claude 2026-10-13 (lift plan 14 L4).",
+    "sha256": "082dcf8aa69bde43e086db236d7923d0ff3acba795eb80aed14466ca471e873f",
+    "edits": 5
+   },
+   "C2-host-css": {
+    "file": "60-cathy.css",
+    "why": "With C1 the gsc-on class sits on One Studio's .gsx-cont host, so the root's display rule is scoped to that host too and the root fills it; the live #app takeover rules stay but never match in One Studio (#app never carries gsc-on). Reviewed by Claude 2026-10-13 (lift plan 14 L4).",
+    "sha256": "7659c873f1e464155438afadbc22a9f4546f30470ec64e5c8317a231b1562454",
+    "edits": 1
+   },
+   "C3-drivers-not-held": {
+    "file": "63-continuum-drivers.js",
+    "why": "Null policy (D-007) on Drivers > Congestion by constraint: a period the Continuum service does not hold (net_mcc null, reason in not_held; e.g. settled DA 2021-24 at buses 100095, 103029, 110762, 111348, 119759) drew NaN SVG coordinates and threw null.replace in readoutText. It now keeps its column as a gap labelled 'not held' (reason on hover), is left out of the axis range, outlier test and answer-line ranges, and is one 'not held' row in the table/CSV, never a 0. Reviewed by Claude 2026-10-14 (fixer devkit-cont, L5 finding).",
+    "sha256": "fdddce05e9f520decef59d218d0fcd85897e10cb2300d94ebc3df927fa355d45",
+    "edits": 9
+   }
+  }
+ },
+ "configurator": {
+  "snapshot": "2026-10-11",
+  "dir": "vendor/live/configurator",
+  "order": [
+   "app-icons.js",
+   "app-configurator.js"
+  ],
+  "loader": "views/configurator-host.js",
+  "files": {
+   "app-icons.js": {
+    "source": "src/app.js",
+    "source_sha256": "b8df3283abd46150bb5bce3369140318ef21b8bc8f1fdece6321688340dd1317",
+    "lines": [
+     828,
+     883
+    ],
+    "markers": {
+     "start": "  /* \u2500\u2500 icons (lucide-style, inline)",
+     "end": "  /* \u2500\u2500 concerns / vocabulary"
+    },
+    "section_sha256": "65a387f72f6aaf06ab4765ea3037c42eab01d6b2479c2b221d1fc2c763f8bf96",
+    "patches": [
+     "F2-icons-module"
+    ],
+    "result_sha256": "d73ca1f75efd7767e12b3cfc1a76537aca5aac7fde3449ea05fad75072abe6bb"
+   },
+   "app-configurator.js": {
+    "source": "src/app.js",
+    "source_sha256": "b8df3283abd46150bb5bce3369140318ef21b8bc8f1fdece6321688340dd1317",
+    "lines": [
+     5535,
+     6315
+    ],
+    "markers": {
+     "start": "   GridSense Analytics \u2014 Graph Configurator (configurator.js).",
+     "end": null
+    },
+    "section_sha256": "f410d5aa0cfc11d0aa1f488259662beb5f8102cd05a97405152eb1f5b558f04a",
+    "patches": [
+     "F1-extract-view",
+     "F3-configurator-icons"
+    ],
+    "result_sha256": "e1f329b92eea6c214786d5e3cdb6e76c7920d29f7eab48afd8a506ea09c9150d"
+   }
+  },
+  "patches": {
+   "F1-extract-view": {
+    "file": "app-configurator.js",
+    "why": "Lift plan 14 L3 (builder G-configurator, 2026-10-13): the Configurator's field catalogue, GS.resolve and every column read are the pinned data.js extract's, but the one window.GS (live-bridge shim) holds the ENGINE's nodes, which lack those columns. The IIFE gets a LOCAL GS: the view views/configurator-host.js hands in at load time only (window.GSX_CFG.GS = Object.create(window.GS) with the extract's nodes/node/CASES/shortCircuitMVA; still one window.GS, nothing replaced), and its ctx() goes through the host's adapter (bus node read from the extract, pins, compare, horizon). Without window.GSX_CFG the code is the live code (window.GS, App.ctx()).",
+    "sha256": "0eb482ecda9440b2bfa6a856acdd440dcde3279c66d55f61ff1ffcb217c07c7a",
+    "edits": 2
+   },
+   "F2-icons-module": {
+    "file": "app-icons.js",
+    "why": "Lift plan 14 L3 (builder G-configurator, 2026-10-13): ICONS + icon() are consts inside the live shell IIFE; as a classic script they would be page globals. Wrapped as one function expression assigned to window.GSX_CFG_ICON, which views/configurator-host.js traps for the span of the load (nothing global remains). The shim's App.icon stays '' (the vendored map/grid draw no icons: visual parity), so the Configurator gets these through patch F3.",
+    "sha256": "70fa3f9151aee1f370b176c4bb675ee4d692431abec48bfe079cfcc744c0ac04",
+    "edits": 2
+   },
+   "F3-configurator-icons": {
+    "file": "app-configurator.js",
+    "why": "Lift plan 14 L3 (builder G-configurator, 2026-10-13): the drawer reads `row.querySelector('svg')` on its icon markup, so an empty icon (the shim's App.icon returns '') throws on open. The live icon set (patch F2) is handed in on the load-time view (GSX.icon); without it the code is the live code (App.icon).",
+    "sha256": "cc6fc21df1fd0e16c57c1264ed70424ea1e0e285a87873158d19c7e38896f312",
+    "edits": 1
+   }
+  }
+ }
+}

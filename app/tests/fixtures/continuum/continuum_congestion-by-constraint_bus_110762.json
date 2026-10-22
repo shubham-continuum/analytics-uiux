@@ -1,0 +1,1156 @@
+{
+ "request": {
+  "path": "/api/v2/continuum/congestion-by-constraint",
+  "query": {
+   "bus": "110762"
+  }
+ },
+ "status": 200,
+ "body": {
+  "basis": "settled periods at LD.MYSTIC  13.8 (nodescope_official); runs at run bus 110762. One unit both sides: $/MWh of the period's mean congestion component, settled sign.",
+  "hour_convention": {
+   "aligned": null,
+   "clock": null,
+   "he_rule": "HE = hour index + 1 (hour beginning)",
+   "note": "Annual statistics: every hour is matched within its own period (settled node and hub on the same local label; a run bus and the run hub on the same study-day hour index). No value here depends on the hour-of-day clock.",
+   "settled": "settled: local prevailing time (America/New_York), hour beginning; the spring-forward day holds 23 labels and the autumn fold is collapsed to one label, so a whole year reads 8,759 hours. HE = label + 1.",
+   "solved": "runs: flat calendar, no daylight saving (standard time), hour index 0–23 per study day, hour beginning. HE = index + 1."
+  },
+  "location": {
+   "buses_sharing_series": 1,
+   "id": 110762,
+   "kind": "bus",
+   "label": "Mystic",
+   "link_agree": false,
+   "link_reason": "NodeScope high confidence (official substation) replaces same_substation link",
+   "link_source": "nodescope",
+   "proxy_km": 0.41,
+   "run_node": "run bus 110762",
+   "settled_node": "LD.MYSTIC  13.8",
+   "substation": "Mystic",
+   "tier": "nodescope_official",
+   "tier_note": "no settled price node",
+   "zone": "NEMA"
+  },
+  "method": {
+   "association": "retired from bars (D-008): association rows overlap and cannot be stacked",
+   "bridge": "Each bar has `key` (one per monitored facility: settled DA and RT share it through the ISO-NE name grammar) and `legend_key` (bars with equal legend_key may share a legend entry). `match` is the settled ↔ run bridge: approximate = an ISO-NE interface code and a PROBE flowgate with the same name (definition unconfirmed — show \"≈\"); exact = a line whose station/kV text and SF fingerprint both agree (BERLIN 1771 ↔ BERLIN CT–SOUTHINGTN-1 115 only); none = a separate legend entry either side of the divider. Never imply continuity by colour across it otherwise.",
+   "exact": "exact: the run's own DFAX of the unit at the bus's PCR price node to each binding constraint (uni.fact_pcr_cong_impact); the stored MCC is −Σ μ·DFAX, so on the settled sign each constraint's share is mean(μ·DFAX) and the shares sum to the MCC (identity to 1e-6). Contingencies are summed per monitored facility; no regression gate, band 0; bars under 0.01 $/MWh go to Other.",
+   "gates": {
+    "additivity_tol": 0.001,
+    "band": {
+     "abs_usd_mwh": 0.01,
+     "rel": 0.2,
+     "rule": "±max(0.01 $/MWh, 20 %) on recovered bars; 0 on exact"
+    },
+    "fixed": "these are defaults the API applies to every period; a request may tighten min_hours, never loosen any gate",
+    "floor_usd_mwh": 0.01,
+    "kappa_max": 30.0,
+    "merge": "contingency variants of one monitored facility are summed into one column before fitting",
+    "min_hours": 50,
+    "r2_min": 0.95,
+    "sf_max": 1.0,
+    "source": "90 System/outputs/reports/2026-10-06_constraint-attribution-review.md §5 (D-008, Ganesh 2026-10-06)",
+    "vif_max": 10.0
+   },
+   "not_attributable": "not_attributable: the period fails a location gate (R² < 0.95, no facility >= 50 h with VIF <= 10, or κ > 30). Only the total (net_mcc) is drawn, with the reason; no bars, no Other.",
+   "recovered": "recovered: the location's hourly congestion component (settled sign) regressed on every binding constraint's hourly shadow price, least squares with an intercept, one fit per period (calendar year or run; never pooled). Contingency variants of one monitored facility are merged into one bar (their contributions summed). Bar = recovered shift factor × mean shadow price over every hour, $/MWh of the annual mean MCC. Gated (method.gates): location R² >= 0.95; facility >= 50 binding hours; VIF <= 10 on the merged design; κ <= 30; |bar| >= 0.01; |SF| <= 1. Each bar carries a ±max(0.01, 20 %) band: against exact DFAX at 317–332 PCR buses the gated facility bars pass that band 0.95 / 0.85 / 1.00 (pcr2030 / 2035 / 2040; constraint-level error p95 0.003–0.042, max 0.17 $/MWh). sf is the coefficient on the stored shadow price: its sign follows the store's convention (settled stored negative, PROBE positive), so only |sf| is physical — never colour by it.",
+   "stacking": "stackable = exact or recovered. Bars are signed attributions that never overlap: premiums stack above zero and discounts below (Σ|bars| may exceed |net_mcc| — counter-flow is real physics), ◆ marks net_mcc, and Other (signed, hatched) = net_mcc − Σ bars holds the intercept and every rare, collinear, sub-floor or |SF| > 1 facility. Σ bars + other = net_mcc to 0.0001 (rounded values)."
+  },
+  "method_counts": {
+   "exact": 3,
+   "not_attributable": 0,
+   "recovered": 2
+  },
+  "method_param": "auto",
+  "min_hours": 50,
+  "min_hours_explicit": false,
+  "names_note": "Settled constraint names (ISO-NE, e.g. BERLIN1771ALN) and run constraint names (PSS/E bus pairs) share no key: the unit ($/MWh, settled sign) is one across the divider, constraint identity is not.",
+  "periods": [
+   {
+    "kind": "settled",
+    "method": null,
+    "not_held": "no settled DA2021 congestion at LD.MYSTIC  13.8 (settled constraint records: DA 2021–2026, RT 2023–2026)",
+    "period": "DA2021",
+    "year": 2021
+   },
+   {
+    "kind": "settled",
+    "method": null,
+    "not_held": "no settled DA2022 congestion at LD.MYSTIC  13.8 (settled constraint records: DA 2021–2026, RT 2023–2026)",
+    "period": "DA2022",
+    "year": 2022
+   },
+   {
+    "kind": "settled",
+    "method": null,
+    "not_held": "no settled DA2023 congestion at LD.MYSTIC  13.8 (settled constraint records: DA 2021–2026, RT 2023–2026)",
+    "period": "DA2023",
+    "year": 2023
+   },
+   {
+    "kind": "settled",
+    "method": null,
+    "not_held": "no settled DA2024 congestion at LD.MYSTIC  13.8 (settled constraint records: DA 2021–2026, RT 2023–2026)",
+    "period": "DA2024",
+    "year": 2024
+   },
+   {
+    "kind": "settled",
+    "method": null,
+    "not_held": "no settled DA2025 congestion at LD.MYSTIC  13.8 (settled constraint records: DA 2021–2026, RT 2023–2026)",
+    "period": "DA2025",
+    "year": 2025
+   },
+   {
+    "kind": "settled",
+    "method": null,
+    "not_held": "no settled DA2026 congestion at LD.MYSTIC  13.8 (settled constraint records: DA 2021–2026, RT 2023–2026)",
+    "period": "DA2026",
+    "year": 2026
+   },
+   {
+    "kind": "settled",
+    "method": null,
+    "not_held": "no settled RT2023 congestion at LD.MYSTIC  13.8 (settled constraint records: DA 2021–2026, RT 2023–2026)",
+    "period": "RT2023",
+    "year": 2023
+   },
+   {
+    "kind": "settled",
+    "method": null,
+    "not_held": "no settled RT2024 congestion at LD.MYSTIC  13.8 (settled constraint records: DA 2021–2026, RT 2023–2026)",
+    "period": "RT2024",
+    "year": 2024
+   },
+   {
+    "kind": "settled",
+    "method": null,
+    "not_held": "no settled RT2025 congestion at LD.MYSTIC  13.8 (settled constraint records: DA 2021–2026, RT 2023–2026)",
+    "period": "RT2025",
+    "year": 2025
+   },
+   {
+    "kind": "settled",
+    "method": null,
+    "not_held": "no settled RT2026 congestion at LD.MYSTIC  13.8 (settled constraint records: DA 2021–2026, RT 2023–2026)",
+    "period": "RT2026",
+    "year": 2026
+   },
+   {
+    "bars": [
+     {
+      "band_usd_mwh": 0.0283,
+      "binding_hours": 2069,
+      "contingencies": [
+       {
+        "hours": 1640,
+        "label": "117000 SHERMAN ROAD  345  117001 WEST FARNUM   345  1"
+       },
+       {
+        "hours": 467,
+        "label": "113264 MILLBURY      345  117001 WEST FARNUM   345  1"
+       }
+      ],
+      "counterpart": null,
+      "facility": "110785 ANP BLACKSTN 345 115015 NGR_3361_NST 345 1",
+      "key": "RUN:110785 ANP BLACKSTN 345 115015 NGR_3361_NST 345 1",
+      "legend_key": "RUN:110785 ANP BLACKSTN 345 115015 NGR_3361_NST 345 1",
+      "match": "none",
+      "match_basis": "no counterpart across the settled ↔ run divider: a separate legend entry",
+      "sf": 0.0735,
+      "value_usd_mwh": 0.1415,
+      "vif": 3.78
+     },
+     {
+      "band_usd_mwh": 0.01,
+      "binding_hours": 1025,
+      "contingencies": [
+       {
+        "hours": 1025,
+        "label": "111133 CARVER        345  111134 W BARNSTABLE  345  1"
+       }
+      ],
+      "counterpart": null,
+      "facility": "111135 W BARNSTABLE 115 111217 BOURNE 115 1",
+      "key": "RUN:111135 W BARNSTABLE 115 111217 BOURNE 115 1",
+      "legend_key": "RUN:111135 W BARNSTABLE 115 111217 BOURNE 115 1",
+      "match": "none",
+      "match_basis": "no counterpart across the settled ↔ run divider: a separate legend entry",
+      "sf": -0.0063,
+      "value_usd_mwh": 0.0461,
+      "vif": 1.08
+     },
+     {
+      "band_usd_mwh": 0.01,
+      "binding_hours": 526,
+      "contingencies": [
+       {
+        "hours": 283,
+        "label": "104127 SEABROOK      345  104128 ES_394_SBK    345  1"
+       },
+       {
+        "hours": 116,
+        "label": "107310 HIGHGATE_TAP  115  107350 ST ALBANS_TP  115  1"
+       },
+       {
+        "hours": 66,
+        "label": "107570 GRANITE       115  107630 CHELSEA VT    115  1"
+       },
+       {
+        "hours": 62,
+        "label": "104113 ES_A253_NGR   230  106011 DUNBARTAN TP  230  1"
+       }
+      ],
+      "counterpart": null,
+      "facility": "113955 TEWKSBURY 230 999970 TEWKSBURY 115 2",
+      "key": "RUN:113955 TEWKSBURY 230 999970 TEWKSBURY 115 2",
+      "legend_key": "RUN:113955 TEWKSBURY 230 999970 TEWKSBURY 115 2",
+      "match": "none",
+      "match_basis": "no counterpart across the settled ↔ run divider: a separate legend entry",
+      "sf": -0.1248,
+      "value_usd_mwh": 0.0316,
+      "vif": 1.3
+     },
+     {
+      "band_usd_mwh": 0.01,
+      "binding_hours": 73,
+      "contingencies": [
+       {
+        "hours": 73,
+        "label": "110786 STOUGHTON     345  110862 K STREET 2    345  1"
+       }
+      ],
+      "counterpart": null,
+      "facility": "110786 STOUGHTON 345 110790 K STREET 1 345 1",
+      "key": "RUN:110786 STOUGHTON 345 110790 K STREET 1 345 1",
+      "legend_key": "RUN:110786 STOUGHTON 345 110790 K STREET 1 345 1",
+      "match": "none",
+      "match_basis": "no counterpart across the settled ↔ run divider: a separate legend entry",
+      "sf": -0.1156,
+      "value_usd_mwh": 0.0232,
+      "vif": 1.8
+     }
+    ],
+    "gates": {
+     "applied": "G1–G7",
+     "k_constraints": 38,
+     "k_facilities": 30,
+     "k_gated": 17,
+     "kappa": 5.2,
+     "r2": 0.9997
+    },
+    "hours": 8760,
+    "kind": "run",
+    "location_read": null,
+    "market": null,
+    "method": "recovered",
+    "missing_hours": 0,
+    "net_mcc": 0.2609,
+    "other": 0.0185,
+    "other_n": 26,
+    "other_parts": {
+     "below_floor": {
+      "n": 13,
+      "usd_mwh": 0.0193
+     },
+     "below_min_hours": {
+      "n": 13,
+      "usd_mwh": -0.0008
+     },
+     "intercept": {
+      "n": 1,
+      "usd_mwh": -0.0001
+     },
+     "sf_over_1": {
+      "n": 0,
+      "usd_mwh": 0.0
+     },
+     "vif_over_max": {
+      "n": 0,
+      "usd_mwh": 0.0
+     }
+    },
+    "partial": null,
+    "period": "5yr",
+    "reason": null,
+    "run": "5yr",
+    "stack_form": "diverging stack: premiums (+) above zero, discounts (−) below, largest nearest the axis; ◆ = net_mcc; hatched signed Other = net_mcc − Σ bars",
+    "stackable": true,
+    "year": 2028
+   },
+   {
+    "bars": [
+     {
+      "band_usd_mwh": 0.0,
+      "binding_hours": 411,
+      "contingencies": [
+       {
+        "dfax": 0.0999,
+        "hours": 412,
+        "label": "119012 ES_341_RIE    345  119051 LAKE ROAD     345  1",
+        "value": 0.1265
+       }
+      ],
+      "counterpart": null,
+      "dfax_max_abs": 0.0999,
+      "facility": "117000 SHERMAN ROAD 345 119025 ES_347_RIE 345 1",
+      "key": "RUN:117000 SHERMAN ROAD 345 119025 ES_347_RIE 345 1",
+      "legend_key": "RUN:117000 SHERMAN ROAD 345 119025 ES_347_RIE 345 1",
+      "match": "none",
+      "match_basis": "no counterpart across the settled ↔ run divider: a separate legend entry",
+      "value_usd_mwh": 0.1265,
+      "vif": null
+     },
+     {
+      "band_usd_mwh": 0.0,
+      "binding_hours": 1124,
+      "contingencies": [
+       {
+        "dfax": 0.0044,
+        "hours": 847,
+        "label": "116023 BERKSHIRE     345  116034 NE_393_NY     345  1",
+        "value": 0.0562
+       },
+       {
+        "dfax": 0.0021,
+        "hours": 785,
+        "label": "Base Case",
+        "value": 0.0258
+       },
+       {
+        "dfax": 0.0041,
+        "hours": 55,
+        "label": "113001 BEAR SWAMP    230  115005 NE_E205W_NY   230  1",
+        "value": 0.0009
+       }
+      ],
+      "counterpart": null,
+      "dfax_max_abs": 0.0044,
+      "facility": "107930 BENNINGTON 115 107931 NE_K6_NY 115 1",
+      "key": "RUN:107930 BENNINGTON 115 107931 NE_K6_NY 115 1",
+      "legend_key": "RUN:107930 BENNINGTON 115 107931 NE_K6_NY 115 1",
+      "match": "none",
+      "match_basis": "no counterpart across the settled ↔ run divider: a separate legend entry",
+      "value_usd_mwh": 0.0829,
+      "vif": null
+     },
+     {
+      "band_usd_mwh": 0.0,
+      "binding_hours": 679,
+      "contingencies": [
+       {
+        "dfax": 0.0078,
+        "hours": 226,
+        "label": "115015 RIE_3361_NST  345  117000 SHERMAN ROAD  345  1",
+        "value": 0.0161
+       },
+       {
+        "dfax": 0.0061,
+        "hours": 465,
+        "label": "117351 HARTFORD AVE  115  117353 PUTNAM PK_71  115  1",
+        "value": 0.013
+       },
+       {
+        "dfax": 0.0078,
+        "hours": 42,
+        "label": "110785 ANP BLACKSTN  345  115015 RIE_3361_NST  345  1",
+        "value": 0.0012
+       },
+       {
+        "dfax": 0.0061,
+        "hours": 6,
+        "label": "117001 WEST FARNUM   345  117300 RIE_315_NGR   345  1",
+        "value": 0.0004
+       },
+       {
+        "dfax": 0.0061,
+        "hours": 2,
+        "label": "114734 BRAYTN POINT  345  117300 RIE_315_NGR   345  1",
+        "value": 0.0
+       }
+      ],
+      "counterpart": null,
+      "dfax_max_abs": 0.0078,
+      "facility": "117304 WAMPANOG 115 117576 FIRST_ST 115 1",
+      "key": "RUN:117304 WAMPANOG 115 117576 FIRST_ST 115 1",
+      "legend_key": "RUN:117304 WAMPANOG 115 117576 FIRST_ST 115 1",
+      "match": "none",
+      "match_basis": "no counterpart across the settled ↔ run divider: a separate legend entry",
+      "value_usd_mwh": 0.0307,
+      "vif": null
+     },
+     {
+      "band_usd_mwh": 0.0,
+      "binding_hours": 2899,
+      "contingencies": [
+       {
+        "dfax": -0.001,
+        "hours": 2899,
+        "label": "Base Case",
+        "value": 0.0192
+       }
+      ],
+      "counterpart": "DNEAST",
+      "dfax_max_abs": 0.001,
+      "facility": "DNEAST Export",
+      "key": "RUN:DNEAST Export",
+      "legend_key": "IF:DNEAST",
+      "match": "approximate",
+      "match_basis": "PROBE flowgate ↔ ISO-NE interface name; run interface definition may differ. constraint-attribution review 2026-10-06 §4 tier A; fingerprint |ρ| <= 0.39 (not confirmed)",
+      "value_usd_mwh": 0.0192,
+      "vif": null
+     },
+     {
+      "band_usd_mwh": 0.0,
+      "binding_hours": 23,
+      "contingencies": [
+       {
+        "dfax": -0.0102,
+        "hours": 23,
+        "label": "115717 BENT RD_M13   115  115718 TIVERTN 13_T  115  1",
+        "value": -0.0126
+       },
+       {
+        "dfax": -0.0091,
+        "hours": 8,
+        "label": "115717 BENT RD_M13   115  117294 NGR_M13_RIE   115  1",
+        "value": -0.0031
+       },
+       {
+        "dfax": -0.0091,
+        "hours": 6,
+        "label": "117294 NGR_M13_RIE   115  118192 JEPSON        115  1",
+        "value": -0.0024
+       }
+      ],
+      "counterpart": null,
+      "dfax_max_abs": 0.0102,
+      "facility": "115715 BENT RD_L14 115 115719 TIVERTN 14_T 115 1",
+      "key": "RUN:115715 BENT RD_L14 115 115719 TIVERTN 14_T 115 1",
+      "legend_key": "RUN:115715 BENT RD_L14 115 115719 TIVERTN 14_T 115 1",
+      "match": "none",
+      "match_basis": "no counterpart across the settled ↔ run divider: a separate legend entry",
+      "value_usd_mwh": -0.0181,
+      "vif": null
+     }
+    ],
+    "gates": {
+     "applied": "none of G1–G4/G6 (exact μ·DFAX); the display floor and |DFAX| <= 1 apply",
+     "k_constraints": 45,
+     "k_facilities": 29,
+     "k_gated": null,
+     "kappa": null,
+     "r2": null
+    },
+    "hours": 8712,
+    "kind": "run",
+    "location_read": null,
+    "market": null,
+    "method": "exact",
+    "missing_hours": 48,
+    "net_mcc": 0.2523,
+    "other": 0.0111,
+    "other_n": 24,
+    "other_parts": {
+     "below_floor": {
+      "n": 24,
+      "usd_mwh": 0.0111
+     },
+     "below_min_hours": {
+      "n": 0,
+      "usd_mwh": 0.0
+     },
+     "intercept": {
+      "n": 0,
+      "usd_mwh": 0.0
+     },
+     "sf_over_1": {
+      "n": 0,
+      "usd_mwh": 0.0
+     },
+     "vif_over_max": {
+      "n": 0,
+      "usd_mwh": 0.0
+     }
+    },
+    "partial": null,
+    "period": "pcr2030",
+    "reason": null,
+    "recovered_check": {
+     "method": "recovered",
+     "r2": 0.9992,
+     "reason": null,
+     "top": [
+      {
+       "facility": "117000 SHERMAN ROAD 345 119025 ES_347_RIE 345 1",
+       "value_usd_mwh": 0.1256
+      },
+      {
+       "facility": "107930 BENNINGTON 115 107931 NE_K6_NY 115 1",
+       "value_usd_mwh": 0.0844
+      },
+      {
+       "facility": "117304 WAMPANOG 115 117576 FIRST_ST 115 1",
+       "value_usd_mwh": 0.027
+      }
+     ]
+    },
+    "run": "pcr2030",
+    "stack_form": "diverging stack: premiums (+) above zero, discounts (−) below, largest nearest the axis; ◆ = net_mcc; hatched signed Other = net_mcc − Σ bars",
+    "stackable": true,
+    "year": 2030
+   },
+   {
+    "bars": [
+     {
+      "band_usd_mwh": 0.01,
+      "binding_hours": 692,
+      "contingencies": [
+       {
+        "hours": 692,
+        "label": "121020 BUNKER HILL   115  121060 TOWANTIC      115  1"
+       }
+      ],
+      "counterpart": null,
+      "facility": "121020 BUNKER HILL 115 121028 BALDWIN 29_T 115 1",
+      "key": "RUN:121020 BUNKER HILL 115 121028 BALDWIN 29_T 115 1",
+      "legend_key": "RUN:121020 BUNKER HILL 115 121028 BALDWIN 29_T 115 1",
+      "match": "none",
+      "match_basis": "no counterpart across the settled ↔ run divider: a separate legend entry",
+      "sf": 0.0031,
+      "value_usd_mwh": 0.0214,
+      "vif": 2.6
+     },
+     {
+      "band_usd_mwh": 0.01,
+      "binding_hours": 2463,
+      "contingencies": [
+       {
+        "hours": 2463,
+        "label": "Base Case"
+       }
+      ],
+      "counterpart": "DNEAST",
+      "facility": "DNEAST Export",
+      "key": "RUN:DNEAST Export",
+      "legend_key": "IF:DNEAST",
+      "match": "approximate",
+      "match_basis": "PROBE flowgate ↔ ISO-NE interface name; run interface definition may differ. constraint-attribution review 2026-10-06 §4 tier A; fingerprint |ρ| <= 0.39 (not confirmed)",
+      "sf": -0.0009,
+      "value_usd_mwh": 0.0167,
+      "vif": 1.25
+     },
+     {
+      "band_usd_mwh": 0.01,
+      "binding_hours": 416,
+      "contingencies": [
+       {
+        "hours": 416,
+        "label": "119077 MANCHESTER    345  119129 KLEEN         345  1"
+       }
+      ],
+      "counterpart": null,
+      "facility": "120200 PORTLAND 115 120209 MIDDLETOWN 115 1",
+      "key": "RUN:120200 PORTLAND 115 120209 MIDDLETOWN 115 1",
+      "legend_key": "RUN:120200 PORTLAND 115 120209 MIDDLETOWN 115 1",
+      "match": "none",
+      "match_basis": "no counterpart across the settled ↔ run divider: a separate legend entry",
+      "sf": 0.0036,
+      "value_usd_mwh": 0.012,
+      "vif": 1.91
+     },
+     {
+      "band_usd_mwh": 0.01,
+      "binding_hours": 625,
+      "contingencies": [
+       {
+        "hours": 566,
+        "label": "120245 BERLIN CT     115  120479 RESERVOIR_J   115  1"
+       },
+       {
+        "hours": 100,
+        "label": "119077 MANCHESTER    345  119129 KLEEN         345  1"
+       },
+       {
+        "hours": 7,
+        "label": "120452 SOUTHINGTN-1  115  120479 RESERVOIR_J   115  1"
+       }
+      ],
+      "counterpart": "BERLIN1771A",
+      "facility": "120245 BERLIN CT 115 120452 SOUTHINGTN-1 115 1",
+      "key": "RUN:120245 BERLIN CT 115 120452 SOUTHINGTN-1 115 1",
+      "legend_key": "EL:BERLIN1771A",
+      "match": "exact",
+      "match_basis": "constraint-attribution review 2026-10-06 §4 tier B: station text agrees and recovered-SF fingerprint |ρ| 0.67-0.82, same top-1 in pcr2030, pcr2035 and 10yr",
+      "sf": 0.0011,
+      "value_usd_mwh": 0.0115,
+      "vif": 1.42
+     }
+    ],
+    "gates": {
+     "applied": "G1–G7",
+     "k_constraints": 51,
+     "k_facilities": 41,
+     "k_gated": 11,
+     "kappa": 3.86,
+     "r2": 0.9998
+    },
+    "hours": 8760,
+    "kind": "run",
+    "location_read": null,
+    "market": null,
+    "method": "recovered",
+    "missing_hours": 0,
+    "net_mcc": 0.0643,
+    "other": 0.0027,
+    "other_n": 37,
+    "other_parts": {
+     "below_floor": {
+      "n": 7,
+      "usd_mwh": 0.0055
+     },
+     "below_min_hours": {
+      "n": 30,
+      "usd_mwh": -0.0026
+     },
+     "intercept": {
+      "n": 1,
+      "usd_mwh": -0.0001
+     },
+     "sf_over_1": {
+      "n": 0,
+      "usd_mwh": 0.0
+     },
+     "vif_over_max": {
+      "n": 0,
+      "usd_mwh": 0.0
+     }
+    },
+    "partial": null,
+    "period": "10yr",
+    "reason": null,
+    "run": "10yr",
+    "stack_form": "diverging stack: premiums (+) above zero, discounts (−) below, largest nearest the axis; ◆ = net_mcc; hatched signed Other = net_mcc − Σ bars",
+    "stackable": true,
+    "year": 2035
+   },
+   {
+    "bars": [
+     {
+      "band_usd_mwh": 0.0,
+      "binding_hours": 1646,
+      "contingencies": [
+       {
+        "dfax": 0.0045,
+        "hours": 1280,
+        "label": "116023 BERKSHIRE     345  116034 NE_393_NY     345  1",
+        "value": 0.095
+       },
+       {
+        "dfax": 0.0022,
+        "hours": 1515,
+        "label": "Base Case",
+        "value": 0.0877
+       },
+       {
+        "dfax": 0.0038,
+        "hours": 42,
+        "label": "113001 BEAR SWAMP    230  115005 NE_E205W_NY   230  1",
+        "value": 0.0007
+       }
+      ],
+      "counterpart": null,
+      "dfax_max_abs": 0.0045,
+      "facility": "107930 BENNINGTON 115 107931 NE_K6_NY 115 1",
+      "key": "RUN:107930 BENNINGTON 115 107931 NE_K6_NY 115 1",
+      "legend_key": "RUN:107930 BENNINGTON 115 107931 NE_K6_NY 115 1",
+      "match": "none",
+      "match_basis": "no counterpart across the settled ↔ run divider: a separate legend entry",
+      "value_usd_mwh": 0.1834,
+      "vif": null
+     },
+     {
+      "band_usd_mwh": 0.0,
+      "binding_hours": 989,
+      "contingencies": [
+       {
+        "dfax": 0.0061,
+        "hours": 856,
+        "label": "117351 HARTFORD AVE  115  117353 PUTNAM PK_71  115  1",
+        "value": 0.0648
+       },
+       {
+        "dfax": 0.0079,
+        "hours": 167,
+        "label": "115015 RIE_3361_NST  345  117000 SHERMAN ROAD  345  1",
+        "value": 0.0141
+       },
+       {
+        "dfax": 0.0062,
+        "hours": 176,
+        "label": "117346 WOLF HILL_71  115  117353 PUTNAM PK_71  115  1",
+        "value": 0.003
+       },
+       {
+        "dfax": 0.0078,
+        "hours": 17,
+        "label": "110773 NEA 336 TAP   345  110785 ANP BLACKSTN  345  1",
+        "value": 0.0014
+       },
+       {
+        "dfax": 0.008,
+        "hours": 38,
+        "label": "110785 ANP BLACKSTN  345  115015 RIE_3361_NST  345  1",
+        "value": 0.0006
+       },
+       {
+        "dfax": 0.0077,
+        "hours": 3,
+        "label": "110772 W MEDWAY B    345  110773 NEA 336 TAP   345  1",
+        "value": 0.0001
+       },
+       {
+        "dfax": 0.0061,
+        "hours": 1,
+        "label": "117001 WEST FARNUM   345  117300 RIE_315_NGR   345  1",
+        "value": 0.0
+       }
+      ],
+      "counterpart": null,
+      "dfax_max_abs": 0.008,
+      "facility": "117304 WAMPANOG 115 117576 FIRST_ST 115 1",
+      "key": "RUN:117304 WAMPANOG 115 117576 FIRST_ST 115 1",
+      "legend_key": "RUN:117304 WAMPANOG 115 117576 FIRST_ST 115 1",
+      "match": "none",
+      "match_basis": "no counterpart across the settled ↔ run divider: a separate legend entry",
+      "value_usd_mwh": 0.0841,
+      "vif": null
+     },
+     {
+      "band_usd_mwh": 0.0,
+      "binding_hours": 1092,
+      "contingencies": [
+       {
+        "dfax": 0.001,
+        "hours": 1072,
+        "label": "120245 BERLIN CT     115  120479 RESERVOIR_J   115  1",
+        "value": 0.0271
+       },
+       {
+        "dfax": 0.003,
+        "hours": 189,
+        "label": "119077 MANCHESTER    345  119129 KLEEN         345  1",
+        "value": 0.0083
+       },
+       {
+        "dfax": 0.0009,
+        "hours": 7,
+        "label": "120452 SOUTHINGTN-1  115  120479 RESERVOIR_J   115  1",
+        "value": 0.0001
+       }
+      ],
+      "counterpart": "BERLIN1771A",
+      "dfax_max_abs": 0.003,
+      "facility": "120245 BERLIN CT 115 120452 SOUTHINGTN-1 115 1",
+      "key": "RUN:120245 BERLIN CT 115 120452 SOUTHINGTN-1 115 1",
+      "legend_key": "EL:BERLIN1771A",
+      "match": "exact",
+      "match_basis": "constraint-attribution review 2026-10-06 §4 tier B: station text agrees and recovered-SF fingerprint |ρ| 0.67-0.82, same top-1 in pcr2030, pcr2035 and 10yr",
+      "value_usd_mwh": 0.0354,
+      "vif": null
+     },
+     {
+      "band_usd_mwh": 0.0,
+      "binding_hours": 28,
+      "contingencies": [
+       {
+        "dfax": -0.0102,
+        "hours": 28,
+        "label": "115717 BENT RD_M13   115  115718 TIVERTN 13_T  115  1",
+        "value": -0.0151
+       },
+       {
+        "dfax": -0.0091,
+        "hours": 16,
+        "label": "117294 NGR_M13_RIE   115  118192 JEPSON        115  1",
+        "value": -0.0072
+       },
+       {
+        "dfax": -0.0091,
+        "hours": 16,
+        "label": "115717 BENT RD_M13   115  117294 NGR_M13_RIE   115  1",
+        "value": -0.0072
+       }
+      ],
+      "counterpart": null,
+      "dfax_max_abs": 0.0102,
+      "facility": "115715 BENT RD_L14 115 115719 TIVERTN 14_T 115 1",
+      "key": "RUN:115715 BENT RD_L14 115 115719 TIVERTN 14_T 115 1",
+      "legend_key": "RUN:115715 BENT RD_L14 115 115719 TIVERTN 14_T 115 1",
+      "match": "none",
+      "match_basis": "no counterpart across the settled ↔ run divider: a separate legend entry",
+      "value_usd_mwh": -0.0296,
+      "vif": null
+     },
+     {
+      "band_usd_mwh": 0.0,
+      "binding_hours": 138,
+      "contingencies": [
+       {
+        "dfax": 0.0992,
+        "hours": 138,
+        "label": "119012 ES_341_RIE    345  119051 LAKE ROAD     345  1",
+        "value": 0.0269
+       }
+      ],
+      "counterpart": null,
+      "dfax_max_abs": 0.0992,
+      "facility": "117000 SHERMAN ROAD 345 119025 ES_347_RIE 345 1",
+      "key": "RUN:117000 SHERMAN ROAD 345 119025 ES_347_RIE 345 1",
+      "legend_key": "RUN:117000 SHERMAN ROAD 345 119025 ES_347_RIE 345 1",
+      "match": "none",
+      "match_basis": "no counterpart across the settled ↔ run divider: a separate legend entry",
+      "value_usd_mwh": 0.0269,
+      "vif": null
+     }
+    ],
+    "gates": {
+     "applied": "none of G1–G4/G6 (exact μ·DFAX); the display floor and |DFAX| <= 1 apply",
+     "k_constraints": 63,
+     "k_facilities": 44,
+     "k_gated": null,
+     "kappa": null,
+     "r2": null
+    },
+    "hours": 8736,
+    "kind": "run",
+    "location_read": null,
+    "market": null,
+    "method": "exact",
+    "missing_hours": 24,
+    "net_mcc": 0.3321,
+    "other": 0.0319,
+    "other_n": 39,
+    "other_parts": {
+     "below_floor": {
+      "n": 36,
+      "usd_mwh": -0.0187
+     },
+     "below_min_hours": {
+      "n": 0,
+      "usd_mwh": 0.0
+     },
+     "intercept": {
+      "n": 0,
+      "usd_mwh": 0.0
+     },
+     "not_shown": {
+      "n": 3,
+      "usd_mwh": 0.0506,
+      "why": "gated bars beyond top=5 or below min_hours=0"
+     },
+     "sf_over_1": {
+      "n": 0,
+      "usd_mwh": 0.0
+     },
+     "vif_over_max": {
+      "n": 0,
+      "usd_mwh": 0.0
+     }
+    },
+    "partial": null,
+    "period": "pcr2035",
+    "reason": null,
+    "recovered_check": {
+     "method": "recovered",
+     "r2": 0.9988,
+     "reason": null,
+     "top": [
+      {
+       "facility": "107930 BENNINGTON 115 107931 NE_K6_NY 115 1",
+       "value_usd_mwh": 0.1794
+      },
+      {
+       "facility": "117304 WAMPANOG 115 117576 FIRST_ST 115 1",
+       "value_usd_mwh": 0.079
+      },
+      {
+       "facility": "120245 BERLIN CT 115 120452 SOUTHINGTN-1 115 1",
+       "value_usd_mwh": 0.036
+      }
+     ]
+    },
+    "run": "pcr2035",
+    "stack_form": "diverging stack: premiums (+) above zero, discounts (−) below, largest nearest the axis; ◆ = net_mcc; hatched signed Other = net_mcc − Σ bars",
+    "stackable": true,
+    "year": 2035
+   },
+   {
+    "bars": [
+     {
+      "band_usd_mwh": 0.0,
+      "binding_hours": 1098,
+      "contingencies": [
+       {
+        "dfax": 0.0062,
+        "hours": 830,
+        "label": "117351 HARTFORD AVE  115  117353 PUTNAM PK_71  115  1",
+        "value": 0.0614
+       },
+       {
+        "dfax": 0.0078,
+        "hours": 279,
+        "label": "110773 NEA 336 TAP   345  110785 ANP BLACKSTN  345  1",
+        "value": 0.0222
+       },
+       {
+        "dfax": 0.0078,
+        "hours": 98,
+        "label": "110772 W MEDWAY B    345  110773 NEA 336 TAP   345  1",
+        "value": 0.0035
+       },
+       {
+        "dfax": 0.0063,
+        "hours": 177,
+        "label": "117346 WOLF HILL_71  115  117353 PUTNAM PK_71  115  1",
+        "value": 0.0028
+       },
+       {
+        "dfax": 0.0076,
+        "hours": 5,
+        "label": "115015 RIE_3361_NST  345  117000 SHERMAN ROAD  345  1",
+        "value": 0.0003
+       },
+       {
+        "dfax": 0.0061,
+        "hours": 6,
+        "label": "117001 WEST FARNUM   345  117300 RIE_315_NGR   345  1",
+        "value": 0.0002
+       },
+       {
+        "dfax": 0.0074,
+        "hours": 2,
+        "label": "110785 ANP BLACKSTN  345  115015 RIE_3361_NST  345  1",
+        "value": 0.0
+       }
+      ],
+      "counterpart": null,
+      "dfax_max_abs": 0.0078,
+      "facility": "117304 WAMPANOG 115 117576 FIRST_ST 115 1",
+      "key": "RUN:117304 WAMPANOG 115 117576 FIRST_ST 115 1",
+      "legend_key": "RUN:117304 WAMPANOG 115 117576 FIRST_ST 115 1",
+      "match": "none",
+      "match_basis": "no counterpart across the settled ↔ run divider: a separate legend entry",
+      "value_usd_mwh": 0.0905,
+      "vif": null
+     },
+     {
+      "band_usd_mwh": 0.0,
+      "binding_hours": 392,
+      "contingencies": [
+       {
+        "dfax": -0.0027,
+        "hours": 386,
+        "label": "103725 N133_NORTH_T  115  103727 ES_N133N_CMP  115  1",
+        "value": -0.0384
+       },
+       {
+        "dfax": -0.0027,
+        "hours": 375,
+        "label": "100237 BOLT-HILL_T4  115  103727 ES_N133N_CMP  115  1",
+        "value": -0.035
+       },
+       {
+        "dfax": -0.0027,
+        "hours": 3,
+        "label": "103725 N133_NORTH_T  115  103730 N133_SOUTH_T  115  1",
+        "value": 0.0
+       }
+      ],
+      "counterpart": null,
+      "dfax_max_abs": 0.0027,
+      "facility": "100235 BOLT-HILL_T3 115 103728 ES_N133S_CMP 115 1",
+      "key": "RUN:100235 BOLT-HILL_T3 115 103728 ES_N133S_CMP 115 1",
+      "legend_key": "RUN:100235 BOLT-HILL_T3 115 103728 ES_N133S_CMP 115 1",
+      "match": "none",
+      "match_basis": "no counterpart across the settled ↔ run divider: a separate legend entry",
+      "value_usd_mwh": -0.0735,
+      "vif": null
+     },
+     {
+      "band_usd_mwh": 0.0,
+      "binding_hours": 1815,
+      "contingencies": [
+       {
+        "dfax": 0.0031,
+        "hours": 1815,
+        "label": "121020 BUNKER HILL   115  121060 TOWANTIC      115  1",
+        "value": 0.0687
+       }
+      ],
+      "counterpart": null,
+      "dfax_max_abs": 0.0031,
+      "facility": "121020 BUNKER HILL 115 121028 BALDWIN 29_T 115 1",
+      "key": "RUN:121020 BUNKER HILL 115 121028 BALDWIN 29_T 115 1",
+      "legend_key": "RUN:121020 BUNKER HILL 115 121028 BALDWIN 29_T 115 1",
+      "match": "none",
+      "match_basis": "no counterpart across the settled ↔ run divider: a separate legend entry",
+      "value_usd_mwh": 0.0687,
+      "vif": null
+     },
+     {
+      "band_usd_mwh": 0.0,
+      "binding_hours": 55,
+      "contingencies": [
+       {
+        "dfax": -0.0094,
+        "hours": 55,
+        "label": "115717 BENT RD_M13   115  115718 TIVERTN 13_T  115  1",
+        "value": -0.0265
+       },
+       {
+        "dfax": -0.0091,
+        "hours": 24,
+        "label": "117294 NGR_M13_RIE   115  118192 JEPSON        115  1",
+        "value": -0.0117
+       },
+       {
+        "dfax": -0.0091,
+        "hours": 24,
+        "label": "115717 BENT RD_M13   115  117294 NGR_M13_RIE   115  1",
+        "value": -0.0117
+       }
+      ],
+      "counterpart": null,
+      "dfax_max_abs": 0.0094,
+      "facility": "115715 BENT RD_L14 115 115719 TIVERTN 14_T 115 1",
+      "key": "RUN:115715 BENT RD_L14 115 115719 TIVERTN 14_T 115 1",
+      "legend_key": "RUN:115715 BENT RD_L14 115 115719 TIVERTN 14_T 115 1",
+      "match": "none",
+      "match_basis": "no counterpart across the settled ↔ run divider: a separate legend entry",
+      "value_usd_mwh": -0.0499,
+      "vif": null
+     },
+     {
+      "band_usd_mwh": 0.0,
+      "binding_hours": 479,
+      "contingencies": [
+       {
+        "dfax": -0.0024,
+        "hours": 428,
+        "label": "113286 MILLBURY      115  113442 MILLBURY4 T1  115  1",
+        "value": -0.0181
+       },
+       {
+        "dfax": -0.0024,
+        "hours": 236,
+        "label": "113286 MILLBURY      115  113443 MILLBURY4 T2  115  1",
+        "value": -0.0108
+       }
+      ],
+      "counterpart": null,
+      "dfax_max_abs": 0.0024,
+      "facility": "113280 MILLBURY TL3 115 113286 MILLBURY 115 1",
+      "key": "RUN:113280 MILLBURY TL3 115 113286 MILLBURY 115 1",
+      "legend_key": "RUN:113280 MILLBURY TL3 115 113286 MILLBURY 115 1",
+      "match": "none",
+      "match_basis": "no counterpart across the settled ↔ run divider: a separate legend entry",
+      "value_usd_mwh": -0.0289,
+      "vif": null
+     }
+    ],
+    "gates": {
+     "applied": "none of G1–G4/G6 (exact μ·DFAX); the display floor and |DFAX| <= 1 apply",
+     "k_constraints": 59,
+     "k_facilities": 38,
+     "k_gated": null,
+     "kappa": null,
+     "r2": null
+    },
+    "hours": 8736,
+    "kind": "run",
+    "location_read": null,
+    "market": null,
+    "method": "exact",
+    "missing_hours": 24,
+    "net_mcc": 0.0413,
+    "other": 0.0344,
+    "other_n": 33,
+    "other_parts": {
+     "below_floor": {
+      "n": 26,
+      "usd_mwh": 0.0282
+     },
+     "below_min_hours": {
+      "n": 0,
+      "usd_mwh": 0.0
+     },
+     "intercept": {
+      "n": 0,
+      "usd_mwh": 0.0
+     },
+     "not_shown": {
+      "n": 7,
+      "usd_mwh": 0.0063,
+      "why": "gated bars beyond top=5 or below min_hours=0"
+     },
+     "sf_over_1": {
+      "n": 0,
+      "usd_mwh": 0.0
+     },
+     "vif_over_max": {
+      "n": 0,
+      "usd_mwh": 0.0
+     }
+    },
+    "partial": null,
+    "period": "pcr2040",
+    "reason": null,
+    "recovered_check": {
+     "method": "recovered",
+     "r2": 0.9988,
+     "reason": null,
+     "top": [
+      {
+       "facility": "117304 WAMPANOG 115 117576 FIRST_ST 115 1",
+       "value_usd_mwh": 0.0903
+      },
+      {
+       "facility": "100235 BOLT-HILL_T3 115 103728 ES_N133S_CMP 115 1",
+       "value_usd_mwh": -0.0744
+      },
+      {
+       "facility": "115715 BENT RD_L14 115 115719 TIVERTN 14_T 115 1",
+       "value_usd_mwh": -0.0495
+      }
+     ]
+    },
+    "run": "pcr2040",
+    "stack_form": "diverging stack: premiums (+) above zero, discounts (−) below, largest nearest the axis; ◆ = net_mcc; hatched signed Other = net_mcc − Σ bars",
+    "stackable": true,
+    "year": 2040
+   }
+  ],
+  "scenario": null,
+  "sign": "Every congestion figure is on ISO-NE's settlement convention, LMP = energy + congestion + loss: a negative congestion component prices the node below the system energy price (a generation pocket), a positive one is a premium over it. Settled rows are published as stored. Every PROBE run (5yr, 10yr, pcr2030/2035/2040) stores LMP = energy - congestion + loss, so its congestion is negated at read and its energy recomputed as LMP - congestion - loss; the PCR table's stored energy column (built the other way) is not read.",
+  "source": {
+   "gates": "90 System/outputs/reports/2026-10-06_constraint-attribution-review.md §5 (D-008, Ganesh 2026-10-06)",
+   "runs": "probe5/probe10.simBinding × bindConstr; uni.fact_pcr_binding_hourly (energy-balance rows excluded) × uni.fact_fcst_lmp_hourly; exact: uni.fact_pcr_cong_impact",
+   "settled": "uni.fact_constraint_hourly (DA hourly; RT 5-minute Σμ/12 per hour; SYSTEM_* and NODE_* rows excluded) × uni.fact_lmp_hourly congestion"
+  },
+  "top": 5,
+  "unit": "$/MWh",
+  "view": "#1 congestion by constraint",
+  "vintage": {
+   "builder": "continuum-views 1.1 (2026-10-06, D-008 gates)",
+   "stale": false,
+   "stale_reason": null,
+   "store_file": "GridSense_one.duckdb",
+   "store_mtime": "2026-09-17T01:21:14",
+   "store_size": "20195586048",
+   "views_built_at": "2026-10-14T10:11:39",
+   "views_file": "continuum_views.duckdb"
+  }
+ }
+}

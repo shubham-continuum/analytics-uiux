@@ -1,0 +1,58 @@
+/* VENDORED from live Studio ext/68-continuum-emissions.css (snapshot 2026-10-11, sha256 0a1002a8a861efa1).
+   DO NOT EDIT: regenerate with plan/vendor_live.py; patches in vendor/live/continuum/patches/. */
+/* ═══════════════════════════════════════════════════════════════════════════
+   ext: 68-continuum-emissions.css — Carbon and 24×7 match (continuum S9 2026-10-06).
+
+   NO NEW HEX: every colour is a Studio token (ext/60's rule). Six font sizes at most inside an emissions panel:
+   10 (axes, face, cells, key, KPI label) · 10.5 (notes, basis) · 11 (controls, tables, method, legend) ·
+   12 (answer line, empty-state title) · 13 (heading) · 19 (KPI value).
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.em-status { font-size: 10.5px; padding: 2px 2px 0; }
+
+[data-em-panel] .em-answer {
+  padding: 2px 8px 6px; font-size: 12px; line-height: 1.45; color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+[data-em-panel] .em-scope { padding-top: 0; }
+[data-em-panel] .em-method {
+  margin: 0 8px 6px; padding: 6px 8px; border: 1px solid var(--border); border-radius: var(--gsc-panel-r, 4px);
+  background: var(--sunk); font-size: 11px; line-height: 1.5; color: var(--ink-3);
+}
+[data-em-panel] .em-method p { margin: 0 0 4px; }
+[data-em-panel] .em-method p:last-child { margin-bottom: 0; }
+[data-em-panel] .em-basis { border-top: 1px dashed var(--border); padding-top: 5px; margin-top: auto; }
+
+/* the (i) toggle: a round button whose label never changes; pressed = the method is open */
+[data-em-panel] .gsc-btn.em-i {
+  width: 24px; padding: 0; justify-content: center; border-radius: 50%;
+  font-family: var(--sans); font-style: italic; font-weight: 600; font-size: 11px;
+}
+[data-em-panel] .gsc-btn.em-i[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+
+/* charts */
+[data-em-panel] .em-cell-t { font-family: var(--mono); font-size: 10px; pointer-events: none; }
+[data-em-panel] .em-bar-l.on { fill: var(--ink); font-weight: 600; }
+[data-em-panel] .em-sub { margin: 8px 0 2px; font-size: 11px; color: var(--ink-3); }
+[data-em-panel] .em-block { margin-top: 8px; }
+[data-em-panel] .gsc-key { margin-top: 2px; }
+[data-em-panel] .gsc-lg .em-lg-note { color: var(--ink-4); }
+
+/* legend swatches: a dot (settled, ours), a diamond (the operator's report), a ring (a solved run) */
+[data-em-panel] .gsc-lg i.em-sw { width: 9px; height: 9px; flex: 0 0 9px; border-radius: 50%; background: currentColor; }
+[data-em-panel] .gsc-lg i.em-sw-dia { width: 8px; height: 8px; flex: 0 0 8px; border-radius: 0; background: none;
+  border: 1.5px solid currentColor; transform: rotate(45deg); }
+[data-em-panel] .gsc-lg i.em-sw-ring { background: none; border: 1.5px solid currentColor; }
+
+/* ext/60 marks a table's first cell with class "t", which the shell's global `.t` table rule sets at 11.5px:
+   held at the table's own 11px inside these panels */
+[data-em-panel] .gsc-tbl td.t { font-size: 11px; }
+
+/* KPI labels sit at 10px here, not 9.5, to keep the panel inside six sizes */
+[data-em-panel] .gsc-kpi .k { font-size: 10px; white-space: normal; }
+[data-em-panel] .gsc-kpis { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+
+/* S-nav 2026-10-07 · Offtake fits 2.5 screens: the two provenance tables are short scrollers side by side */
+#gsc-root [data-gsc-panel="em-factors"] .gsc-scroll, #gsc-root [data-gsc-panel="em-check"] .gsc-scroll { max-height: 220px; }
+/* S-nav 2026-10-07 · the Continuum's six-size scale (11 · 12 · 13 · 15 · 20 · 28) */
+#gsc-root .em-status, #gsc-root [data-em-panel] .em-cell-t, #gsc-root [data-em-panel] .gsc-kpi .k { font-size: 11px; }

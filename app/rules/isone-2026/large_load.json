@@ -1,0 +1,99 @@
+{
+ "large_load": {
+  "status": "pending",
+  "src": "FERC EL26-72: 195 FERC ¶ 61,215 (show-cause, 2026-06-18); Abeyance Order 196 FERC ¶ 61,132 (2026-08-14) PP 7-9 (R3 D1-D3)",
+  "_note": "FERC EL26-72 show-cause (ISO-NE lacks large-load provisions). Response due 2026-11-16 (a §205 filing satisfies it); nothing filed as of 2026-10-06. Every entry below is the ISO-NE / PTO-AC PROPOSAL, not tariff: S6 shows each one badged pending and re-verifies after the filing. Owner: S6 (rules/largeload.js).",
+  "filing": {
+   "docket": "EL26-72",
+   "response_due": "2026-11-16",
+   "answers_due": "2026-12-16",
+   "filed_as_of": { "date": "2026-10-06", "filed": false },
+   "reverify_on": "2026-11-17",
+   "badge": "pending §205 filing (due 2026-11-16, FERC EL26-72)",
+   "src": "196 FERC ¶ 61,132 PP 7-9 (recited in 196 FERC ¶ 61,215, EL26-72-001); ISO-NE Large Loads Integration key project page (R3 D2-D3)",
+   "status": "pending",
+   "effective": "2026-11-16"
+  },
+  "threshold_mw": {
+   "value": 50,
+   "unit": "MW",
+   "op": ">=",
+   "basis": "gross peak load at one site, regardless of co-located generation; an expansion that takes the gross peak to the threshold counts",
+   "src": "ISO-NE RC/TC deck 2026-08-18/19 slides 6-9; 195 FERC ¶ 61,215 fn 2 and P 56 (R3 D4)",
+   "status": "pending",
+   "effective": "pending §205 filing"
+  },
+  "threshold_kv": {
+   "value": 69,
+   "unit": "kV",
+   "op": ">=",
+   "note": "ISO-NE's proposal is inclusive (69 kV or greater); FERC's preliminary definition says greater than 69 kV. The app screens on the ISO-NE proposal.",
+   "src": "ISO-NE RC/TC deck 2026-08-18/19 slides 6-9; 195 FERC ¶ 61,215 fn 2 (R3 D4)",
+   "status": "pending",
+   "effective": "pending §205 filing"
+  },
+  "services": {
+   "rows": [
+    { "code": "FCDS", "name": "Firm Contract Demand Service", "firm": true, "billing": "contract_mw", "byong": true, "upgrades_first": true, "interim": false,
+      "text": "Permanent, firm, fixed contract MW that cannot be exceeded; same curtailment priority as RNS/LNS load; every identified network upgrade must be in service first" },
+    { "code": "NFCDS", "name": "Non-Firm Contract Demand Service", "firm": false, "billing": "monthly_peak", "byong": false, "upgrades_first": false, "interim": false,
+      "text": "Permanent non-firm service, studied with the load's flexibility to minimise upgrades; billed on actual demand at the monthly peak; curtailable" },
+    { "code": "ICDS", "name": "Interim Contract Demand Service", "firm": false, "billing": "monthly_peak", "byong": false, "upgrades_first": false, "interim": true, "converts_to": "FCDS",
+      "text": "Temporary non-firm service before the upgrades are done, billed as NFCDS; converts to FCDS when its requirements (upgrades included) are met" }
+   ],
+   "note": "A large load cannot take traditional RNS/LNS, and one point of delivery cannot be split across services.",
+   "src": "ISO-NE RC/TC deck 2026-08-18/19 slides 10-31; PTO-AC deck 2026-09-15 slides 7, 14 (R3 D5)",
+   "status": "pending",
+   "effective": "pending §205 filing"
+  },
+  "study_days": {
+   "value": 90,
+   "unit": "days",
+   "note": "Large-load study from a complete application; rolling applications, outside the generator cluster studies. Facilities study and construction durations are not published.",
+   "src": "ISO-NE RC/TC deck 2026-08-18/19 slides 10-31 (R3 D5)",
+   "status": "pending",
+   "effective": "pending §205 filing"
+  },
+  "cra": {
+   "formula": "max(0, carrying charge × Large Load Network Upgrades (excluding Similar Upgrades) − FCDS charge)",
+   "carrying_charge": null,
+   "carrying_charge_note": "Not published. The PTO-AC deck's worked example uses an illustrative carrying charge; it is not a PTO rate and is never used.",
+   "similar_upgrades": "Upgrades duplicating RSP-list projects are excluded from the CRA; the RSP-list match is not held, so the study cost may include them.",
+   "llif": "Sole-use Large Load Interconnection Facilities are recovered separately (not in the CRA).",
+   "src": "PTO-AC 'Proposed Large Load Cost Recovery Agreement' 2026-09-15 slides 7-13, 16-17 (R3 D7, R3 §3.4)",
+   "status": "pending",
+   "effective": "pending §205 filing"
+  },
+  "capacity": {
+   "rows": [
+    { "service": "FCDS", "text": "Bring your own new generation (BYONG): designated resources before FCDS; the large load is excluded from the Installed Capacity Requirement. Cost = self-supply cost; detailed rules in 2027." },
+    { "service": "ICDS", "text": "Interim service may start before BYONG is met; the self-supply cost follows at conversion to FCDS." },
+    { "service": "NFCDS", "text": "No BYONG requirement (curtailable). FCM treatment of large loads while BYONG detail is pending is an open question." }
+   ],
+   "src": "ISO-NE RC/TC deck 2026-08-18/19 slides 4, 16-17; informational report 2026-07-20 (R3 D6; R3 open question 11)",
+   "status": "pending",
+   "effective": "pending §205 filing"
+  },
+  "local_adders": {
+   "held": false,
+   "note": "Local Network Service (OATT Schedule 21), Schedule 12C, distribution and retail transmission tracker, by PTO: not retrieved.",
+   "src": "R3 §3.4 and open question 5",
+   "status": "unverifiable"
+  },
+  "rns_rate": {
+   "2026": 177.62722,
+   "2027": 183.59911,
+   "unit": "$/kW-yr",
+   "src": "ISO-NE General Business Practices §2",
+   "status": "corrected",
+   "note": "Reference only: a large load would pay FCDS/NFCDS instead of RNS under the proposal; never add both. FCDS and NFCDS/ICDS are billed at this rate (R3 D7-D9)."
+  },
+  "schedule1_rate": {
+   "value": 1.8742,
+   "unit": "$/kW-yr",
+   "src": "ISO-NE General Business Practices §2",
+   "status": "verified",
+   "effective": "2026-06-01"
+  }
+ }
+}

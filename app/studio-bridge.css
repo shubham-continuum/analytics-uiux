@@ -1,0 +1,203 @@
+/* Preview content in the live Studio card grammar (v6, 2026-10-01). Loaded after studio/studio.css (the live stylesheet,
+   read-only copy) and the scoped app.css. Values are the live computed styles read from :8103 (section.w, .w-h h3, .w-p,
+   .summary, .gswf-sel, #gsf-stages), so analyzer cards sit in the board as if they were live cards. */
+
+/* ---- chrome gaps: things the live frame does with JS or does not have ---- */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.hdr .gsf-search{cursor:text}
+.hdr .gsf-search input.gsx-search{background:transparent;border:0;outline:0;color:inherit;font:inherit;padding:0;min-width:0;width:100%;flex:1 1 auto}
+.hdr .gsf-search input.gsx-search::placeholder{color:var(--ink-4)}
+.hdr .pin-hdr.on{color:var(--accent);background:var(--accent-soft)}
+.scope .gsf-strip label.gsx-quiet-l{display:none}
+.gswf-kill .badge.bad{background:var(--bad-bg);border-color:var(--bad-line);color:var(--bad)}
+#gsf-stages a,#gsf-stages a:visited{color:inherit;text-decoration:none}
+.sb a.sb-item,.sb a.sb-step{text-decoration:none}
+.summary .facts b[role="button"]{cursor:pointer}
+
+/* ---- analyzer body: one board, the live card look ---- */
+.gsx-an{display:grid;gap:6px;margin-top:6px}
+.gsx-an>section[role="tabpanel"]{min-width:0}
+.gsx-an section.card.w{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:8px 10px 7px;box-shadow:none}
+.gsx-an section.card.w>.card-h.w-h{display:flex;align-items:flex-start;gap:8px;padding:0;margin:0 0 4px;border:0;min-height:20px;background:none}
+.gsx-an section.card.w>.card-h.w-h>h3.w-q{font-size:13px;font-weight:600;line-height:17px;color:var(--ink);margin:0;padding:0;letter-spacing:0}
+.gsx-an section.card.w>.card-h .card-sub{font-size:11.5px;line-height:16px;color:var(--ink-4);font-weight:400}
+.gsx-an section.card.w>.card-h .w-tools{display:flex;gap:4px;margin-left:auto;flex:none}
+.gsx-an section.card.w>.card-h .w-tools .ibtn{width:20px;height:20px;min-height:20px;padding:0;display:grid;place-items:center;border-radius:5px;border:0;background:transparent;color:var(--ink-4);font:600 11px/1 var(--sans)}
+.gsx-an section.card.w>.card-h .w-tools .ibtn:hover{background:var(--tint);color:var(--ink)}
+.gsx-an section.card.w>.card-h .w-tools .ibtn svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.gsx-an section.card.w>.card-h .w-tools .gsq-i{border:1px solid var(--border-2);font-family:Georgia,serif;font-style:italic}
+.gsx-an section.card.w>.w-badges{display:flex;gap:4px;flex-wrap:wrap;margin:0 0 6px;padding:0}
+.gsx-an .card-b{padding:0}
+.gsx-an .card-f{border-top:1px solid var(--border);margin-top:6px;padding-top:5px;font-size:11px;color:var(--ink-4)}
+.gsx-an .cards{gap:6px}
+
+/* KPI tiles read like the live stat tiles inside cards */
+.gsx-an .kpis{gap:6px}
+.gsx-an .kpi{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:8px 10px 7px}
+.gsx-an .kpi .label{font-family:var(--mono);font-size:8.5px;letter-spacing:.12em;font-weight:600;color:var(--ink-4)}
+.gsx-an .kpi .value{font-size:22px;font-weight:700;letter-spacing:-.3px}
+.gsx-an .kpi .note{font-size:11px;color:var(--ink-3)}
+
+/* Analyzer tabs: the live stage-strip grammar, one level down */
+.gsx-an .tabs{background:transparent;border:0;border-bottom:1px solid var(--border);border-radius:0;padding:0 0 0 2px;gap:2px;margin:0}
+.gsx-an .tabs button{min-height:24px;padding:2px 10px;border-radius:4px;font-size:12px;font-weight:600;color:var(--ink-3);border:1px solid transparent}
+.gsx-an .tabs button.active{background:var(--accent-soft);border-color:var(--accent-line);color:var(--ink);box-shadow:none}
+
+/* Guided review bar: the live .summary band look */
+.gsx-an .walk{background:var(--surface-2);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:8px;margin:0}
+
+/* Pills inside analyzer content follow the live badge */
+.gsx-an .pill{border-radius:4px;font-size:10.5px;padding:1px 6px}
+.hdr .gsx-ws{position:relative}
+.hdr .gsx-ws .gsx-ws-sel{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.hdr .gsf-tabs a.gsx-tab-a{display:inline-flex;align-items:center;justify-content:center;color:inherit;text-decoration:none}
+/* Quiet mode (live gsq-quiet): captions and footnotes off by default; "Show text" in the footer puts them back */
+.gsx-an.gsx-quiet section.card .card-h .card-sub,.gsx-an.gsx-quiet section.card>.card-f{display:none}
+.summary .facts b code.gsx-pn{background:none;padding:0;font-family:var(--mono);font-size:10.5px;font-weight:500;color:var(--ink-3);margin-left:6px}
+
+/* Live-stylesheet leaks into analyzer content (found by tests/css-leak.mjs): restore the preview structure */
+.gsx-an .notice,.gsx-layer .notice{display:block;gap:0}
+.gsx-an .notice b{color:inherit}
+.gsx-an code,.gsx-layer code{display:inline;min-height:0}
+.gsx-an .notice{margin:8px 0}
+.gsx-an :is(p,span,b,a,label,li,td,th,em,strong,small)>svg{display:inline-block;vertical-align:middle}
+.gsx-an section[role="tabpanel"]>div.notice{margin:8px 0}
+.gsx-an section[role="tabpanel"]>div.notice:first-child{margin-top:0}
+/* live dense mode zeroes .notice margins (#app.gsf-dense .notice): inside the analyzer a notice still needs air from the block above */
+#app .gsx-an .notice{margin:8px 0}
+#app .gsx-an section[role="tabpanel"]>div.notice:first-child{margin-top:0}
+
+/* ---- Shared map (geomap.js): the live basemap palette; strokes keep their width when zoomed ---- */
+:root{--gm-water:#0a111e;--gm-land:#1b2840;--gm-lake:#0e1a2e;--gm-river:#1f3b5e;--gm-county:rgba(160,181,212,.13);--gm-state:rgba(160,181,212,.42);--gm-nh:#4a5568}
+.gm-wrap{position:relative;border:1px solid var(--border);border-radius:4px;overflow:hidden;background:var(--gm-water)}
+svg.gm{display:block;width:100%;height:var(--gm-h,420px);cursor:grab;touch-action:none}
+svg.gm:active{cursor:grabbing}
+svg.gm path,svg.gm line,svg.gm circle{vector-effect:non-scaling-stroke}
+.gm .gm-water{fill:var(--gm-water)}
+.gm .gm-land{fill:var(--gm-land);stroke:none}
+.gm .gm-lake{fill:var(--gm-lake);stroke:none}
+.gm .gm-river{fill:none;stroke:var(--gm-river);stroke-width:.8}
+.gm .gm-county{fill:none;stroke:var(--gm-county);stroke-width:.6}
+.gm .gm-state{fill:none;stroke:var(--gm-state);stroke-width:1}
+.gm .gm-border{fill:none;stroke:var(--gm-state);stroke-width:1.2;stroke-dasharray:4 3}
+.gm .gm-slabel,.gm .gm-clabel{fill:var(--ink-4);font:600 10px var(--sans);letter-spacing:.12em;text-anchor:middle;pointer-events:none;opacity:.75}
+.gm .gm-clabel{font-weight:500;font-size:9px;letter-spacing:.04em;opacity:.55}
+.gm .gm-rings circle{fill:none;stroke:var(--border-3);stroke-dasharray:3 4}
+.gm .gm-rings text{fill:var(--ink-4);font:10px var(--mono)}
+.gm .gm-lines line{stroke:var(--ink-4);stroke-width:1.2;opacity:.7}
+.gm .gm-lines line.gm-net{stroke:#3a4d6b;stroke-width:1;opacity:.9}
+.gm .gm-lines line.gm-lim{stroke:var(--bad);stroke-width:2.5;opacity:1}
+.gm .gm-lines line.gm-pre{stroke:var(--warn);stroke-width:2.5;opacity:1;stroke-dasharray:5 3}
+.gm .gm-lines line[data-tip]:hover{stroke-width:4;opacity:1}
+.gm .gm-pts circle{stroke:var(--gm-water);stroke-width:1.5;fill:var(--s1)}
+.gm .gm-pts circle[data-tip]{cursor:pointer}
+.gm .gm-pts circle:hover{stroke:var(--ink);stroke-width:2}
+.gm .gm-pts circle.gm-sel{stroke:var(--ink);stroke-width:2.5}
+.gm .gm-plabel,.gm .gm-labels text{fill:var(--ink-2);font:600 11px var(--sans);paint-order:stroke;stroke:var(--gm-water);stroke-width:3px;stroke-linejoin:round;pointer-events:none}
+.gm .gm-scale line{stroke:var(--ink-3);stroke-width:1.2}
+.gm .gm-scale text{fill:var(--ink-3);font:10px var(--mono);text-anchor:middle}
+.gm-legend{display:flex;flex-wrap:wrap;align-items:center;gap:4px 14px;margin-top:6px;font-size:11px;color:var(--ink-3)}
+.gm-legend .gm-li{display:inline-flex;align-items:center;gap:6px}
+.gm-legend .gm-lk{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-4)}
+.gm-legend .gm-sw{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--s1)}
+.gm-legend .gm-sw.gm-sw-line{width:16px;height:3px;border-radius:2px}
+.gm-legend .gm-ramp{display:inline-block;width:120px;height:8px;border-radius:4px}
+.gm-wrap .map-ctl{position:absolute;top:8px;right:8px;display:flex;flex-direction:column;gap:4px}
+.gm-wrap .map-ctl button{width:26px;height:26px;min-height:26px;padding:0;border-radius:5px;background:var(--surface-2);border:1px solid var(--border-2);color:var(--ink-2)}
+.gm .m-met{fill:var(--s1);cursor:pointer}.gm .m-unknown{fill:var(--surface);stroke:var(--ink-4);stroke-width:1;cursor:pointer}.gm .m-unmet{fill:#5a6b85;cursor:pointer}.gm .m-excluded{fill:var(--border);opacity:.5}.gm .gm-pts circle.m-hl{fill:none;stroke:var(--s2);stroke-width:2.5;pointer-events:none}.gm .gm-pts circle.m-sel{fill:none;stroke:var(--ink);stroke-width:3;pointer-events:none}
+
+/* ---- Percentile strip (charts.percentileStrip) ---- */
+.pstrip{display:grid;gap:8px}
+.pstrip .ps-title{font-size:12px;color:var(--ink-3)}
+.ps-row{display:grid;gap:2px}
+.ps-h{display:flex;align-items:baseline;gap:8px}
+.ps-l{flex:1;font-size:11.5px;color:var(--ink-3)}
+.ps-v{font-size:13px;font-weight:700;color:var(--ink);font-feature-settings:'tnum' 1}
+.ps-v small{font-size:10.5px;font-weight:500;color:var(--ink-4)}
+.ps-s{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:0 6px;border-radius:4px;border:1px solid var(--border-2);color:var(--ink-3)}
+.ps-s.ps-met{color:var(--ok);border-color:var(--ok-line);background:var(--ok-bg)}
+.ps-s.ps-not-met{color:var(--bad);border-color:var(--bad-line);background:var(--bad-bg)}
+.ps-s.ps-unknown{color:var(--warn);border-color:var(--warn-line);background:var(--warn-bg)}
+svg.ps-svg{display:block;width:100%;height:22px}
+.ps-svg .ps-track{stroke:var(--border-2);stroke-width:2;stroke-linecap:round}
+.ps-svg .ps-band{fill:var(--s1);opacity:.28}
+.ps-svg .ps-med{stroke:var(--ink-4);stroke-width:1.5}
+.ps-svg .ps-ref{stroke:var(--ink-2);stroke-width:1.5;stroke-dasharray:3 2}
+.ps-svg .ps-dot{stroke:var(--surface);stroke-width:2;fill:var(--ink-2)}
+.ps-svg .ps-dot.ps-met{fill:var(--ok)}.ps-svg .ps-dot.ps-not-met{fill:var(--bad)}.ps-svg .ps-dot.ps-context{fill:var(--s1)}
+.ps-f{font-family:var(--mono);font-size:10px;color:var(--ink-4)}
+.ps-key{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:10.5px;color:var(--ink-4);border-top:1px solid var(--border);padding-top:5px}
+.ps-key i{display:inline-block;margin-right:5px;vertical-align:middle}
+.ps-key .ps-k-band{width:14px;height:7px;border-radius:4px;background:var(--s1);opacity:.4}
+.ps-key .ps-k-med{width:1.5px;height:10px;background:var(--ink-4)}
+.ps-key .ps-k-ref{width:0;height:10px;border-left:1.5px dashed var(--ink-2)}
+.ps-key .ps-k-dot{width:8px;height:8px;border-radius:50%;background:var(--ink-2)}
+
+/* ---- Answer-first cards: the one-sentence answer (live .w-p) above the visual ---- */
+.gsx-an .card-answer{margin:2px 0 8px;font-size:15px;line-height:1.4;font-weight:600;color:var(--ink-2)}
+.gsx-an .card-answer b{color:var(--ink);font-weight:700}
+
+/* ---- Compact KPI tiles (live stat tiles: label · value · one note line) ---- */
+.gsx-an .kpi{padding:7px 10px 6px}
+.gsx-an .kpi .value{font-size:20px;line-height:1.15}
+.gsx-an .kpi .note{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:3px}
+
+/* ---- Guided review: one line; the rest behind "Demo inputs and evidence" ---- */
+.gsx-an .walk{padding:5px 10px;gap:3px}
+.gsx-an .walk .walk-b{flex-wrap:nowrap}
+.gsx-an .walk .walk-what{font-size:12px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.gsx-an .walk .walk-assumptions{border-top:0;padding-top:0}
+
+/* ---- Compact controls: rarely used inputs behind "More options"; the tab's "Next:" step ---- */
+.gsx-an details.more-ctl{margin:4px 0 0;border:0;padding:0}
+.gsx-an details.more-ctl>summary{display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-size:11.5px;font-weight:600;color:var(--accent);list-style:none;padding:2px 0}
+.gsx-an details.more-ctl>summary::-webkit-details-marker{display:none}
+.gsx-an details.more-ctl>summary::before{content:'▸';font-size:10px;transition:transform .15s}
+.gsx-an details.more-ctl[open]>summary::before{transform:rotate(90deg)}
+.gsx-an details.more-ctl[open]>*:not(summary){margin-top:6px}
+.gsx-an .next-step{display:flex;align-items:center;gap:10px;margin:8px 0 2px;padding:7px 12px;border:1px solid var(--accent-line);border-radius:8px;background:var(--accent-soft);font-size:12.5px;color:var(--ink-2)}
+.gsx-an .next-step b{color:var(--ink)}
+.gsx-an .next-step{justify-content:space-between} /* no auto margin: its px resolves differently under the live type (css-leak) */
+
+.gm .gm-lines line.gm-sel{stroke:var(--ink);stroke-width:4;opacity:1}
+
+/* ---- Land (moved from views/land-charts.js LAND_CSS) ---- */
+.gsx-an .land-ring{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.gsx-an .land-ring svg{flex:none}
+.gsx-an .land-legend{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:11.5px;min-width:180px;flex:1}
+.gsx-an .land-legend li{display:grid;grid-template-columns:10px 1fr auto auto;gap:8px;align-items:center}
+.gsx-an .land-legend i{width:10px;height:10px;border-radius:2px;display:inline-block}
+.gsx-an .land-legend b{font-variant-numeric:tabular-nums;font-weight:600}
+.gsx-an .land-legend em{font-style:normal;color:var(--ink-3);font-variant-numeric:tabular-nums;min-width:44px;text-align:right}
+.gsx-an .land-gauge{text-align:center}
+.gsx-an .land-gauge svg{width:100%;max-width:260px;height:auto}
+.gsx-an .lg-v{font-size:22px;font-weight:650;font-variant-numeric:tabular-nums;margin-top:-6px}
+.gsx-an .lg-l{font-size:11px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em}
+.gsx-an .lg-n{font-size:11px;color:var(--ink-3);margin-top:4px}
+.gsx-an .land-gauges{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:6px}
+.gsx-an .land-maplegend{display:flex;flex-wrap:wrap;gap:12px;font-size:10.5px;color:var(--ink-3);margin-top:6px}
+.gsx-an .land-maplegend i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
+.gsx-an .land-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px 10px;align-items:end}
+.gsx-an .land-form .field input,.gsx-an .land-form .field select{min-height:32px;padding:5px 8px}
+.gsx-an .land-notes{margin:6px 0 0;padding-left:16px;font-size:11.5px;color:var(--ink-3);line-height:1.55}
+.gsx-an .land-status select{min-height:28px;padding:3px 6px;font-size:12px;min-width:118px}
+.gsx-an .land-status input{min-height:28px;padding:3px 6px;font-size:12px;width:90px}
+.gsx-an .land-kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:12px;margin:0}
+.gsx-an .land-kv dt{color:var(--ink-3)}
+.gsx-an .land-kv dd{margin:0;font-variant-numeric:tabular-nums}
+/* ---- Decision memo print (moved from views/decision.js) ---- */
+@media print{body *{visibility:hidden!important}.d-print,.d-print *{visibility:visible!important}.d-print{position:absolute;left:0;top:0;width:100%}}
+.gm .gm-lines line.gm-tie{stroke:var(--s2);stroke-width:2;stroke-dasharray:6 4;opacity:1}
+.ps-tw{position:relative}
+.ps-svg line{vector-effect:non-scaling-stroke}
+.ps-tw>i.ps-dot{position:absolute;top:50%;width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;background:var(--ink-2);border:2px solid var(--surface);box-sizing:border-box}
+.ps-tw>i.ps-dot.ps-met{background:var(--ok)}.ps-tw>i.ps-dot.ps-not-met{background:var(--bad)}.ps-tw>i.ps-dot.ps-context{background:var(--s1)}.ps-tw>i.ps-dot.ps-unknown{background:var(--warn)}
+.chart text.dlabel{fill:var(--ink-2);font-weight:600;font-size:11px}
+
+/* ---- Persistent frame (M1, frame.js): the live dock grid (studio.css §4) is reused as is; these rules cover what the
+   preview adds — a dock header on the inspector, its placeholder, and touch drags on the splitters. ---- */
+.gsf-split{touch-action:none}
+#app.gsf-docked #gsf-insp>.gsf-host{flex:1}
+#app.gsf-docked.gsf-insp-off #gsf-insp>:not(.gsf-tab){display:none}
+#app.gsf-docked #gsf-split-h{height:var(--split)}
+.gsf-ph .btn.sm{margin:6px 0 2px;min-height:24px;padding:0 10px;border-radius:4px}

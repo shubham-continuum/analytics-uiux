@@ -1,0 +1,14 @@
+{
+ "file": "app-icons.js",
+ "why": "Lift plan 14 L3 (builder G-configurator, 2026-10-13): ICONS + icon() are consts inside the live shell IIFE; as a classic script they would be page globals. Wrapped as one function expression assigned to window.GSX_CFG_ICON, which views/configurator-host.js traps for the span of the load (nothing global remains). The shim's App.icon stays '' (the vendored map/grid draw no icons: visual parity), so the Configurator gets these through patch F3.",
+ "edits": [
+  {
+   "find": "  const ICONS = {",
+   "replace": "window.GSX_CFG_ICON = (function () { /* One Studio patch F2 */\n  const ICONS = {"
+  },
+  {
+   "find": "aria-hidden=\"true\">${ICONS[n] || ''}</svg>`;",
+   "replace": "aria-hidden=\"true\">${ICONS[n] || ''}</svg>`;\n  return icon;\n})();"
+  }
+ ]
+}

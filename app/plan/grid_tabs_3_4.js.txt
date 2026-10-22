@@ -1,0 +1,71 @@
+// ---------- Tab 3: Upgrade cost allocator ----------
+function costDirection(S) { return S.tech === 'datacenter' ? 'import' : 'export'; }
+function costSize(S) { return costDirection(S) === 'export' ? Number(S.exportMW) : Number(S.importMW); }
+function costLabel(c) {
+  if (c.status === 'Not requested') return '—';
+  if (c.status === 'Not held') return 'not held';
+  if (c.status === 'Lower bound') return `≥ ${musd(c.total)}`;
+  return musd(c.total);
+}
+function tabCost({ data, S }) {
+  const dir = costDirection(S), size = costSize(S), tech = techKey(S.tech);
+  const step = stepCostAll(data.grid, S.nodeId, tech, size, dir);
+  S.ui.allocKey = `${S.nodeId}|${tech}|${dir}|${size}`;
+  const edits = (S.ui.alloc ||= {})[S.ui.allocKey] ||= {};
+  const gapRows = step.gaps.map(g => ({ id: `gap|${g.key}`, label: `Network upgrades for ${g.label}`, category: 'Network upgrade', cost: null, share: 100, source: `${g.reason}${ok(g.envelope) ? ` · envelope ${fmt.mw(g.envelope)} is below the request` : ''}` }));
+  const scope = [
+    ...step.items.map(i => ({ id: i.id, label: i.label, category: 'Network upgrade', cost: i.cost, share: 100, source: `Study facility cost · ${i.case} · overloads at ${fmt.mw(i.transfer)}` })),
+    ...gapRows,
+    { id: 'direct', label: 'Direct connection facilities (POI bay, gen-tie)', category: 'Direct facility', cost: null, share: 100, source: 'Enter from a vendor quote or study' },
+    { id: 'affected', label: 'Affected-system upgrades', category: 'Affected system', cost: null, share: 100, source: 'Not in the store' },
+  ].map(r => ({ ...r, ...(edits[r.id] || {}) }));
+  const res = allocateCosts(scope);
+  const known = res.rows.filter(r => r.allocation != null).reduce((t, r) => t + r.allocation, 0);
+  const networkUnpriced = res.rows.filter(r => r.category === 'Network upgrade' && r.allocation == null).length;
+  S.ui.allocSummary = { tech, dir, size, known, unpriced: res.unpriced, networkUnpriced, status: step.status, edited: Object.keys(edits).length > 0 };
+  const rows = res.rows.map(r => `<tr><td class="wrap">${esc(r.label)}</td><td>${esc(r.category)}</td>
+      <td class="num"><input class="cost-input" type="number" min="0" step="0.01" aria-label="Cost $M for ${esc(r.label)}" data-act="alloc" data-id="${esc(r.id)}" data-f="cost" value="${r.cost ?? ''}" placeholder="not held"></td>
+      <td class="num"><input class="cost-input" style="width:80px" type="number" min="0" max="100" step="1" aria-label="Project share % for ${esc(r.label)}" data-act="alloc" data-id="${esc(r.id)}" data-f="share" value="${r.share}"></td>
+      <td class="num">${r.allocation != null ? musd(r.allocation) : 'unpriced'}</td><td class="wrap">${esc(r.source)}</td></tr>`).join('');
+  const subtotal = networkUnpriced ? `≥ ${musd(known)}` : musd(known);
+  return `<div class="notice">Allocation scenario: <b>${Object.keys(edits).length ? 'Edited' : 'Standalone (project pays 100%)'}</b>. A simple MW share is illustrative only; ISO-NE's cluster allocation method is not held. Study-issued allocations replace these when available.${S.tech === 'datacenter' ? ' Data-centre cost uses the large-load case.' : ''}</div>
+    ${res.errors.length ? `<div class="notice error" role="alert">${res.errors.map(esc).join(' ')}</div>` : ''}
+    ${step.gaps.length ? `<div class="notice warn">${step.gaps.map(g => esc(g.label)).join(', ')}: no facility costs are held for this case, so the network-upgrade total is a lower bound.</div>` : ''}
+    <div class="kpis">
+      ${kpi('Known subtotal', subtotal, '', `Network: ${costLabel(step)} (${esc(step.status.toLowerCase())}) at ${fmt.mw(size)}`)}
+      ${kpi('Unpriced scope', fmt.int(res.unpriced), 'items', res.unpriced ? 'Total is at least the subtotal' : 'All listed scope priced')}
+      ${kpi('Per kW (known)', ok(known) && size > 0 ? `${networkUnpriced ? '≥ ' : ''}$${((known * 1e6) / (size * 1000)).toFixed(0)}` : '—', '/kW', 'Known subtotal ÷ request')}
+    </div>
+    <div class="panel"><div class="panel-head"><div><h2>Upgrade scope</h2><p class="sub">Facilities that overload below the request in any applicable case, plus direct and affected-system scope</p></div><button data-act="alloc-reset">Reset to study values</button></div>
+      <div class="table-wrap"><table><thead><tr><th>Scope</th><th>Category</th><th class="num">Cost $M</th><th class="num">Project share %</th><th class="num">Allocated</th><th>Source</th></tr></thead><tbody>${rows}</tbody></table></div>
+      ${step.contingent ? `<div class="notice warn">${step.contingent} pre-existing overload(s) carry flow from this project and may need upgrades first (contingent facilities).</div>` : ''}
+      <div class="handoff"><div><strong>Use this cost scenario in finance</strong><p>Project finance adds the known subtotal to capital cost and lists the ${fmt.int(res.unpriced)} unpriced item(s).</p></div><button class="primary" data-act="handoff-cost">Use this upgrade-cost scenario in Finance</button></div>
+      ${details('<p>Project estimate = Σ (cost × project share). Facilities are unioned across all applicable study cases. A case with no facility costs that binds below the request makes the total a lower bound (≥). Unpriced items are counted, never treated as $0.</p>', '<p>Costs come from the stored facility study. No interpolation between study sizes. A true $0 is shown only when every applicable case has evidence that nothing overloads below the request.</p>', evidence(data))}
+    </div>`;
+}
+
+// ---------- Tab 4: Mitigation & phasing ----------
+function tabMitigation({ data, S }) {
+  const tech = techKey(S.tech), dir = costDirection(S), req = costSize(S);
+  const t = caseTable(data.grid, S.nodeId, tech, Number(S.exportMW), Number(S.importMW));
+  const ex = binding(t, 'export'), im = binding(t, 'import');
+  // Storage charges at S MW, so its size limit is the lower of export and charge bindings.
+  const limits = [dir === 'export' ? ex.value : im.value, ['storage', 'hybrid'].includes(S.tech) ? im.value : null].filter(ok);
+  const lim = limits.length ? Math.min(...limits) : null;
+  const sizes = [...new Set([25, 50, 75, 100, 150, 200, 250, 300, req, ok(lim) ? Math.floor(lim) : null].filter(v => ok(v) && v > 0))].sort((a, b) => a - b);
+  const alt = sizes.map(s => { const c = stepCostAll(data.grid, S.nodeId, tech, s, dir); return { s, fits: ok(lim) ? s <= lim : null, c }; });
+  const rows = alt.map(a => `<tr${a.s === req ? ' style="background:#f3f8f8"' : ''}><td class="num">${fmt.mw(a.s)}${a.s === req ? ' (request)' : ''}${ok(lim) && a.s === Math.floor(lim) ? ' (largest that fits)' : ''}</td><td>${a.fits == null ? '<span class="pill">not studied</span>' : a.fits ? '<span class="pill good">Fits</span>' : '<span class="pill warn">Needs upgrades</span>'}</td><td class="num">${costLabel(a.c)}${a.c.unpriced ? ` + ${a.c.unpriced} unpriced` : ''}</td><td class="num">${ok(a.c.total) && ['Priced', 'True zero'].includes(a.c.status) && a.s > 0 ? `$${((a.c.total * 1e6) / (a.s * 1000)).toFixed(0)}/kW` : '—'}</td></tr>`).join('');
+  const atReq = stepCostAll(data.grid, S.nodeId, tech, req, dir);
+  const pts = alt.filter(a => ['Priced', 'True zero', 'Partly priced'].includes(a.c.status) && ok(a.c.total)).map(a => ({ x: a.s, y: a.c.total }));
+  return `<div class="kpis">
+      ${kpi('Largest size without upgrades', ok(lim) ? fmt.mw(Math.floor(lim)) : 'not held', '', ['storage', 'hybrid'].includes(S.tech) ? 'Lower of export and shoulder-charge limits' : (dir === 'export' ? ex.row?.label : im.row?.label) || '')}
+      ${kpi('Upgrade cost at request', costLabel(atReq), '', `${fmt.mw(req)} · ${esc(atReq.status.toLowerCase())}`)}
+      ${kpi('Output given up by downsizing', ok(lim) && req > lim ? fmt.mw(req - Math.floor(lim)) : '—', '', 'Request − largest size that fits')}
+    </div>
+    <div class="panel"><div class="panel-head"><div><h2>Upgrade cost by project size</h2><p class="sub">Step function from published facility limits and costs (screening; no new study). Sizes where the total is only a lower bound are not plotted.</p></div></div>
+      ${pts.length ? lineChart([{ name: 'Upgrade cost', points: pts }], { fmt: v => `$${v.toFixed(1)}M`, xfmt: v => `${v} MW`, title: 'Upgrade cost by size' }) : '<div class="notice">No complete cost is held for any size in this configuration.</div>'}
+      <div class="table-wrap"><table><thead><tr><th class="num">Size</th><th>Connection</th><th class="num">Upgrade cost</th><th class="num">Per kW</th></tr></thead><tbody>${rows}</tbody></table></div>
+      <p class="audit-note">Also consider: charging caps (Economics › BESS dispatch uses the shoulder charge limit), staged capacity (build to the largest size that fits, add after upgrades), and alternative POIs (switch the candidate bus above).</p>
+      ${details('<p>Cost(S) = Σ facility costs whose transfer limit is below S, across all applicable cases, excluding pre-existing overloads.</p>', '<p>Sizes between study points are screened from facility transfer limits, which are size-independent. This is not an interconnection study result.</p>', evidence(data))}
+    </div>`;
+}

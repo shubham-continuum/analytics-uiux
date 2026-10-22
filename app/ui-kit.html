@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GridSense · UI kit (layout fixture)</title><link rel="icon" href="./favicon.svg"><link rel="stylesheet" href="./app.css"></head>
+<body><main class="main" id="app"></main>
+<script type="module">
+// Layout + chart fixture for the Shell/UI agent's screenshot sweep (tests/shots-ui.mjs kit).
+// SYNTHETIC SHAPES ONLY: these values are generated, are not data and never reach a dashboard.
+import { resetCharts, mountCharts, handleChartToggle, stackedBar, areaChart, scatter, histogram, sparkline, durationCurve, lineChart, barChart, heatmap, groupedBar } from './charts.js';
+import { mountTables } from './ui.js';
+resetCharts();
+const f = v => v.toFixed(1), wave = (n, a, p) => Array.from({ length: n }, (_, i) => a + a * 0.6 * Math.sin((i / n) * Math.PI * p));
+const kpi = (l, v, u, n, nh) => `<div class="kpi${nh ? ' nh' : ''}"><div class="label">${l}</div><div class="value">${v}${u ? `<span class="unit">${u}</span>` : ''}</div><div class="note">${n}</div></div>`;
+const card = (c, t, sub, body, foot = '', tools = '') => `<section class="card ${c}"><header class="card-h"><h3>${t}</h3><span class="card-sub">${sub}</span><div class="card-tools">${tools}</div></header><div class="card-b">${body}</div>${foot ? `<footer class="card-f">${foot}</footer>` : ''}</section>`;
+const rows = Array.from({ length: 30 }, (_, i) => `<tr><td>Item ${i + 1}</td><td class="num">${(i * 3.7).toFixed(1)}</td><td class="num">${i % 7 ? (i * 1.3).toFixed(2) : 'not held'}</td><td>${sparkline(wave(12, 5 + i, 2))}</td></tr>`).join('');
+document.getElementById('app').innerHTML = `
+<div class="notice warn"><b>Layout fixture.</b> Synthetic shapes to check the card grid and charts. Not data.</div>
+<div class="kpis">${kpi('Held value', '$66.71', '/MWh', 'note line')}${kpi('Range', '$22 – $183', '/MWh', 'p5 to p95')}${kpi('Not held', 'not held', '', 'no forecast run for this bus', true)}${kpi('Share', '0.8%', 'of hours', 'price < $0')}</div>
+<div class="cards">
+${card('c-8', 'Stacked bar', 'energy + congestion + losses by year · synthetic', stackedBar(['2020', '2021', '2022', '2023', '2024', '2025'].map((l, i) => ({ label: l, values: [30 + i * 5, i % 2 ? -2 : 3, i === 3 ? null : 1.2] })), { series: ['Energy', 'Congestion', 'Losses'], fmt: f, title: 'kit-stack' }), 'source · caveat line', '<button>Export</button>')}
+${card('c-4 r-2', 'Tall table', 'r-2 card fills two rows', `<div class="table-wrap"><table class="dense"><thead><tr><th>Item</th><th class="num">A</th><th class="num">B</th><th>Trend</th></tr></thead><tbody>${rows}</tbody></table></div>`)}
+${card('c-8', 'Area (stacked)', 'two series stacked', areaChart([{ name: 'Solar', points: wave(24, 20, 1).map((y, x) => ({ x, y })) }, { name: 'Wind', points: wave(24, 12, 3).map((y, x) => ({ x, y: x === 9 ? null : y })) }], { stacked: true, fmt: f, title: 'kit-area' }))}
+${card('c-4', 'Scatter', 'grouped points', scatter(Array.from({ length: 40 }, (_, i) => ({ x: i * 2.5, y: 10 + ((i * 37) % 23), label: `b${i}`, group: i % 3 ? 'A' : 'B' })), { xLabel: 'MW', yLabel: '$/MWh', fmt: f, xfmt: v => v.toFixed(0), title: 'kit-scatter' }))}
+${card('c-4', 'Histogram', 'hourly distribution', histogram(wave(500, 40, 17).concat([null, null]), { fmt: v => v.toFixed(0), title: 'kit-hist' }))}
+${card('c-4', 'Duration curve', 'sorted high → low', durationCurve([{ name: 'RT', values: wave(800, 40, 11) }, { name: 'DA', values: wave(800, 38, 7) }], { fmt: v => v.toFixed(0), title: 'kit-dur' }))}
+${card('c-6', 'Heatmap', 'month × hour on the Studio ramp', heatmap(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((m, r) => ({ label: m, cells: Array.from({ length: 24 }, (_, h) => ({ label: String(h), value: r === 4 && h === 3 ? null : 20 + 30 * Math.sin((h / 24) * Math.PI) + r })) })), { fmt: v => v.toFixed(0), title: 'kit-heat' }))}
+${card('c-6', 'Grouped bar + line', 'existing charts in a card', groupedBar(['Q1', 'Q2', 'Q3', 'Q4'].map((l, i) => ({ label: l, values: [10 + i, 8 + i * 2, i === 2 ? null : 5] })), { series: ['One', 'Two', 'Three'], fmt: f, title: 'kit-gbar' }) + lineChart([{ name: 'L', points: wave(12, 9, 2).map((y, x) => ({ x, y })) }], { fmt: f, height: 140, title: 'kit-line' }))}
+${card('c-3', 'c-3 card', 'a long subtitle that should truncate on one line then show in full on hover', barChart([{ label: 'a', value: 3 }, { label: 'b', value: null }, { label: 'c', value: -2 }], { fmt: f, title: 'kit-bar' }))}
+${card('c-3', 'Empty state', 'explained', histogram([], { emptyText: 'No hourly prices are held for this node in 2019.' }))}
+${card('c-6', 'Notice + text', 'a card with prose', '<div class="notice">A notice inside a card.</div><p class="sub">Short paragraph of explanation text in a card body.</p>')}
+<section class="card c-12 card-trace"><details class="trace" data-trace="kit"><summary>Calculation: example <span class="trace-result">= <b>1.0</b></span></summary><div class="trace-body"><div class="trace-formula">x = a ÷ b</div></div></details></section>
+</div>`;
+const root = document.getElementById('app');
+root.addEventListener('click', e => handleChartToggle(e.target));
+mountCharts(root); mountTables(root);
+</script></body></html>

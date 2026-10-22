@@ -1,0 +1,2158 @@
+{
+ "generatedAt": "2026-09-29T19:39:12+00:00",
+ "generator": "plan/build_samples.py",
+ "source": "unified ISONE_GridSense_unified.duckdb (read-only): dim_bus, bridge_bus_pnode, mart_bus_year/_tb/_da_rt/_month/_fcst_year, fact_lmp_hourly, fact_headroom, fact_limiting_element, dim_queue · data/land.json (Studio copy, older database) · Studio demo projects parsed from studio/src/app.js GS_SEED (read-only)",
+ "rules": "Observed Grid limits, cost status, land fit and queue counts come from the preview cores (gridrules.js, landcore.js, queuecore.js); observed price figures from prices.js analyzePrices on the settled 2025 RT basis. Finance and planning presets are explicitly illustrative assumptions.",
+ "basisNote": "Every sample uses the settled 2025 RT basis at the option bus (one bus, one price). The Studio demo used case sp, horizon 2030, history 2025; the 2030 forecast figure is quoted beside it, never mixed in.",
+ "hub": {
+  "avg": 65.88346118721462,
+  "hours": 8760
+ },
+ "fitCounts": {
+  "solar100": 1462,
+  "storage100": 853,
+  "hybrid150": 747,
+  "dc300": 181,
+  "wind200": 761
+ },
+ "projects": [
+  {
+   "id": "kennebec",
+   "name": "Dummy — Cape Cod Solar (sample)",
+   "client_type": "Solar developer",
+   "tech": "solar",
+   "exportMW": 100,
+   "importMW": 0,
+   "narrative": "A developer weighs a 100 MW solar project on Cape Cod, mirroring the Studio's Cape Cod Solar demo. Hatchville has its own price node and a clear-sky capture of $52.41/MWh (0.785 of its 2025 mean); QP624 OSP S1 borrows a neighbour's price and its upgrade cost is only a lower bound, so the choice turns on evidence quality as much as price.",
+   "options": [
+    {
+     "id": "o1",
+     "label": "Same-substation price",
+     "busId": "111403",
+     "busName": "Mashpee",
+     "tier": "same_substation",
+     "note": "Studio demo option o1 (Cape Cod Solar). Priced at the price node at the same substation (LD.MASHPEE 23). Export limit 152.8 MW (Summer peak · export, fits); upgrade cost no upgrades indicated (Shoulder · export confirmed by the envelope only)."
+    },
+    {
+     "id": "o2",
+     "label": "Own price node",
+     "busId": "111209",
+     "busName": "Hatchville",
+     "tier": "direct",
+     "note": "Studio demo option o2. Priced at its own settlement node LD.HATCHVIL23. Export limit 197.8 MW (Summer peak · export, fits); upgrade cost no upgrades indicated (Shoulder · export confirmed by the envelope only)."
+    },
+    {
+     "id": "o3",
+     "label": "Borrowed price",
+     "busId": "111348",
+     "busName": "QP624 OSP S1",
+     "tier": "geo_proxy",
+     "note": "Nearest borrowed-price bus to Mashpee (10.7 mi) whose 100 MW solar upgrade cost is a Lower bound. Borrowed price: nearest node un.vnyrdwnd115 vinw is 1.0 km away. Export limit 55.7 MW (Shoulder · export, does not fit)."
+    }
+   ],
+   "basis": {
+    "mode": "historical",
+    "market": "RT",
+    "run": null,
+    "years": [
+     2025
+    ],
+    "weighting": "duration",
+    "weights": {},
+    "strict": true,
+    "includePartial": false
+   },
+   "steps": [
+    {
+     "stage": "market",
+     "tab": "find",
+     "depth": "screen",
+     "option": "o2",
+     "what_to_look_at": "By the Grid element-study rule, 1,462 of 2,678 buses fit 100 MW of solar export on every applicable case. Screen depth shows only these ISO-wide figures. Hatchville is one; its 2025 RT mean is $66.74.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "market",
+     "tab": "rank",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Rank candidate buses under this project’s 100 MW export / 0 MW import request. Compare Mashpee with the pinned options; a score is a screen, not a permit or interconnection approval.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "market",
+     "tab": "size",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Sweep request size around 100 MW. Directional grid cases can change the ranking; use the same request on Grid before carrying a limit into Economics.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "market",
+     "tab": "regions",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Compare ISO-NE regions at the selected technology and request size, then drill to Mashpee; an ISO-wide aggregate is not a site price.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "land",
+     "tab": "area",
+     "depth": "review",
+     "option": "o2",
+     "what_to_look_at": "9,592 clear acres in the 3-mile screen against 560 acres base footprint for 100 MW solar: fits on the habitat/protected screen only (Studio copy of the exclusions, older database).",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "land",
+     "tab": "footprint",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Use the 100 MW technology footprint model and test clear-acreage sensitivity. The 60% site-control input is illustrative; parcel boundaries and title are not held.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "land",
+     "tab": "corridor",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "The 1.2-mile route is an illustrative input. Move the route and crossing assumptions to see cost sensitivity; no surveyed corridor or right-of-way is represented.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "land",
+     "tab": "permits",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Review permit sequence and site-control threshold for solar. Dates and statuses remain unverified until entered; a regional exclusion screen cannot establish a permit.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "grid",
+     "tab": "capacity",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Mashpee: export limit 152.8 MW (Summer peak · export, fits). For pure solar only the export cases apply; the 99.2 MW shoulder-charge limit is irrelevant here.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "grid",
+     "tab": "constraints",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Inspect limiting facilities and study vintage behind Mashpee’s export 152.8 MW (Summer peak · export, fits) and import not requested. A missing facility list remains unassessed.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "grid",
+     "tab": "cost",
+     "depth": "study",
+     "option": "111348",
+     "what_to_look_at": "QP624 OSP S1: Lower bound: at least $8.5M priced, and Shoulder · export binds with no facility costs held. A Lower bound is never shown as a total.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "grid",
+     "tab": "mitigation",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Compare smaller requests or import caps with Mashpee’s stored directional envelope. Alternative POIs and unstudied mitigation stay conditional.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "queue",
+     "tab": "cluster",
+     "depth": "review",
+     "option": "o2",
+     "what_to_look_at": "No solved-case queue request lies within 10 mi of Hatchville; that does not mean the area is empty, only that the solved-case set holds none.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "queue",
+     "tab": "schedule",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "The 19 Nov 2026 window-close and 2029 target COD are illustrative. Compare tariff-clock minimums with observed completion durations; restudies can extend the path.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "queue",
+     "tab": "cash",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Use $15.0M = 100 MW × $0.15M/MW illustrative network-upgrade allowance; not a study estimate. The cash ladder is a what-if until Grid sends a priced allocation.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "queue",
+     "tab": "changes",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Inspect withdrawals, changed requests and study status near Mashpee. Nearby MW is context, not a one-for-one subtraction from grid headroom.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "prices",
+     "tab": "lmp",
+     "depth": "screen",
+     "option": "o2",
+     "what_to_look_at": "Hatchville: 2025 RT mean $66.74/MWh (P5 $22.18, P95 $183.56, 0.84% of hours negative) against the ISO-NE Internal Hub's $65.88. The 2030 forecast run averages $47.21 (quoted beside the basis, not mixed in). In LMP & years, add 2024 to 2025 and Apply analysis to compare a two-year result and its contribution audit; return to 2025 for the single-year figures quoted here. Historical and forecast runs stay separate.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "prices",
+     "tab": "basis",
+     "depth": "review",
+     "option": "o3",
+     "what_to_look_at": "QP624 OSP S1 borrows UN.VNYRDWND115 VINW (1.0 km): its 2025 average congestion $0.10/MWh is the neighbour's, not its own.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "prices",
+     "tab": "shape",
+     "depth": "review",
+     "option": "o2",
+     "what_to_look_at": "Clear-sky capture at Hatchville is $52.41/MWh, ratio 0.785; the mart's own solar weighting gives 0.925. The two bases differ; neither is a site profile.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "prices",
+     "tab": "tails",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Inspect negative hours, P5/P95 and spread durations on the same 2025 RT observations. A tail metric is not a bankable revenue forecast.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "economics",
+     "tab": "revenue",
+     "depth": "study",
+     "option": "o2",
+     "what_to_look_at": "Energy revenue uses the 15% capacity factor (cited assumption) and 3% losses at Hatchville's clear-sky capture of $52.41/MWh, capped at the export limit 197.8 MW.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "economics",
+     "tab": "bess",
+     "depth": "study",
+     "option": "o1",
+     "what_to_look_at": "Optional technology comparison: this project is not a stand-alone BESS. Change technology and request limits to size one; no battery earnings are automatically added to the project.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "economics",
+     "tab": "hybrid",
+     "depth": "study",
+     "option": "o1",
+     "what_to_look_at": "Optional hybrid alternative: this project is not a solar-plus-storage plant. This tab can test a new configuration, but its value is not part of the base project.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "economics",
+     "tab": "finance",
+     "depth": "study",
+     "option": "o1",
+     "what_to_look_at": "All finance fields are populated with declared planning assumptions. Year-one revenue: 100 MW × 8,760 h × 15.0% assumed CF × 97% net output × $52.39/MWh observed 2025 price = $6.7M/yr. No PPA or REC proceeds assumed. CAPEX and O&M are illustrative; grid upgrades are incomplete until priced and sent from Grid.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "decision",
+     "tab": "compare",
+     "depth": "review",
+     "option": "o2",
+     "what_to_look_at": "Clear-sky capture by option: Hatchville $52.41; Mashpee $52.39; QP624 OSP S1 $52.23. Cost status: Mashpee No upgrades indicated; Hatchville No upgrades indicated; QP624 OSP S1 Lower bound.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "decision",
+     "tab": "stress",
+     "depth": "study",
+     "option": "o1",
+     "what_to_look_at": "Stress the recommendation against price, connection, site and queue uncertainties. An unheld study or parcel stays an open risk, not a passed screen.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "decision",
+     "tab": "readiness",
+     "depth": "study",
+     "option": "o1",
+     "what_to_look_at": "Review which evidence is held, which planning inputs were assumed and which approvals or costs remain open before advancing this option.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "decision",
+     "tab": "record",
+     "depth": "study",
+     "option": "o2",
+     "what_to_look_at": "Record the choice with its basis (settled 2025 RT) and the open item: QP624 OSP S1's cost is a lower bound until Shoulder · export is studied.",
+     "trace": null,
+     "expect": []
+    }
+   ],
+   "assumptions": {
+    "label": "Illustrative planning inputs, not observed site facts or a quote",
+    "ui": {
+     "econ": {
+      "solarCF": 15,
+      "windCF": 32.5,
+      "lossPct": 3,
+      "rte": 86,
+      "duration": 4,
+      "cycleCost": 3,
+      "degradation": 0.5
+     },
+     "fin": {
+      "capex": 130000000.0,
+      "annualOM": 2600000.0,
+      "discountRate": 0.08,
+      "years": 25,
+      "constructionYears": 2,
+      "cod": 2029,
+      "annualRevenue": 6677122
+     },
+     "land": {
+      "control": 60,
+      "route": 1.2,
+      "siteLat": 41.63469,
+      "siteLon": -70.48057,
+      "perMile": 2000000,
+      "terminal": 5000000,
+      "crossings": 500000,
+      "buy": 25000,
+      "lease": 1500,
+      "disc": 8,
+      "years": 30,
+      "esc": 2,
+      "resale": 50,
+      "permits": {
+       "start": "2027-01"
+      },
+      "po0": 0,
+      "po1": 2,
+      "po2": 4,
+      "po3": 6,
+      "po4": 8,
+      "po5": 10,
+      "po6": 12,
+      "po7": 14,
+      "po8": 16,
+      "po9": 18,
+      "po10": 20,
+      "po11": 22,
+      "po12": 24,
+      "po13": 26,
+      "po14": 28,
+      "po15": 30,
+      "po16": 32,
+      "po17": 34,
+      "pd0": 6,
+      "pd1": 8,
+      "pd2": 10,
+      "pd3": 12,
+      "pd4": 6,
+      "pd5": 8,
+      "pd6": 10,
+      "pd7": 12,
+      "pd8": 6,
+      "pd9": 8,
+      "pd10": 10,
+      "pd11": 12,
+      "pd12": 6,
+      "pd13": 8,
+      "pd14": 10,
+      "pd15": 12,
+      "pd16": 6,
+      "pd17": 8
+     },
+     "qStart": "2026-11-19",
+     "qCod": 2029,
+     "qRadius": 10,
+     "qNuUser": 15.0
+    },
+    "provenance": {
+     "prices": "Settled 2025 RT at the selected bus or explicitly labelled same-substation/proxy price node",
+     "grid": "Stored solved-case directional envelopes; no new engineering study",
+     "land": "Studio-copy regional screen where held. The offset site point, 60% site control, route, land terms, line works and permit timing are demo inputs, not a parcel, easement, permit or quote",
+     "queue": "Solved-case queue records; planning dates and upgrade cost are what-if inputs",
+     "finance": "Illustrative CAPEX, O&M, 8% discount, 25 operating years and 2029 COD; replace with a project estimate"
+    },
+    "revenueMethod": "100 MW × 8,760 h × 15.0% assumed CF × 97% net output × $52.39/MWh observed 2025 price = $6.7M/yr. No PPA or REC proceeds assumed.",
+    "optionAnnualRevenue": {
+     "111403": 6677122,
+     "111209": 6680546,
+     "111348": 6656807
+    },
+    "optionSite": {
+     "111403": {
+      "siteLat": 41.63469,
+      "siteLon": -70.48057
+     },
+     "111209": {
+      "siteLat": 41.62616,
+      "siteLon": -70.56229
+     },
+     "111348": {
+      "siteLat": 41.70169,
+      "siteLon": -70.29266
+     }
+    },
+    "networkUpgradeMethod": "$15.0M = 100 MW × $0.15M/MW illustrative network-upgrade allowance; not a study estimate."
+   },
+   "coverage": {
+    "analyzers": 28,
+    "observedSources": [
+     "2025 RT prices",
+     "stored grid envelopes",
+     "solved-case queue records"
+    ],
+    "assumedInputs": [
+     "site point and control",
+     "route and line costs",
+     "land terms and permit timing",
+     "network-upgrade allowance when no priced subtotal",
+     "CAPEX",
+     "O&M",
+     "annual revenue",
+     "COD"
+    ],
+    "openEvidence": [
+     "parcel/site control proof",
+     "final interconnection study",
+     "unpriced upgrade scope",
+     "executed revenue contract"
+    ]
+   },
+   "dummy": true
+  },
+  {
+   "id": "storage",
+   "name": "Dummy — ME Storage 100 MW / 400 MWh (sample)",
+   "client_type": "Storage developer",
+   "tech": "storage",
+   "exportMW": 100,
+   "importMW": 100,
+   "narrative": "A storage developer compares two 100 MW / 400 MWh sites in ME. Powersville has the richer spread (TB4 $74.06/MWh) but can only charge 57.3 MW on the shoulder case; Washington takes the full 100 MW both ways at a TB4 of $73.54/MWh.",
+   "options": [
+    {
+     "id": "o1",
+     "label": "Tight shoulder charge",
+     "busId": "103029",
+     "busName": "Powersville",
+     "tier": "geo_proxy",
+     "note": "Highest settled 2025 TB4 ($74.06/MWh) among buses where 100 MW export fits but the shoulder-charge limit does not: charge 57.3 MW (Shoulder · charge, does not fit), export 145 MW (Shoulder · export, fits)."
+    },
+    {
+     "id": "o2",
+     "label": "Unconstrained",
+     "busId": "117010",
+     "busName": "Washington",
+     "tier": "same_substation",
+     "note": "Highest settled 2025 TB4 ($73.54/MWh) in ME among buses that fit 100 MW both ways with no priced upgrade: charge 106.7 MW (Shoulder · charge, fits), export 226.4 MW (Shoulder · export, fits)."
+    }
+   ],
+   "basis": {
+    "mode": "historical",
+    "market": "RT",
+    "run": null,
+    "years": [
+     2025
+    ],
+    "weighting": "duration",
+    "weights": {},
+    "strict": true,
+    "includePartial": false
+   },
+   "steps": [
+    {
+     "stage": "market",
+     "tab": "find",
+     "depth": "screen",
+     "option": "o1",
+     "what_to_look_at": "By the Grid element-study rule, 853 of 2,678 buses fit 100 MW of storage, both directions (shoulder charge only) on every applicable case. Screen depth shows only these ISO-wide figures. Powersville is not one: its charge side does not fit.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "market",
+     "tab": "rank",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Rank candidate buses under this project’s 100 MW export / 100 MW import request. Compare Powersville with the pinned options; a score is a screen, not a permit or interconnection approval.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "market",
+     "tab": "size",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Sweep request size around 100 MW. Directional grid cases can change the ranking; use the same request on Grid before carrying a limit into Economics.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "market",
+     "tab": "regions",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Compare ISO-NE regions at the selected technology and request size, then drill to Powersville; an ISO-wide aggregate is not a site price.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "land",
+     "tab": "area",
+     "depth": "review",
+     "option": "o2",
+     "what_to_look_at": "No exclusion screen is held for Washington, so Land shows the fit as unknown, not as a pass.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "land",
+     "tab": "footprint",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Use the 100 MW technology footprint model and test clear-acreage sensitivity. The 60% site-control input is illustrative; parcel boundaries and title are not held.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "land",
+     "tab": "corridor",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "The 1.2-mile route is an illustrative input. Move the route and crossing assumptions to see cost sensitivity; no surveyed corridor or right-of-way is represented.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "land",
+     "tab": "permits",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Review permit sequence and site-control threshold for storage. Dates and statuses remain unverified until entered; a regional exclusion screen cannot establish a permit.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "grid",
+     "tab": "capacity",
+     "depth": "review",
+     "option": "o2",
+     "what_to_look_at": "Washington: charge 106.7 MW (Shoulder · charge, fits), export 226.4 MW (Shoulder · export, fits); upgrade cost no upgrades indicated (Shoulder · export, Shoulder · charge confirmed by the envelope only).",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "grid",
+     "tab": "constraints",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Inspect limiting facilities and study vintage behind Powersville’s export 145 MW (Shoulder · export, fits) and import 57.3 MW (Shoulder · charge, does not fit). A missing facility list remains unassessed.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "grid",
+     "tab": "cost",
+     "depth": "study",
+     "option": "o1",
+     "what_to_look_at": "Powersville: Lower bound: at least $0.0M priced, and Shoulder · charge binds with no facility costs held.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "grid",
+     "tab": "mitigation",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Compare smaller requests or import caps with Powersville’s stored directional envelope. Alternative POIs and unstudied mitigation stay conditional.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "queue",
+     "tab": "cluster",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "No solved-case queue request lies within 10 mi of Powersville; that does not mean the area is empty, only that the solved-case set holds none.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "queue",
+     "tab": "schedule",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "The 19 Nov 2026 window-close and 2029 target COD are illustrative. Compare tariff-clock minimums with observed completion durations; restudies can extend the path.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "queue",
+     "tab": "cash",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Use $15.0M = 100 MW × $0.15M/MW illustrative network-upgrade allowance; not a study estimate. The cash ladder is a what-if until Grid sends a priced allocation.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "queue",
+     "tab": "changes",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Inspect withdrawals, changed requests and study status near Powersville. Nearby MW is context, not a one-for-one subtraction from grid headroom.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "prices",
+     "tab": "lmp",
+     "depth": "screen",
+     "option": "o1",
+     "what_to_look_at": "Powersville: 2025 RT mean $55.85/MWh (P5 −$27.83, P95 $168.90, 7.72% of hours negative) against the ISO-NE Internal Hub's $65.88. In LMP & years, add 2024 to 2025 and Apply analysis to compare a two-year result and its contribution audit; return to 2025 for the single-year figures quoted here. Historical and forecast runs stay separate.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "prices",
+     "tab": "basis",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Compare Powersville with the internal hub only on matching 2025 RT intervals. Its price-node tier is borrowed price: nearest node UN.POWERSVL115 GNRT is 0.0 km away; basis and congestion inherit that evidence quality.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "prices",
+     "tab": "shape",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Inspect hourly and seasonal shape at Powersville; the default generation shape is a declared profile assumption, not measured output at this site.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "prices",
+     "tab": "tails",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Daily 4-hour spread averages $74.06/MWh over 365 complete days at Powersville (the mart holds $74.06); 241 hours above $200 and 676 negative hours.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "economics",
+     "tab": "revenue",
+     "depth": "study",
+     "option": "o1",
+     "what_to_look_at": "Use 2025 RT and the declared profile assumptions for interval energy revenue. Finance’s illustrative input is: 60% of the $9.3M observed four-hour spread benchmark = $5.6M/yr. The 60% haircut is illustrative; use BESS dispatch for the chronological operating result.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "economics",
+     "tab": "bess",
+     "depth": "study",
+     "option": "o1",
+     "what_to_look_at": "Spread benchmark (100 MW × 4 h × TB4 × 365 × 86% RTE): $9.3M/yr at Powersville vs $9.2M/yr at Washington. The dispatch then caps charging at 57.3 MW.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "economics",
+     "tab": "hybrid",
+     "depth": "study",
+     "option": "o1",
+     "what_to_look_at": "Optional hybrid alternative: this project is not a solar-plus-storage plant. This tab can test a new configuration, but its value is not part of the base project.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "economics",
+     "tab": "finance",
+     "depth": "study",
+     "option": "o1",
+     "what_to_look_at": "All finance fields are populated with declared planning assumptions. Year-one revenue: 60% of the $9.3M observed four-hour spread benchmark = $5.6M/yr. The 60% haircut is illustrative; use BESS dispatch for the chronological operating result. CAPEX and O&M are illustrative; grid upgrades are incomplete until priced and sent from Grid.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "decision",
+     "tab": "compare",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Trade-off: Powersville spread $74.06 with charge limited to 57.3 MW; Washington $73.54 with the full 100 MW.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "decision",
+     "tab": "stress",
+     "depth": "study",
+     "option": "o1",
+     "what_to_look_at": "Stress the recommendation against price, connection, site and queue uncertainties. An unheld study or parcel stays an open risk, not a passed screen.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "decision",
+     "tab": "readiness",
+     "depth": "study",
+     "option": "o1",
+     "what_to_look_at": "Review which evidence is held, which planning inputs were assumed and which approvals or costs remain open before advancing this option.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "decision",
+     "tab": "record",
+     "depth": "study",
+     "option": "o2",
+     "what_to_look_at": "Record the decision, with the shoulder-charge limit at Powersville (57.3 MW) as the stated reason.",
+     "trace": null,
+     "expect": []
+    }
+   ],
+   "assumptions": {
+    "label": "Illustrative planning inputs, not observed site facts or a quote",
+    "ui": {
+     "econ": {
+      "solarCF": 15,
+      "windCF": 32.5,
+      "lossPct": 3,
+      "rte": 86,
+      "duration": 4,
+      "cycleCost": 3,
+      "degradation": 0.5
+     },
+     "fin": {
+      "capex": 120000000.0,
+      "annualOM": 3000000.0,
+      "discountRate": 0.08,
+      "years": 25,
+      "constructionYears": 2,
+      "cod": 2029,
+      "annualRevenue": 5579686
+     },
+     "land": {
+      "control": 60,
+      "route": 1.2,
+      "siteLat": 45.62603,
+      "siteLon": -68.58628,
+      "perMile": 2000000,
+      "terminal": 5000000,
+      "crossings": 500000,
+      "buy": 25000,
+      "lease": 1500,
+      "disc": 8,
+      "years": 30,
+      "esc": 2,
+      "resale": 50,
+      "permits": {
+       "start": "2027-01"
+      },
+      "po0": 0,
+      "po1": 2,
+      "po2": 4,
+      "po3": 6,
+      "po4": 8,
+      "po5": 10,
+      "po6": 12,
+      "po7": 14,
+      "po8": 16,
+      "po9": 18,
+      "po10": 20,
+      "po11": 22,
+      "po12": 24,
+      "po13": 26,
+      "po14": 28,
+      "po15": 30,
+      "po16": 32,
+      "po17": 34,
+      "pd0": 6,
+      "pd1": 8,
+      "pd2": 10,
+      "pd3": 12,
+      "pd4": 6,
+      "pd5": 8,
+      "pd6": 10,
+      "pd7": 12,
+      "pd8": 6,
+      "pd9": 8,
+      "pd10": 10,
+      "pd11": 12,
+      "pd12": 6,
+      "pd13": 8,
+      "pd14": 10,
+      "pd15": 12,
+      "pd16": 6,
+      "pd17": 8
+     },
+     "qStart": "2026-11-19",
+     "qCod": 2029,
+     "qRadius": 10,
+     "qNuUser": 15.0
+    },
+    "provenance": {
+     "prices": "Settled 2025 RT at the selected bus or explicitly labelled same-substation/proxy price node",
+     "grid": "Stored solved-case directional envelopes; no new engineering study",
+     "land": "Studio-copy regional screen where held. The offset site point, 60% site control, route, land terms, line works and permit timing are demo inputs, not a parcel, easement, permit or quote",
+     "queue": "Solved-case queue records; planning dates and upgrade cost are what-if inputs",
+     "finance": "Illustrative CAPEX, O&M, 8% discount, 25 operating years and 2029 COD; replace with a project estimate"
+    },
+    "revenueMethod": "60% of the $9.3M observed four-hour spread benchmark = $5.6M/yr. The 60% haircut is illustrative; use BESS dispatch for the chronological operating result.",
+    "optionAnnualRevenue": {
+     "103029": 5579686,
+     "117010": 5539978
+    },
+    "optionSite": {
+     "103029": {
+      "siteLat": 45.62603,
+      "siteLon": -68.58628
+     },
+     "117010": {
+      "siteLat": 41.94512,
+      "siteLon": -71.46997
+     }
+    },
+    "networkUpgradeMethod": "$15.0M = 100 MW × $0.15M/MW illustrative network-upgrade allowance; not a study estimate."
+   },
+   "coverage": {
+    "analyzers": 28,
+    "observedSources": [
+     "2025 RT prices",
+     "stored grid envelopes",
+     "solved-case queue records"
+    ],
+    "assumedInputs": [
+     "site point and control",
+     "route and line costs",
+     "land terms and permit timing",
+     "network-upgrade allowance when no priced subtotal",
+     "CAPEX",
+     "O&M",
+     "annual revenue",
+     "COD"
+    ],
+    "openEvidence": [
+     "parcel/site control proof",
+     "final interconnection study",
+     "unpriced upgrade scope",
+     "executed revenue contract"
+    ]
+   },
+   "dummy": true
+  },
+  {
+   "id": "hybrid",
+   "name": "Dummy — North Cambridge Solar + Storage 150 + 75 MW (sample)",
+   "client_type": "IPP (hybrid)",
+   "tech": "hybrid",
+   "exportMW": 150,
+   "importMW": 75,
+   "narrative": "An IPP sizes a 150 MW solar array with a 75 MW / 300 MWh battery behind one point of interconnection. At North Cambridge the POI takes only 110.9 MW, so solar alone would spill 0 MWh a year (0.0% of output, clear-sky assumption); the battery's job is to recover it.",
+   "options": [
+    {
+     "id": "o1",
+     "label": "POI below the array",
+     "busId": "110815",
+     "busName": "North Cambridge",
+     "tier": "geo_proxy",
+     "note": "Best 2025 mart solar ratio (0.927) among buses with a land screen held whose export limit is 90–130 MW, below the 150 MW array: export 110.9 MW (Summer peak · export, does not fit), shoulder charge 373.6 MW (Shoulder · charge, fits)."
+    },
+    {
+     "id": "o2",
+     "label": "POI takes the array",
+     "busId": "113951",
+     "busName": "Tewksbury",
+     "tier": "same_substation",
+     "note": "Best 2025 mart solar ratio (0.927) in NEMA among buses that export 150 MW and charge 75 MW: export 635.3 MW (Summer peak · export, fits)."
+    }
+   ],
+   "basis": {
+    "mode": "historical",
+    "market": "RT",
+    "run": null,
+    "years": [
+     2025
+    ],
+    "weighting": "duration",
+    "weights": {},
+    "strict": true,
+    "includePartial": false
+   },
+   "steps": [
+    {
+     "stage": "market",
+     "tab": "find",
+     "depth": "screen",
+     "option": "o1",
+     "what_to_look_at": "By the Grid element-study rule, 747 of 2,678 buses fit 150 MW export with 75 MW shoulder charging on every applicable case. Screen depth shows only these ISO-wide figures. North Cambridge is not one, by design: its POI is the constraint this sample studies.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "market",
+     "tab": "rank",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Rank candidate buses under this project’s 150 MW export / 75 MW import request. Compare North Cambridge with the pinned options; a score is a screen, not a permit or interconnection approval.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "market",
+     "tab": "size",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Sweep request size around 150 MW. Directional grid cases can change the ranking; use the same request on Grid before carrying a limit into Economics.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "market",
+     "tab": "regions",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Compare ISO-NE regions at the selected technology and request size, then drill to North Cambridge; an ISO-wide aggregate is not a site price.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "land",
+     "tab": "area",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "15,711 clear acres in the 3-mile screen against 960 acres base footprint for a 150 MW solar + storage hybrid: fits on the habitat/protected screen only (Studio copy of the exclusions, older database).",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "land",
+     "tab": "footprint",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Use the 150 MW technology footprint model and test clear-acreage sensitivity. The 60% site-control input is illustrative; parcel boundaries and title are not held.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "land",
+     "tab": "corridor",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "The 1.2-mile route is an illustrative input. Move the route and crossing assumptions to see cost sensitivity; no surveyed corridor or right-of-way is represented.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "land",
+     "tab": "permits",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Review permit sequence and site-control threshold for hybrid. Dates and statuses remain unverified until entered; a regional exclusion screen cannot establish a permit.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "grid",
+     "tab": "capacity",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Export 110.9 MW (Summer peak · export, does not fit) against the 150 MW array; charge 373.6 MW (Shoulder · charge, fits) against 75 MW. The export limit is the POI cap Economics applies.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "grid",
+     "tab": "constraints",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Inspect limiting facilities and study vintage behind North Cambridge’s export 110.9 MW (Summer peak · export, does not fit) and import 373.6 MW (Shoulder · charge, fits). A missing facility list remains unassessed.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "grid",
+     "tab": "cost",
+     "depth": "study",
+     "option": "o1",
+     "what_to_look_at": "North Cambridge: Priced: $556.2M over 2 facilities, largest 110815 N. CAMBRIDGE  115  110814 BRIGHTON B    115  1 at $348.0M.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "grid",
+     "tab": "mitigation",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Compare smaller requests or import caps with North Cambridge’s stored directional envelope. Alternative POIs and unstudied mitigation stay conditional.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "queue",
+     "tab": "cluster",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "6 solved-case requests within 10 mi (1,316.4 MW requested); the nearest is Q622, NG, 43 MW, 2.4 mi away, status \"Under initial study\". Nearby MW is context, never subtracted from headroom.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "queue",
+     "tab": "schedule",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "The 19 Nov 2026 window-close and 2029 target COD are illustrative. Compare tariff-clock minimums with observed completion durations; restudies can extend the path.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "queue",
+     "tab": "cash",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Use $556.2M is the priced study subtotal, not a final allocated cost; unpriced facilities remain open. The cash ladder is a what-if until Grid sends a priced allocation.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "queue",
+     "tab": "changes",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Inspect withdrawals, changed requests and study status near North Cambridge. Nearby MW is context, not a one-for-one subtraction from grid headroom.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "prices",
+     "tab": "lmp",
+     "depth": "screen",
+     "option": "o1",
+     "what_to_look_at": "North Cambridge: 2025 RT mean $66.62/MWh (P5 $22.20, P95 $182.25, 0.84% of hours negative) against the ISO-NE Internal Hub's $65.88. In LMP & years, add 2024 to 2025 and Apply analysis to compare a two-year result and its contribution audit; return to 2025 for the single-year figures quoted here. Historical and forecast runs stay separate.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "prices",
+     "tab": "basis",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Compare North Cambridge with the internal hub only on matching 2025 RT intervals. Its price-node tier is borrowed price: nearest node LD.ALEWIFE 13.8 is 0.0 km away; basis and congestion inherit that evidence quality.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "prices",
+     "tab": "shape",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Clear-sky capture $52.27/MWh, ratio 0.785; 74 negative hours in 2025 are the hours the battery should absorb.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "prices",
+     "tab": "tails",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Inspect negative hours, P5/P95 and spread durations on the same 2025 RT observations. A tail metric is not a bankable revenue forecast.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "economics",
+     "tab": "revenue",
+     "depth": "study",
+     "option": "o1",
+     "what_to_look_at": "Use 2025 RT and the declared profile assumptions for interval energy revenue. Finance’s illustrative input is: Solar screen $10.0M/yr at observed clear-sky capture $52.27/MWh plus 30% of the $7.9M four-hour spread benchmark = $12.3M/yr. This is an illustrative combined revenue ceiling, not metered dispatch.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "economics",
+     "tab": "bess",
+     "depth": "study",
+     "option": "o1",
+     "what_to_look_at": "Optional technology comparison: this project is not a stand-alone BESS. Change technology and request limits to size one; no battery earnings are automatically added to the project.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "economics",
+     "tab": "hybrid",
+     "depth": "study",
+     "option": "o2",
+     "what_to_look_at": "At Tewksbury the POI is 150 MW, so solar-only spill is 0 MWh/yr: the battery earns on arbitrage alone.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "economics",
+     "tab": "finance",
+     "depth": "study",
+     "option": "o1",
+     "what_to_look_at": "All finance fields are populated with declared planning assumptions. Year-one revenue: Solar screen $10.0M/yr at observed clear-sky capture $52.27/MWh plus 30% of the $7.9M four-hour spread benchmark = $12.3M/yr. This is an illustrative combined revenue ceiling, not metered dispatch. CAPEX and O&M are illustrative; grid upgrades are incomplete until priced and sent from Grid.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "decision",
+     "tab": "compare",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Spill with no battery: North Cambridge 0 MWh vs Tewksbury 0 MWh; export limits 110.9 MW vs 635.3 MW.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "decision",
+     "tab": "stress",
+     "depth": "study",
+     "option": "o1",
+     "what_to_look_at": "Stress the recommendation against price, connection, site and queue uncertainties. An unheld study or parcel stays an open risk, not a passed screen.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "decision",
+     "tab": "readiness",
+     "depth": "study",
+     "option": "o1",
+     "what_to_look_at": "Review which evidence is held, which planning inputs were assumed and which approvals or costs remain open before advancing this option.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "decision",
+     "tab": "record",
+     "depth": "study",
+     "option": "o1",
+     "what_to_look_at": "Record whether the 39.1 MW gap between array and POI is worth a battery, or a smaller array.",
+     "trace": null,
+     "expect": []
+    }
+   ],
+   "assumptions": {
+    "label": "Illustrative planning inputs, not observed site facts or a quote",
+    "ui": {
+     "econ": {
+      "solarCF": 15,
+      "windCF": 32.5,
+      "lossPct": 3,
+      "rte": 86,
+      "duration": 4,
+      "cycleCost": 3,
+      "degradation": 0.5
+     },
+     "fin": {
+      "capex": 260000000.0,
+      "annualOM": 5200000.0,
+      "discountRate": 0.08,
+      "years": 25,
+      "constructionYears": 2,
+      "cod": 2029,
+      "annualRevenue": 12347996
+     },
+     "land": {
+      "control": 60,
+      "route": 1.2,
+      "siteLat": 42.39961,
+      "siteLon": -71.15122,
+      "perMile": 2000000,
+      "terminal": 5000000,
+      "crossings": 500000,
+      "buy": 25000,
+      "lease": 1500,
+      "disc": 8,
+      "years": 30,
+      "esc": 2,
+      "resale": 50,
+      "permits": {
+       "start": "2027-01"
+      },
+      "po0": 0,
+      "po1": 2,
+      "po2": 4,
+      "po3": 6,
+      "po4": 8,
+      "po5": 10,
+      "po6": 12,
+      "po7": 14,
+      "po8": 16,
+      "po9": 18,
+      "po10": 20,
+      "po11": 22,
+      "po12": 24,
+      "po13": 26,
+      "po14": 28,
+      "po15": 30,
+      "po16": 32,
+      "po17": 34,
+      "pd0": 6,
+      "pd1": 8,
+      "pd2": 10,
+      "pd3": 12,
+      "pd4": 6,
+      "pd5": 8,
+      "pd6": 10,
+      "pd7": 12,
+      "pd8": 6,
+      "pd9": 8,
+      "pd10": 10,
+      "pd11": 12,
+      "pd12": 6,
+      "pd13": 8,
+      "pd14": 10,
+      "pd15": 12,
+      "pd16": 6,
+      "pd17": 8
+     },
+     "qStart": "2026-11-19",
+     "qCod": 2029,
+     "qRadius": 10,
+     "qNuUser": 556.22
+    },
+    "provenance": {
+     "prices": "Settled 2025 RT at the selected bus or explicitly labelled same-substation/proxy price node",
+     "grid": "Stored solved-case directional envelopes; no new engineering study",
+     "land": "Studio-copy regional screen where held. The offset site point, 60% site control, route, land terms, line works and permit timing are demo inputs, not a parcel, easement, permit or quote",
+     "queue": "Solved-case queue records; planning dates and upgrade cost are what-if inputs",
+     "finance": "Illustrative CAPEX, O&M, 8% discount, 25 operating years and 2029 COD; replace with a project estimate"
+    },
+    "revenueMethod": "Solar screen $10.0M/yr at observed clear-sky capture $52.27/MWh plus 30% of the $7.9M four-hour spread benchmark = $12.3M/yr. This is an illustrative combined revenue ceiling, not metered dispatch.",
+    "optionAnnualRevenue": {
+     "110815": 12347996,
+     "113951": 12279331
+    },
+    "optionSite": {
+     "110815": {
+      "siteLat": 42.39961,
+      "siteLon": -71.15122
+     },
+     "113951": {
+      "siteLat": 42.63106,
+      "siteLon": -71.25073
+     }
+    },
+    "networkUpgradeMethod": "$556.2M is the priced study subtotal, not a final allocated cost; unpriced facilities remain open."
+   },
+   "coverage": {
+    "analyzers": 28,
+    "observedSources": [
+     "2025 RT prices",
+     "stored grid envelopes",
+     "solved-case queue records"
+    ],
+    "assumedInputs": [
+     "site point and control",
+     "route and line costs",
+     "land terms and permit timing",
+     "network-upgrade allowance when no priced subtotal",
+     "CAPEX",
+     "O&M",
+     "annual revenue",
+     "COD"
+    ],
+    "openEvidence": [
+     "parcel/site control proof",
+     "final interconnection study",
+     "unpriced upgrade scope",
+     "executed revenue contract"
+    ]
+   },
+   "dummy": true
+  },
+  {
+   "id": "campus",
+   "name": "Dummy — ME Data Centre 300 MW (sample)",
+   "client_type": "Large load / hyperscaler",
+   "tech": "datacenter",
+   "exportMW": 0,
+   "importMW": 300,
+   "narrative": "A hyperscaler screens 300 MW of firm, flat load. BHE 388 MPC fits the import on both study cases and a flat 300 MW load there would have cost $158.9M in 2025 energy, 12.1% of it in the 257 hours above $200/MWh; the Studio's campus bus Mystic cannot take 300 MW.",
+   "options": [
+    {
+     "id": "o1",
+     "label": "Lowest-price fit",
+     "busId": "103005",
+     "busName": "BHE 388 MPC",
+     "tier": "geo_proxy",
+     "note": "Lowest 2025 RT mean ($60.45) of the ≥115 kV buses that import 300 MW on both the large-load and summer-peak charge cases: import 459.8 MW (Summer peak · charge, fits)."
+    },
+    {
+     "id": "o2",
+     "label": "Second zone",
+     "busId": "121046",
+     "busName": "Baldwin",
+     "tier": "direct",
+     "note": "Lowest-priced fit outside ME ($62.59): import 313 MW (Summer peak · charge, fits)."
+    },
+    {
+     "id": "o3",
+     "label": "Studio campus bus",
+     "busId": "110762",
+     "busName": "Mystic",
+     "tier": "same_substation",
+     "note": "The Studio demo campus's first option (Merrimack Compute Campus). At 300 MW the import is 30.2 MW (Large load · import, does not fit); upgrade cost Priced: $842.2M over 4 facilities, largest 110758 N. CAMBRIDGE  345  110759 MYSTIC MA     345  1 at $418.0M."
+    }
+   ],
+   "basis": {
+    "mode": "historical",
+    "market": "RT",
+    "run": null,
+    "years": [
+     2025
+    ],
+    "weighting": "duration",
+    "weights": {},
+    "strict": true,
+    "includePartial": false
+   },
+   "steps": [
+    {
+     "stage": "market",
+     "tab": "find",
+     "depth": "screen",
+     "option": "o1",
+     "what_to_look_at": "By the Grid element-study rule, 181 of 2,678 buses fit 300 MW of load (large-load and summer-peak charge cases) on every applicable case. Screen depth shows only these ISO-wide figures.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "market",
+     "tab": "rank",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Rank candidate buses under this project’s 0 MW export / 300 MW import request. Compare BHE 388 MPC with the pinned options; a score is a screen, not a permit or interconnection approval.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "market",
+     "tab": "size",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Sweep request size around 300 MW. Directional grid cases can change the ranking; use the same request on Grid before carrying a limit into Economics.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "market",
+     "tab": "regions",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Compare ISO-NE regions at the selected technology and request size, then drill to BHE 388 MPC; an ISO-wide aggregate is not a site price.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "land",
+     "tab": "area",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "No exclusion screen is held for BHE 388 MPC, so Land shows the fit as unknown, not as a pass.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "land",
+     "tab": "footprint",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Use the 300 MW technology footprint model and test clear-acreage sensitivity. The 60% site-control input is illustrative; parcel boundaries and title are not held.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "land",
+     "tab": "corridor",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "The 1.2-mile route is an illustrative input. Move the route and crossing assumptions to see cost sensitivity; no surveyed corridor or right-of-way is represented.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "land",
+     "tab": "permits",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Review permit sequence and site-control threshold for datacenter. Dates and statuses remain unverified until entered; a regional exclusion screen cannot establish a permit.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "grid",
+     "tab": "capacity",
+     "depth": "review",
+     "option": "o3",
+     "what_to_look_at": "Mystic: import 30.2 MW (Large load · import, does not fit) against 300 MW. Large-load envelope 133.6 MW.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "grid",
+     "tab": "constraints",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Inspect limiting facilities and study vintage behind BHE 388 MPC’s export not requested and import 459.8 MW (Summer peak · charge, fits). A missing facility list remains unassessed.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "grid",
+     "tab": "cost",
+     "depth": "study",
+     "option": "o3",
+     "what_to_look_at": "Mystic: Priced: $842.2M over 4 facilities, largest 110758 N. CAMBRIDGE  345  110759 MYSTIC MA     345  1 at $418.0M.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "grid",
+     "tab": "mitigation",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Compare smaller requests or import caps with BHE 388 MPC’s stored directional envelope. Alternative POIs and unstudied mitigation stay conditional.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "queue",
+     "tab": "cluster",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "No solved-case queue request lies within 10 mi of BHE 388 MPC; that does not mean the area is empty, only that the solved-case set holds none.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "queue",
+     "tab": "schedule",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "The 19 Nov 2026 window-close and 2029 target COD are illustrative. Compare tariff-clock minimums with observed completion durations; restudies can extend the path.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "queue",
+     "tab": "cash",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Use $45.0M = 300 MW × $0.15M/MW illustrative network-upgrade allowance; not a study estimate. The cash ladder is a what-if until Grid sends a priced allocation.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "queue",
+     "tab": "changes",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Inspect withdrawals, changed requests and study status near BHE 388 MPC. Nearby MW is context, not a one-for-one subtraction from grid headroom.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "prices",
+     "tab": "lmp",
+     "depth": "screen",
+     "option": "o1",
+     "what_to_look_at": "BHE 388 MPC: 2025 RT mean $60.45/MWh (P5 $2.40, P95 $172.40, 4.79% of hours negative) against the ISO-NE Internal Hub's $65.88. In LMP & years, add 2024 to 2025 and Apply analysis to compare a two-year result and its contribution audit; return to 2025 for the single-year figures quoted here. Historical and forecast runs stay separate.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "prices",
+     "tab": "basis",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Compare BHE 388 MPC with the internal hub only on matching 2025 RT intervals. Its price-node tier is borrowed price: nearest node UN.CHEMICAL115 PERC is 5.6 km away; basis and congestion inherit that evidence quality.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "prices",
+     "tab": "shape",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Inspect hourly and seasonal shape at BHE 388 MPC; the default generation shape is a declared profile assumption, not measured output at this site.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "prices",
+     "tab": "tails",
+     "depth": "study",
+     "option": "o1",
+     "what_to_look_at": "A flat 300 MW load at BHE 388 MPC: $158.9M energy bill in 2025, $19.2M (12.1%) from hours above $200; 721 hours were under $20.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "economics",
+     "tab": "revenue",
+     "depth": "study",
+     "option": "o1",
+     "what_to_look_at": "For a load, Economics reads cost, not revenue: 2,628,000 MWh at a mean $60.45/MWh = $158.9M. Capacity and transmission charges are placeholders until tariffs are held.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "economics",
+     "tab": "bess",
+     "depth": "study",
+     "option": "o1",
+     "what_to_look_at": "Optional technology comparison: this project is not a stand-alone BESS. Change technology and request limits to size one; no battery earnings are automatically added to the project.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "economics",
+     "tab": "hybrid",
+     "depth": "study",
+     "option": "o1",
+     "what_to_look_at": "Optional hybrid alternative: this project is not a solar-plus-storage plant. This tab can test a new configuration, but its value is not part of the base project.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "economics",
+     "tab": "finance",
+     "depth": "study",
+     "option": "o1",
+     "what_to_look_at": "All finance fields are populated with declared planning assumptions. Year-one revenue: Illustrative campus lease receipts: 300 MW × $500,000/MW-year = $150.0M/yr. This is an assumed customer contract, not revenue in the source data; electricity procurement is assessed separately. CAPEX and O&M are illustrative; grid upgrades are incomplete until priced and sent from Grid.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "decision",
+     "tab": "compare",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Flat-load energy cost by option: BHE 388 MPC $158.9M (459.8 MW (Summer peak · charge, fits)); Baldwin $164.5M (313 MW (Summer peak · charge, fits)); Mystic $170.5M (30.2 MW (Large load · import, does not fit)).",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "decision",
+     "tab": "stress",
+     "depth": "study",
+     "option": "o1",
+     "what_to_look_at": "Stress the recommendation against price, connection, site and queue uncertainties. An unheld study or parcel stays an open risk, not a passed screen.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "decision",
+     "tab": "readiness",
+     "depth": "study",
+     "option": "o1",
+     "what_to_look_at": "Review which evidence is held, which planning inputs were assumed and which approvals or costs remain open before advancing this option.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "decision",
+     "tab": "record",
+     "depth": "study",
+     "option": "o1",
+     "what_to_look_at": "Record the site with the import margin and the scarcity share (12.1%) as the load-cost risk.",
+     "trace": null,
+     "expect": []
+    }
+   ],
+   "assumptions": {
+    "label": "Illustrative planning inputs, not observed site facts or a quote",
+    "ui": {
+     "econ": {
+      "solarCF": 15,
+      "windCF": 32.5,
+      "lossPct": 3,
+      "rte": 86,
+      "duration": 4,
+      "cycleCost": 3,
+      "degradation": 0.5
+     },
+     "fin": {
+      "capex": 1200000000.0,
+      "annualOM": 36000000.0,
+      "discountRate": 0.08,
+      "years": 25,
+      "constructionYears": 2,
+      "cod": 2029,
+      "annualRevenue": 150000000
+     },
+     "land": {
+      "control": 60,
+      "route": 1.2,
+      "siteLat": 44.74852,
+      "siteLon": -68.76201,
+      "perMile": 2000000,
+      "terminal": 5000000,
+      "crossings": 500000,
+      "buy": 25000,
+      "lease": 1500,
+      "disc": 8,
+      "years": 30,
+      "esc": 2,
+      "resale": 50,
+      "permits": {
+       "start": "2027-01"
+      },
+      "po0": 0,
+      "po1": 2,
+      "po2": 4,
+      "po3": 6,
+      "po4": 8,
+      "po5": 10,
+      "po6": 12,
+      "po7": 14,
+      "po8": 16,
+      "po9": 18,
+      "po10": 20,
+      "po11": 22,
+      "po12": 24,
+      "po13": 26,
+      "po14": 28,
+      "po15": 30,
+      "po16": 32,
+      "po17": 34,
+      "pd0": 6,
+      "pd1": 8,
+      "pd2": 10,
+      "pd3": 12,
+      "pd4": 6,
+      "pd5": 8,
+      "pd6": 10,
+      "pd7": 12,
+      "pd8": 6,
+      "pd9": 8,
+      "pd10": 10,
+      "pd11": 12,
+      "pd12": 6,
+      "pd13": 8,
+      "pd14": 10,
+      "pd15": 12,
+      "pd16": 6,
+      "pd17": 8
+     },
+     "qStart": "2026-11-19",
+     "qCod": 2029,
+     "qRadius": 10,
+     "qNuUser": 45.0
+    },
+    "provenance": {
+     "prices": "Settled 2025 RT at the selected bus or explicitly labelled same-substation/proxy price node",
+     "grid": "Stored solved-case directional envelopes; no new engineering study",
+     "land": "Studio-copy regional screen where held. The offset site point, 60% site control, route, land terms, line works and permit timing are demo inputs, not a parcel, easement, permit or quote",
+     "queue": "Solved-case queue records; planning dates and upgrade cost are what-if inputs",
+     "finance": "Illustrative CAPEX, O&M, 8% discount, 25 operating years and 2029 COD; replace with a project estimate"
+    },
+    "revenueMethod": "Illustrative campus lease receipts: 300 MW × $500,000/MW-year = $150.0M/yr. This is an assumed customer contract, not revenue in the source data; electricity procurement is assessed separately.",
+    "optionAnnualRevenue": {
+     "103005": 150000000,
+     "121046": 150000000,
+     "110762": 150000000
+    },
+    "optionSite": {
+     "103005": {
+      "siteLat": 44.74852,
+      "siteLon": -68.76201
+     },
+     "121046": {
+      "siteLat": 41.53239,
+      "siteLon": -73.04788
+     },
+     "110762": {
+      "siteLat": 42.40104,
+      "siteLon": -71.07496
+     }
+    },
+    "networkUpgradeMethod": "$45.0M = 300 MW × $0.15M/MW illustrative network-upgrade allowance; not a study estimate."
+   },
+   "coverage": {
+    "analyzers": 28,
+    "observedSources": [
+     "2025 RT prices",
+     "stored grid envelopes",
+     "solved-case queue records"
+    ],
+    "assumedInputs": [
+     "site point and control",
+     "route and line costs",
+     "land terms and permit timing",
+     "network-upgrade allowance when no priced subtotal",
+     "CAPEX",
+     "O&M",
+     "annual revenue",
+     "COD"
+    ],
+    "openEvidence": [
+     "parcel/site control proof",
+     "final interconnection study",
+     "unpriced upgrade scope",
+     "executed revenue contract"
+    ]
+   },
+   "dummy": true
+  },
+  {
+   "id": "downeast",
+   "name": "Dummy — Maine Wind 200 MW (sample)",
+   "client_type": "Wind developer",
+   "tech": "wind",
+   "exportMW": 200,
+   "importMW": 0,
+   "narrative": "A wind developer screens 200 MW in Maine, the Studio's Downeast Wind zone. Wind earns overnight, so the question is the price floor: ES 385 CMP held a 2025 overnight P25 of $28.63/MWh (P5 $22.35) and fits 200 MW, while Cyro Drive exports only 131.3 MW.",
+   "options": [
+    {
+     "id": "o1",
+     "label": "Highest overnight floor",
+     "busId": "104059",
+     "busName": "ES 385 CMP",
+     "tier": "geo_proxy",
+     "note": "Highest 2025 overnight P25 ($28.63/MWh, hours 00–05) among Maine buses that export 200 MW on every case: export 246.1 MW (Shoulder · export, fits)."
+    },
+    {
+     "id": "o2",
+     "label": "Studio Downeast bus",
+     "busId": "100179",
+     "busName": "Cyro Drive",
+     "tier": "direct",
+     "note": "The Studio demo Downeast Wind's first option. At 200 MW: export 131.3 MW (Shoulder · export, does not fit); overnight P25 $28.34/MWh."
+    }
+   ],
+   "basis": {
+    "mode": "historical",
+    "market": "RT",
+    "run": null,
+    "years": [
+     2025
+    ],
+    "weighting": "duration",
+    "weights": {},
+    "strict": true,
+    "includePartial": false
+   },
+   "steps": [
+    {
+     "stage": "market",
+     "tab": "find",
+     "depth": "screen",
+     "option": "o1",
+     "what_to_look_at": "By the Grid element-study rule, 761 of 2,678 buses fit 200 MW of wind export on every applicable case. Screen depth shows only these ISO-wide figures.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "market",
+     "tab": "rank",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Rank candidate buses under this project’s 200 MW export / 0 MW import request. Compare ES 385 CMP with the pinned options; a score is a screen, not a permit or interconnection approval.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "market",
+     "tab": "size",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Sweep request size around 200 MW. Directional grid cases can change the ranking; use the same request on Grid before carrying a limit into Economics.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "market",
+     "tab": "regions",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Compare ISO-NE regions at the selected technology and request size, then drill to ES 385 CMP; an ISO-wide aggregate is not a site price.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "land",
+     "tab": "area",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "No exclusion screen is held for ES 385 CMP, so Land shows the fit as unknown, not as a pass.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "land",
+     "tab": "footprint",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Use the 200 MW technology footprint model and test clear-acreage sensitivity. The 60% site-control input is illustrative; parcel boundaries and title are not held.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "land",
+     "tab": "corridor",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "The 1.2-mile route is an illustrative input. Move the route and crossing assumptions to see cost sensitivity; no surveyed corridor or right-of-way is represented.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "land",
+     "tab": "permits",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Review permit sequence and site-control threshold for wind. Dates and statuses remain unverified until entered; a regional exclusion screen cannot establish a permit.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "grid",
+     "tab": "capacity",
+     "depth": "review",
+     "option": "o2",
+     "what_to_look_at": "Cyro Drive: export 131.3 MW (Shoulder · export, does not fit); upgrade cost Lower bound: at least $2.6M priced, and Shoulder · export binds with no facility costs held.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "grid",
+     "tab": "constraints",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Inspect limiting facilities and study vintage behind ES 385 CMP’s export 246.1 MW (Shoulder · export, fits) and import not requested. A missing facility list remains unassessed.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "grid",
+     "tab": "cost",
+     "depth": "study",
+     "option": "o2",
+     "what_to_look_at": "Cyro Drive: Lower bound: at least $2.6M priced, and Shoulder · export binds with no facility costs held.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "grid",
+     "tab": "mitigation",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Compare smaller requests or import caps with ES 385 CMP’s stored directional envelope. Alternative POIs and unstudied mitigation stay conditional.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "queue",
+     "tab": "cluster",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "No solved-case queue request lies within 10 mi of ES 385 CMP; that does not mean the area is empty, only that the solved-case set holds none.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "queue",
+     "tab": "schedule",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "The 19 Nov 2026 window-close and 2029 target COD are illustrative. Compare tariff-clock minimums with observed completion durations; restudies can extend the path.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "queue",
+     "tab": "cash",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Use $30.0M = 200 MW × $0.15M/MW illustrative network-upgrade allowance; not a study estimate. The cash ladder is a what-if until Grid sends a priced allocation.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "queue",
+     "tab": "changes",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Inspect withdrawals, changed requests and study status near ES 385 CMP. Nearby MW is context, not a one-for-one subtraction from grid headroom.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "prices",
+     "tab": "lmp",
+     "depth": "screen",
+     "option": "o1",
+     "what_to_look_at": "ES 385 CMP: 2025 RT mean $66.72/MWh (P5 $22.20, P95 $182.02, 0.84% of hours negative) against the ISO-NE Internal Hub's $65.88. In LMP & years, add 2024 to 2025 and Apply analysis to compare a two-year result and its contribution audit; return to 2025 for the single-year figures quoted here. Historical and forecast runs stay separate.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "prices",
+     "tab": "basis",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Compare ES 385 CMP with the internal hub only on matching 2025 RT intervals. Its price-node tier is borrowed price: nearest node LD.TASKERFM34.5 is 3.7 km away; basis and congestion inherit that evidence quality.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "prices",
+     "tab": "shape",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Inspect hourly and seasonal shape at ES 385 CMP; the default generation shape is a declared profile assumption, not measured output at this site.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "prices",
+     "tab": "tails",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Overnight floor (hours 00–05, 2,190 hours): P5 $22.35, P25 $28.63/MWh; 74 negative hours across the whole year.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "economics",
+     "tab": "revenue",
+     "depth": "study",
+     "option": "o1",
+     "what_to_look_at": "Wind revenue uses the ISO-NE fleet wind shape (measured, not a site profile) at the 32.5% CF assumption, priced on ES 385 CMP's 2025 RT mean of $66.72/MWh.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "economics",
+     "tab": "bess",
+     "depth": "study",
+     "option": "o1",
+     "what_to_look_at": "Optional technology comparison: this project is not a stand-alone BESS. Change technology and request limits to size one; no battery earnings are automatically added to the project.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "economics",
+     "tab": "hybrid",
+     "depth": "study",
+     "option": "o1",
+     "what_to_look_at": "Optional hybrid alternative: this project is not a solar-plus-storage plant. This tab can test a new configuration, but its value is not part of the base project.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "economics",
+     "tab": "finance",
+     "depth": "study",
+     "option": "o1",
+     "what_to_look_at": "All finance fields are populated with declared planning assumptions. Year-one revenue: 200 MW × 8,760 h × 32.5% assumed CF × 97% net output × $66.72/MWh observed 2025 price = $36.9M/yr. No PPA or REC proceeds assumed. CAPEX and O&M are illustrative; grid upgrades are incomplete until priced and sent from Grid.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "decision",
+     "tab": "compare",
+     "depth": "review",
+     "option": "o1",
+     "what_to_look_at": "Overnight P25 by option: ES 385 CMP $28.63 (export 246.1 MW (Shoulder · export, fits)); Cyro Drive $28.34 (export 131.3 MW (Shoulder · export, does not fit)).",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "decision",
+     "tab": "stress",
+     "depth": "study",
+     "option": "o1",
+     "what_to_look_at": "Stress the recommendation against price, connection, site and queue uncertainties. An unheld study or parcel stays an open risk, not a passed screen.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "decision",
+     "tab": "readiness",
+     "depth": "study",
+     "option": "o1",
+     "what_to_look_at": "Review which evidence is held, which planning inputs were assumed and which approvals or costs remain open before advancing this option.",
+     "trace": null,
+     "expect": []
+    },
+    {
+     "stage": "decision",
+     "tab": "record",
+     "depth": "study",
+     "option": "o1",
+     "what_to_look_at": "Record the site and the overnight floor ($28.63 P25) as the price risk to watch.",
+     "trace": null,
+     "expect": []
+    }
+   ],
+   "assumptions": {
+    "label": "Illustrative planning inputs, not observed site facts or a quote",
+    "ui": {
+     "econ": {
+      "solarCF": 15,
+      "windCF": 32.5,
+      "lossPct": 3,
+      "rte": 86,
+      "duration": 4,
+      "cycleCost": 3,
+      "degradation": 0.5
+     },
+     "fin": {
+      "capex": 380000000.0,
+      "annualOM": 11400000.0,
+      "discountRate": 0.08,
+      "years": 25,
+      "constructionYears": 2,
+      "cod": 2029,
+      "annualRevenue": 36852187
+     },
+     "land": {
+      "control": 60,
+      "route": 1.2,
+      "siteLat": 43.36577,
+      "siteLon": -70.98286,
+      "perMile": 2000000,
+      "terminal": 5000000,
+      "crossings": 500000,
+      "buy": 25000,
+      "lease": 1500,
+      "disc": 8,
+      "years": 30,
+      "esc": 2,
+      "resale": 50,
+      "permits": {
+       "start": "2027-01"
+      },
+      "po0": 0,
+      "po1": 2,
+      "po2": 4,
+      "po3": 6,
+      "po4": 8,
+      "po5": 10,
+      "po6": 12,
+      "po7": 14,
+      "po8": 16,
+      "po9": 18,
+      "po10": 20,
+      "po11": 22,
+      "po12": 24,
+      "po13": 26,
+      "po14": 28,
+      "po15": 30,
+      "po16": 32,
+      "po17": 34,
+      "pd0": 6,
+      "pd1": 8,
+      "pd2": 10,
+      "pd3": 12,
+      "pd4": 6,
+      "pd5": 8,
+      "pd6": 10,
+      "pd7": 12,
+      "pd8": 6,
+      "pd9": 8,
+      "pd10": 10,
+      "pd11": 12,
+      "pd12": 6,
+      "pd13": 8,
+      "pd14": 10,
+      "pd15": 12,
+      "pd16": 6,
+      "pd17": 8
+     },
+     "qStart": "2026-11-19",
+     "qCod": 2029,
+     "qRadius": 10,
+     "qNuUser": 30.0
+    },
+    "provenance": {
+     "prices": "Settled 2025 RT at the selected bus or explicitly labelled same-substation/proxy price node",
+     "grid": "Stored solved-case directional envelopes; no new engineering study",
+     "land": "Studio-copy regional screen where held. The offset site point, 60% site control, route, land terms, line works and permit timing are demo inputs, not a parcel, easement, permit or quote",
+     "queue": "Solved-case queue records; planning dates and upgrade cost are what-if inputs",
+     "finance": "Illustrative CAPEX, O&M, 8% discount, 25 operating years and 2029 COD; replace with a project estimate"
+    },
+    "revenueMethod": "200 MW × 8,760 h × 32.5% assumed CF × 97% net output × $66.72/MWh observed 2025 price = $36.9M/yr. No PPA or REC proceeds assumed.",
+    "optionAnnualRevenue": {
+     "104059": 36852187,
+     "100179": 36121537
+    },
+    "optionSite": {
+     "104059": {
+      "siteLat": 43.36577,
+      "siteLon": -70.98286
+     },
+     "100179": {
+      "siteLat": 43.41538,
+      "siteLon": -70.71966
+     }
+    },
+    "networkUpgradeMethod": "$30.0M = 200 MW × $0.15M/MW illustrative network-upgrade allowance; not a study estimate."
+   },
+   "coverage": {
+    "analyzers": 28,
+    "observedSources": [
+     "2025 RT prices",
+     "stored grid envelopes",
+     "solved-case queue records"
+    ],
+    "assumedInputs": [
+     "site point and control",
+     "route and line costs",
+     "land terms and permit timing",
+     "network-upgrade allowance when no priced subtotal",
+     "CAPEX",
+     "O&M",
+     "annual revenue",
+     "COD"
+    ],
+    "openEvidence": [
+     "parcel/site control proof",
+     "final interconnection study",
+     "unpriced upgrade scope",
+     "executed revenue contract"
+    ]
+   },
+   "dummy": true
+  }
+ ],
+ "dummy": true,
+ "dummyNote": "Dev-kit copy: the five projects are dummies (illustrative names, client types, finance and planning inputs). Their option buses, prices, grid limits and queue data are real ISO-NE public data, recorded in fixtures/."
+}

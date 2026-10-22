@@ -1,0 +1,14 @@
+import { BASE, pwRequire } from './env.mjs';
+import { createRequire } from 'node:module';
+const require = pwRequire;
+const { chromium } = require('playwright');
+const b = await chromium.launch({ channel: 'chrome' }); const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
+await p.goto(`${BASE}/economics.html#tab=bess&bus=100172`); await p.waitForSelector('.kpis', { timeout: 120000 });
+await p.selectOption('[data-act="tech"]', 'storage');
+const t0 = Date.now(); const solving = await p.locator('.loading-panel').count();
+await p.waitForSelector('details.trace[data-trace="e-bess"]', { timeout: 180000 });
+console.log('showed solving panel:', solving > 0, '| solved in', Date.now() - t0, 'ms');
+console.log((await p.locator('.kpi').first().innerText()).replace(/\s+/g, ' '));
+console.log((await p.locator('.audit-note', { hasText: 'state-of-charge steps' }).innerText()).replace(/\s+/g, ' '));
+const t = p.locator('details.trace[data-trace="e-bess"]'); await t.evaluate(d => { d.open = true; });
+await t.screenshot({ path: 'tests/shots/trace-e-bess.png' }); await b.close();

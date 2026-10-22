@@ -1,0 +1,51 @@
+{
+ "_about": "Members the vendored lift code reads that live-bridge.js does not provide yet (tests/shim-inventory.test.mjs). Each slice that wires a member deletes it here; the list must be empty after L4.",
+ "App": [
+  "Drawer",
+  "Palette",
+  "TIERS",
+  "card",
+  "concernOf",
+  "isAdmin",
+  "reqId",
+  "safeAnswer",
+  "save"
+ ],
+ "App.state": [
+  "basis",
+  "mineLayout",
+  "projectId",
+  "published",
+  "tier",
+  "userWidgets"
+ ],
+ "GS": [
+  "catalog",
+  "meta",
+  "nearestSize",
+  "priceBasisNote",
+  "priceStat",
+  "px",
+  "resolve",
+  "stat"
+ ],
+ "Charts": [
+  "H",
+  "S",
+  "Tip",
+  "bars",
+  "cv",
+  "empty",
+  "esc",
+  "fmtVal",
+  "hbars",
+  "heat",
+  "hist",
+  "line",
+  "map",
+  "panels",
+  "scatter",
+  "stats",
+  "table"
+ ]
+}

@@ -1,0 +1,14 @@
+{
+ "file": "31-map-grid.js",
+ "why": "Null policy (D-007): map tooltip and map value labels read 'not held' for a missing value. Reviewed by Claude 2026-10-06.",
+ "edits": [
+  {
+   "find": "      ['kV', n.kv == null ? '—' : fmt.num(n.kv, 0) + ' kV'],\n      ['Zone', zoneOf(n) || '—'],\n      [`Headroom · ${esc(GS.caseOf(SCOPE.case).label)}`, hr == null ? '—' : fmt.mw(hr)],\n      ['LMP 2030', pb ? `${fmt.lmp(pb.value)} · ${SRC_WORD[pb.source] || pb.source}` : '—'],",
+   "replace": "      ['kV', n.kv == null ? 'not held' : fmt.num(n.kv, 0) + ' kV'],\n      ['Zone', zoneOf(n) || 'not held'],\n      [`Headroom · ${esc(GS.caseOf(SCOPE.case).label)}`, hr == null ? 'not held' : fmt.mw(hr)],\n      ['LMP 2030', pb ? `${fmt.lmp(pb.value)} · ${SRC_WORD[pb.source] || pb.source}` : 'not held'],"
+  },
+  {
+   "find": "    if (v == null || v !== v) return '—';\n    if (k.ramp === 'cat') return String(v);",
+   "replace": "    if (v == null || v !== v) return 'not held';\n    if (k.ramp === 'cat') return String(v);"
+  }
+ ]
+}

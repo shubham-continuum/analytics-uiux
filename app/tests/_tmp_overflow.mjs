@@ -1,0 +1,11 @@
+import { BASE, pwRequire } from './env.mjs';
+import { createRequire } from 'node:module';
+const require = pwRequire;
+const { chromium } = require('playwright');
+const b = await chromium.launch({ channel: 'chrome' });
+const page = await b.newPage({ viewport: { width: 1440, height: 900 } });
+await page.goto(`${BASE}/analytics-analyzer-studio.html#stage=decision&tab=compare&bus=111403`);
+await page.waitForSelector('.kpis', { timeout: 60000 }); await page.waitForTimeout(3000);
+const r = await page.evaluate(() => { const W = innerWidth; const out = []; for (const el of document.querySelectorAll('body *')) { const x = el.getBoundingClientRect(); if (x.right > W + 1 && x.width > 0) out.push(`${el.tagName}.${el.className?.baseVal ?? el.className} r=${Math.round(x.right)} w=${Math.round(x.width)}`); } return { sw: document.documentElement.scrollWidth, W, out: out.slice(0, 15) }; });
+console.log(JSON.stringify(r, null, 1));
+await b.close();

@@ -1,0 +1,499 @@
+/* VENDORED from live Studio ext/60-cathy.css (snapshot 2026-10-11, sha256 af96b900b55c654c).
+   DO NOT EDIT: regenerate with plan/vendor_live.py; patches in vendor/live/patches/. */
+/* ═══════════════════════════════════════════════════════════════════════════
+   ext: 60-cathy.css — Cathy, the SCED analytics tab.
+
+   The layout is NodeScope's, measured off the reference screenshots in
+   outputs/studio-cathy/nodescope-reference/: a fixed left picker rail, a
+   scenario strip and a screen-tab row across the top of the surface, then
+   panels in a two-column auto-fill grid with the controls on the panel's own
+   right edge. Everything inside the Studio's own frame and its own tokens.
+
+   NO NEW HEX. Every colour is one of Shubham's tokens, aliased here under a
+   --gsc-* name so the use site reads what it means. The palettes were run
+   through the six dataviz checks (CIEDE2000 + Machado 2009); the run is
+   recorded in studio/CATHY-UI-ADDED.md §5.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+#app {
+  /* layout only */
+  --gsc-pick-w: 268px;
+  --gsc-strip-h: 34px;
+  --gsc-tabs-h: 32px;
+  --gsc-gap: 6px;
+  --gsc-panel-r: 4px;
+  --gsc-row-h: 26px;
+
+  /* 1 · the month × hour surface — the Studio's own sequential price ramp,
+         re-validated for this use (all six checks, both themes) */
+  --gsc-heat-1: var(--h1); --gsc-heat-2: var(--h2); --gsc-heat-3: var(--h3);
+  --gsc-heat-4: var(--h4); --gsc-heat-5: var(--h5); --gsc-heat-6: var(--h6);
+  --gsc-heat-7: var(--h7);
+  /* the two inks a heat cell's number can wear; picked per cell from the
+     stop's own lightness, never guessed */
+  --gsc-cell-ink-dark: #0b1120;
+  --gsc-cell-ink-light: #f4f7fb;
+
+  /* 2 · TB duration 2h → 8h · an ORDERED variable, so a ramp, not a series */
+  --gsc-tb-1: var(--h2); --gsc-tb-2: var(--h4); --gsc-tb-3: var(--h6);
+
+  /* 3 · the scenario overlay, at most three at once */
+  --gsc-sc-1: var(--s4); --gsc-sc-2: var(--s6); --gsc-sc-3: var(--s7);
+
+  /* 4 · the price make-up */
+  --gsc-mk-energy: var(--s8); --gsc-mk-cong: var(--s2); --gsc-mk-loss: var(--model);
+
+  /* 5 · the generation stack — an ordered ring; band n gets ring slot n */
+  --gsc-fuel-1: var(--s1); --gsc-fuel-2: var(--s8); --gsc-fuel-3: var(--model);
+  --gsc-fuel-4: var(--s2); --gsc-fuel-5: var(--s5); --gsc-fuel-6: var(--s4);
+  --gsc-fuel-7: var(--s6); --gsc-fuel-8: var(--s3);
+  --gsc-fuel-x: var(--ink-4);   /* a ninth fuel and beyond, with the count said */
+}
+
+/* ── the mount ─────────────────────────────────────────────────────────────
+   Cathy is a full-workspace view: while it is open the board, the stage tabs
+   and the inspector are out of the flow and the map dock is collapsed to its
+   edge tab by GSFrame.setDock('map', true) — restored on leave, to whatever it
+   was before, not to a default. */
+#gsc-root { display: none; }
+#app.gsc-on #gsc-root { display: grid; }
+
+#app.gsf-docked.gsc-on #gsf-ws > .board,
+#app.gsf-docked.gsc-on #gsf-insp,
+#app.gsf-docked.gsc-on #gsf-split-i,
+#app.gsf-docked.gsc-on #gsf-stages { display: none !important; }
+#app.gsf-docked.gsc-on #gsf-ws { grid-template-rows: minmax(0, 1fr); grid-template-columns: minmax(0, 1fr); }
+#app.gsf-docked.gsc-on #gsc-root { grid-row: 1; grid-column: 1 / -1; }
+/* the frame's dock feature off, or thrown: Cathy still has a home */
+#app:not(.gsf-docked).gsc-on > .sm > .body > .board { display: none !important; }
+#app:not(.gsf-docked).gsc-on > .sm > .body > #gsc-root { flex: 1 1 auto; }
+
+#gsc-root {
+  grid-template-columns: var(--gsc-pick-w) minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  min-width: 0; min-height: 0; overflow: hidden;
+  background: var(--bg); color: var(--ink);
+  font-family: var(--sans); font-size: 12.5px;
+}
+
+/* ── left picker rail — NodeScope's node list ─────────────────────────────── */
+#gsc-pick {
+  grid-column: 1; display: flex; flex-direction: column; min-height: 0;
+  border-right: 1px solid var(--border-2); background: var(--surface);
+}
+#gsc-pick .gsc-sec { padding: 8px 10px; border-bottom: 1px solid var(--border); }
+#gsc-pick .gsc-e {
+  font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink-4); margin-bottom: 5px; display: block;
+}
+#gsc-pick .gsc-sel {
+  border: 1px solid var(--accent-line); background: var(--accent-soft);
+  border-radius: var(--gsc-panel-r); padding: 6px 8px;
+}
+#gsc-pick .gsc-sel b { font-size: 12.5px; display: block; line-height: 1.25; }
+#gsc-pick .gsc-sel span { font-size: 10.5px; color: var(--ink-3); font-family: var(--mono); }
+#gsc-pick .gsc-find { display: flex; gap: 4px; }
+#gsc-pick input[type=text], #gsc-pick select {
+  width: 100%; min-width: 0; height: 26px; padding: 0 6px; font: inherit; font-size: 11.5px;
+  color: var(--ink); background: var(--sunk); border: 1px solid var(--border-2);
+  border-radius: var(--gsc-panel-r);
+}
+#gsc-pick select { width: 88px; flex: 0 0 88px; }
+#gsc-pick input[type=text]:focus, #gsc-pick select:focus { outline: 2px solid var(--accent-line); outline-offset: -1px; }
+
+#gsc-list { flex: 1 1 auto; overflow: auto; min-height: 0; }
+#gsc-list .gsc-opt {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 6px;
+  padding: 4px 10px; min-height: var(--gsc-row-h); cursor: pointer;
+  border-bottom: 1px solid var(--border); background: none; width: 100%; text-align: left;
+  color: var(--ink); font: inherit;
+}
+#gsc-list .gsc-opt:hover { background: var(--raised); }
+#gsc-list .gsc-opt[aria-selected="true"] { background: var(--accent-soft); box-shadow: inset 2px 0 0 var(--accent); }
+#gsc-list .gsc-opt .t { font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#gsc-list .gsc-opt .s { font-size: 10px; color: var(--ink-4); font-family: var(--mono); }
+#gsc-list .gsc-kind {
+  font-size: 8.5px; letter-spacing: .08em; text-transform: uppercase; padding: 1px 4px;
+  border: 1px solid var(--border-2); border-radius: 2px; color: var(--ink-3); white-space: nowrap;
+}
+#gsc-list .gsc-none { padding: 12px 10px; font-size: 11.5px; color: var(--ink-3); }
+#gsc-pick .gsc-count { padding: 5px 10px; font-size: 10px; color: var(--ink-4); font-family: var(--mono);
+  border-top: 1px solid var(--border); text-align: right; }
+#gsc-pick .gsc-foot { padding: 8px 10px; border-top: 1px solid var(--border-2); display: grid; gap: 5px; }
+
+/* ── the surface: strip · tabs · panels ───────────────────────────────────── */
+#gsc-main {
+  grid-column: 2; display: grid; grid-template-rows: auto auto auto minmax(0, 1fr);
+  min-width: 0; min-height: 0; overflow: hidden;
+}
+/* continuum S0 2026-10-06: rows placed by name, so a strip a screen hides (the timeline's) leaves its row empty
+   instead of moving the screen into an auto-height row */
+#gsc-main > #gsc-strip { grid-row: 1; }
+#gsc-main > #gsc-scen { grid-row: 2; }
+#gsc-main > #gsc-tabs { grid-row: 3; }
+#gsc-main > #gsc-screen { grid-row: 4; }
+
+/* continuum S0 2026-10-06 · the scenario row: Base and the proxies the server publishes */
+#gsc-scen {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 4px; min-height: var(--gsc-strip-h);
+  padding: 3px 8px; background: var(--chrome-2); border-bottom: 1px solid var(--border-2);
+}
+#gsc-scen .gsc-lab {
+  font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink-4); margin-right: 4px; white-space: nowrap;
+}
+#gsc-scen .gsc-chip[aria-pressed="true"] .gsc-sw { background: var(--accent); }
+#gsc-scen .gsc-nh {
+  font-size: 10.5px; color: var(--ink-4); margin-left: 2px; border-left: 1px solid var(--border); padding-left: 8px;
+  min-width: 0; overflow-wrap: anywhere;
+}
+#gsc-scen .gsc-btn { height: 24px; }
+.gsc-scen-line { border-left: 2px solid var(--accent); padding-left: 6px; }
+.gsc-scen-line[data-gsc-scen="not-applied"] { border-left-color: var(--border-3); }
+.gsc-wf-head { font-size: 13px; }
+.gsc-wf-sec { font-weight: 600; color: var(--ink-2); border-top: 1px solid var(--border); padding-top: 6px; margin-top: 4px; }
+
+/* scenario strip */
+/* the strip wraps rather than scrolls: a scenario chip that is off-screen is a
+   scenario the reader does not know exists, and the two not-held ones are the
+   point of the strip */
+#gsc-strip {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 4px; min-height: var(--gsc-strip-h);
+  padding: 3px 8px; background: var(--chrome-2);
+  border-bottom: 1px solid var(--border-2);
+}
+#gsc-strip .gsc-lab {
+  font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink-4); margin-right: 4px; white-space: nowrap;
+}
+.gsc-chip {
+  display: inline-flex; align-items: center; gap: 5px; height: 24px; padding: 0 8px;
+  border: 1px solid var(--border-2); border-radius: var(--r-pill); background: var(--surface);
+  color: var(--ink-2); font: inherit; font-size: 11.5px; white-space: nowrap; cursor: pointer;
+}
+.gsc-chip:hover { border-color: var(--border-3); color: var(--ink); }
+.gsc-chip[aria-pressed="true"] { color: var(--ink); border-color: currentColor; }
+.gsc-chip .gsc-sw { width: 9px; height: 9px; border-radius: 2px; flex: 0 0 9px; background: var(--border-3); }
+.gsc-chip[aria-pressed="true"][data-slot="1"] .gsc-sw { background: var(--gsc-sc-1); }
+.gsc-chip[aria-pressed="true"][data-slot="2"] .gsc-sw { background: var(--gsc-sc-2); }
+.gsc-chip[aria-pressed="true"][data-slot="3"] .gsc-sw { background: var(--gsc-sc-3); }
+/* a scenario the store does not hold is never selectable and never a flat line */
+.gsc-chip[data-held="false"] {
+  cursor: not-allowed; color: var(--ink-4); border-style: dashed; background: none;
+}
+.gsc-chip[data-held="false"] .gsc-sw { background: none; border: 1px dashed var(--border-3); }
+.gsc-chip[data-held="false"]:hover { border-color: var(--border-2); color: var(--ink-4); }
+#gsc-strip .gsc-nh {
+  font-size: 10.5px; color: var(--ink-4); white-space: nowrap; margin-left: 2px;
+  border-left: 1px solid var(--border); padding-left: 8px;
+}
+
+/* screen tabs */
+/* the tab row wraps too. A horizontal scroller here put the context line past
+   the right edge at 1280 — the frame sweep's own rule, and the reason a reader
+   at a docked width could not see which scenarios were in scope */
+#gsc-tabs {
+  display: flex; align-items: stretch; flex-wrap: wrap; gap: 0; min-height: var(--gsc-tabs-h);
+  border-bottom: 1px solid var(--border-2); background: var(--chrome);
+}
+#gsc-tabs button {
+  border: 0; background: none; color: var(--ink-3); font: inherit; font-size: 12px;
+  padding: 0 12px; cursor: pointer; white-space: nowrap; border-bottom: 2px solid transparent;
+  min-height: var(--gsc-tabs-h);
+}
+#gsc-tabs button:hover { color: var(--ink); background: var(--raised); }
+#gsc-tabs button[aria-current="page"] { color: var(--accent); border-bottom-color: var(--accent); }
+#gsc-tabs .gsc-ctx {
+  margin-left: auto; display: flex; align-items: center; gap: 8px; padding: 0 10px;
+  font-size: 10.5px; color: var(--ink-4); font-family: var(--mono);
+  min-width: 0; max-width: 100%; overflow: hidden; min-height: var(--gsc-tabs-h);
+}
+#gsc-tabs .gsc-ctx > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#gsc-tabs .gsc-ctx .gsc-fix { flex: 0 0 auto; }
+#gsc-tabs .gsc-ctx .gsc-fix { color: var(--warn); border: 1px solid var(--warn-line);
+  border-radius: 2px; padding: 0 4px; letter-spacing: .06em; }
+
+/* the panel grid */
+#gsc-screen { overflow: auto; min-height: 0; padding: var(--gsc-gap);
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(min(460px, 100%), 1fr));
+  gap: var(--gsc-gap); align-content: start; align-items: start; }
+#gsc-screen > .gsc-wide { grid-column: 1 / -1; }
+
+.gsc-panel {
+  border: 1px solid var(--border-2); border-radius: var(--gsc-panel-r);
+  background: var(--surface); min-width: 0; display: flex; flex-direction: column;
+}
+.gsc-panel > .gsc-h {
+  display: flex; align-items: center; gap: 8px; padding: 6px 8px;
+  border-bottom: 1px solid var(--border); min-height: 30px;
+}
+.gsc-panel > .gsc-h h3 { margin: 0; font-size: 13px; font-weight: 600; color: var(--ink);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gsc-panel > .gsc-h .gsc-ctl { margin-left: auto; display: flex; align-items: center; gap: 4px; flex: 0 0 auto; }
+/* every chart states its scope, scenario, market, hours and kind on its face */
+.gsc-face {
+  padding: 3px 8px; font-family: var(--mono); font-size: 10px; color: var(--ink-4);
+  border-bottom: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 4px 10px;
+}
+.gsc-face b { color: var(--ink-3); font-weight: 500; }
+.gsc-body { padding: 6px 8px 8px; min-width: 0; position: relative; }
+.gsc-note { padding: 4px 8px 8px; font-size: 10.5px; color: var(--ink-4); line-height: 1.45; }
+
+/* a panel that cannot be drawn honestly says what is absent and what would fill it */
+.gsc-empty { padding: 10px; border: 1px dashed var(--border-2); border-radius: var(--gsc-panel-r);
+  background: var(--sunk); }
+.gsc-empty b { display: block; font-size: 12px; color: var(--ink-2); margin-bottom: 3px; }
+.gsc-empty p { margin: 0; font-size: 11px; color: var(--ink-4); line-height: 1.5; }
+
+/* controls */
+.gsc-seg { display: inline-flex; border: 1px solid var(--border-2); border-radius: var(--gsc-panel-r); overflow: hidden; }
+.gsc-seg button {
+  border: 0; border-left: 1px solid var(--border); background: none; color: var(--ink-3);
+  font: inherit; font-size: 11px; height: 24px; padding: 0 8px; cursor: pointer;
+}
+.gsc-seg button:first-child { border-left: 0; }
+.gsc-seg button[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); }
+.gsc-seg button:disabled { opacity: .45; cursor: not-allowed; }
+.gsc-btn {
+  height: 24px; padding: 0 8px; border: 1px solid var(--border-2); border-radius: var(--gsc-panel-r);
+  background: var(--surface); color: var(--ink-2); font: inherit; font-size: 11px; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 5px;
+}
+.gsc-btn:hover { border-color: var(--border-3); color: var(--ink); }
+.gsc-btn.pri { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.gsc-btn svg { width: 13px; height: 13px; }
+.gsc-panel > .gsc-h select.gsc-yr {
+  height: 24px; padding: 0 4px; font: inherit; font-size: 11px; color: var(--ink-2);
+  background: var(--surface); border: 1px solid var(--border-2); border-radius: var(--gsc-panel-r);
+}
+.gsc-toggle { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; color: var(--ink-3); cursor: pointer; }
+.gsc-toggle input { accent-color: var(--accent); width: 13px; height: 13px; }
+
+/* charts */
+.gsc-svg { display: block; width: 100%; height: auto; overflow: visible; }
+.gsc-cv { display: block; width: 100%; }
+.gsc-cvwrap { position: relative; width: 100%; }
+.gsc-ax { font-family: var(--mono); font-size: 10px; fill: var(--ink-4); }
+.gsc-axl { font-family: var(--sans); font-size: 10px; fill: var(--ink-4); }
+.gsc-grid { stroke: var(--grid-line); stroke-width: 1; }
+.gsc-axis { stroke: var(--axis); stroke-width: 1; }
+.gsc-lg { display: flex; flex-wrap: wrap; gap: 4px 12px; padding: 2px 0 6px; font-size: 11px; color: var(--ink-3); }
+.gsc-lg span { display: inline-flex; align-items: center; gap: 5px; }
+.gsc-lg i { width: 11px; height: 11px; border-radius: 2px; display: inline-block; flex: 0 0 11px; }
+.gsc-lg i.hollow { background: none !important; border: 1.5px dashed currentColor; }
+/* orchestrator 2026-09-28 lmp continuous: a forecast run's swatch is a dashed stroke */
+.gsc-lg i.gsc-dash { background: none !important; width: 18px; flex: 0 0 18px; height: 0; border-radius: 0; border-top: 2px dashed currentColor; align-self: center; }
+
+/* the hover readout — a DOM node, so a hover never redraws a chart */
+.gsc-hover {
+  position: absolute; pointer-events: none; z-index: 4; opacity: 0; transition: opacity .08s var(--ease);
+  background: var(--raised); border: 1px solid var(--border-3); border-radius: var(--gsc-panel-r);
+  box-shadow: var(--shadow-sm); padding: 4px 7px; font-family: var(--mono); font-size: 10.5px;
+  color: var(--ink); white-space: nowrap; max-width: 320px;
+}
+.gsc-hover.on { opacity: 1; }
+.gsc-cross { position: absolute; pointer-events: none; z-index: 3; width: 1px; background: var(--border-3); opacity: 0; }
+.gsc-cross.on { opacity: 1; }
+
+/* tables — every chart has one, built from the same array the chart draws */
+.gsc-tbl { width: 100%; border-collapse: collapse; font-size: 11px; }
+.gsc-tbl th, .gsc-tbl td { padding: 3px 6px; border-bottom: 1px solid var(--border); text-align: right; white-space: nowrap; }
+.gsc-tbl th { position: sticky; top: 0; z-index: 1; background: var(--chrome-2); color: var(--ink-3);
+  font-weight: 600; font-size: 10px; letter-spacing: .04em; text-transform: uppercase; }
+.gsc-tbl th:first-child, .gsc-tbl td:first-child { text-align: left; }
+.gsc-tbl td { font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--ink-2); }
+.gsc-tbl td.t { font-family: var(--sans); color: var(--ink); }
+.gsc-tbl tbody tr:hover { background: var(--raised); }
+/* the coverage table carries each block's own reason — prose, so it wraps */
+[data-gsc-body="coverage"] .gsc-tbl td { white-space: normal; text-align: left; font-family: var(--sans); line-height: 1.4; }
+.gsc-scroll { max-height: 340px; overflow: auto; border: 1px solid var(--border); border-radius: var(--gsc-panel-r); }
+
+/* key metric cells — NodeScope's top row */
+.gsc-kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(124px, 1fr)); gap: var(--gsc-gap); }
+.gsc-kpi { border: 1px solid var(--border); border-radius: var(--gsc-panel-r); padding: 6px 8px; background: var(--sunk); }
+.gsc-kpi .k { font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-4);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gsc-kpi .v { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 19px;
+  line-height: 1.25; color: var(--ink); }
+.gsc-kpi .s { font-family: var(--mono); font-size: 10px; color: var(--ink-4); }
+
+/* the colour key strip under a heat surface */
+.gsc-key { display: flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 10px; color: var(--ink-4); }
+.gsc-key .gsc-ramp { display: flex; flex: 1 1 auto; height: 8px; border: 1px solid var(--border); border-radius: 2px; overflow: hidden; }
+.gsc-key .gsc-ramp i { flex: 1 1 0; }
+
+/* narrow workspace: the picker becomes a strip of its own, never a scrollbar war */
+#app.gsf-narrow #gsc-root { grid-template-columns: 208px minmax(0, 1fr); }
+#app.gsf-tight #gsc-root { grid-template-columns: minmax(0, 1fr); }
+#app.gsf-tight #gsc-pick { display: none; }
+#app.gsf-tight #gsc-main { grid-column: 1; }
+#app.gsf-tight #gsc-screen { grid-template-columns: minmax(0, 1fr); }
+
+/* the module tab in the frame's topbar */
+.gsf-tabs button[data-gsf-module="cathy"][aria-current="page"] { color: var(--accent); }
+
+/* continuum fix 2026-10-06: the hub reference is a statement in the picker foot, not a control */
+#gsc-pick .gsc-hubref { font-size: 11px; line-height: 1.35; color: var(--ink-3); padding: 2px 2px 4px; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   S-nav 2026-10-07 · navigation & space (review 2026-10-07; Ganesh: no duplicate graphs, proper space management)
+     rows      main (six workflow screens) · toolbar (runs + scenario on one row · market · year · live) · pages
+               (sticky by construction: it sits above the scroller, never inside it) · the screen
+     type      six sizes only (SKL-091 §4): 11 axis/caption · 12 control/label · 13 body/heading · 15 lead tab ·
+               20 KPI · 28 lead value
+     targets   every control at least 32 px in both directions (SKL-091 §4)
+   ═══════════════════════════════════════════════════════════════════════════ */
+#gsc-main { grid-template-rows: auto auto auto minmax(0, 1fr); }
+#gsc-main > #gsc-tabs { grid-row: 1; }
+#gsc-main > #gsc-toolbar { grid-row: 2; }
+#gsc-main > #gsc-subnav { grid-row: 3; }
+#gsc-main > #gsc-screen { grid-row: 4; }
+
+/* main row — the six workflow screens on ONE row */
+#gsc-tabs { display: block; min-height: 0; }
+#gsc-tabs .gsc-wfrow { display: flex; align-items: stretch; flex-wrap: nowrap; gap: 0; min-height: 40px; min-width: 0; }
+#gsc-tabs .gsc-wftab {
+  font-size: 13px; font-weight: 600; padding: 0 14px; min-height: 40px; color: var(--ink-3);
+  border: 0; border-bottom: 2px solid transparent; background: none; cursor: pointer; white-space: nowrap; flex: 0 0 auto;
+}
+#gsc-tabs .gsc-wftab:hover { color: var(--ink); background: var(--raised); }
+#gsc-tabs .gsc-wftab[aria-current="page"] { color: var(--accent); border-bottom-color: var(--accent); }
+#gsc-tabs .gsc-ctx { flex: 1 1 auto; justify-content: flex-end; min-height: 40px; font-size: 11px; }
+#gsc-tabs .gsc-exp { align-self: center; margin: 0 8px; flex: 0 0 auto; border-bottom: 1px solid var(--border-2); }
+
+/* toolbar — one per screen */
+#gsc-toolbar {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 4px 12px; padding: 4px 8px;
+  background: var(--chrome-2); border-bottom: 1px solid var(--border-2); min-width: 0;
+}
+#gsc-toolbar .gsc-tgroup { display: flex; align-items: center; flex-wrap: wrap; gap: 4px; min-width: 0; }
+#gsc-toolbar .gsc-runs { flex: 1 1 auto; }
+#gsc-toolbar .gsc-tright { flex: 0 0 auto; margin-left: auto; }
+#gsc-toolbar #gsc-strip, #gsc-toolbar #gsc-scen {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 4px; min-height: 0; padding: 0;
+  background: none; border: 0; min-width: 0;
+}
+#gsc-toolbar #gsc-scen { border-left: 1px solid var(--border-2); padding-left: 8px; }
+#gsc-toolbar .gsc-lab { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-4); margin-right: 2px; white-space: nowrap; }
+#gsc-toolbar .gsc-nh { font-size: 11px; color: var(--ink-4); border: 0; padding: 0 2px; margin: 0; white-space: nowrap; }
+#gsc-toolbar .gsc-i-only { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 50%;
+  border: 1px solid var(--border-3); font-style: italic; cursor: help; }
+#gsc-toolbar .gsc-live { display: flex; align-items: center; gap: 6px; }
+#gsc-toolbar .gsc-livedot { font-size: 12px; color: var(--ink-3); display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+#gsc-toolbar .gsc-livedot::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--good, var(--accent)); }
+
+/* pages of this screen — the jump bar */
+#gsc-subnav {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 0 2px; padding: 0 8px; min-height: 36px;
+  border-bottom: 1px solid var(--border-2); background: var(--chrome); min-width: 0;
+}
+#gsc-subnav .gsc-page {
+  border: 0; background: none; color: var(--ink-3); font: inherit; font-size: 12px; padding: 0 10px; min-height: 36px;
+  cursor: pointer; white-space: nowrap; border-bottom: 2px solid transparent;
+}
+#gsc-subnav .gsc-page:hover { color: var(--ink); background: var(--raised); }
+#gsc-subnav .gsc-page[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); font-weight: 600; }
+#gsc-subnav .gsc-jump { margin-left: auto; display: flex; align-items: center; gap: 2px; min-width: 0; flex-wrap: wrap; }
+#gsc-subnav .gsc-lab { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-4); margin-right: 4px; }
+#gsc-subnav .gsc-jumpto { border: 0; background: none; color: var(--accent); font: inherit; font-size: 12px; padding: 0 8px; cursor: pointer; white-space: nowrap; }
+#gsc-subnav .gsc-jumpto:hover { text-decoration: underline; }
+
+/* the screen: one grid, equal card heights per row where cards are side by side, no dead space */
+#gsc-screen { align-items: stretch; grid-auto-rows: min-content; }
+#gsc-screen > .gsc-anchor { height: 0; margin: 0 0 calc(-1 * var(--gsc-gap)); scroll-margin-top: 4px; }
+#gsc-screen > .gsc-panel:not(.gsc-wide) { height: 100%; }
+.gsc-answer { padding: 4px 8px 0; font-size: 13px; color: var(--ink-2); font-family: var(--mono); font-variant-numeric: tabular-nums;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gsc-face { flex-wrap: nowrap; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
+.gsc-face > span { margin-right: 10px; }
+.gsc-face .badge { white-space: nowrap; }
+.gsc-note.gsc-method { border-top: 1px dashed var(--border); padding-top: 6px; }
+.gsc-shown { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; padding: 4px 8px; font-size: 12px; color: var(--ink-3);
+  border: 1px dashed var(--border-2); border-radius: var(--gsc-panel-r); background: var(--sunk); }
+.gsc-shown .gsc-nh { font-size: 11px; color: var(--ink-4); }
+.gsc-link { border: 0; background: none; color: var(--accent); font: inherit; font-size: 12px; padding: 0 4px; cursor: pointer; }
+.gsc-link:hover { text-decoration: underline; }
+.gsc-span { display: flex; align-items: center; gap: 8px; }
+.gsc-span .gsc-lab { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-4); }
+
+/* the type scale — six sizes (11 · 12 · 13 · 15 · 20 · 28) */
+#gsc-root { font-size: 13px; }
+#gsc-pick .gsc-e, #gsc-scen .gsc-lab, #gsc-strip .gsc-lab, #gsc-pick .gsc-sel span, #gsc-list .gsc-opt .s, #gsc-list .gsc-kind,
+#gsc-pick .gsc-count, #gsc-scen .gsc-nh, #gsc-strip .gsc-nh, #gsc-tabs .gsc-ctx, .gsc-face, .gsc-note, .gsc-ax, .gsc-axl,
+.gsc-hover, .gsc-tbl, .gsc-tbl th, .gsc-kpi .k, .gsc-kpi .s, .gsc-key, .gsc-lg, #gsc-pick .gsc-hubref, .gsc-empty p { font-size: 11px; }
+#gsc-pick input[type=text], #gsc-pick select, .gsc-chip, #gsc-tabs button, .gsc-seg button, .gsc-btn, .gsc-toggle,
+.gsc-panel > .gsc-h select.gsc-yr, #gsc-list .gsc-opt .t, .gsc-empty b { font-size: 12px; }
+#gsc-pick .gsc-sel b, .gsc-panel > .gsc-h h3 { font-size: 13px; }
+.gsc-kpi .v { font-size: 20px; }
+
+/* 32 px targets */
+#gsc-root .gsc-chip, #gsc-root .gsc-btn, #gsc-root .gsc-seg button, #gsc-pick input[type=text], #gsc-pick select,
+.gsc-panel > .gsc-h select.gsc-yr, #gsc-root .gsc-link, #gsc-root .gsc-jumpto { min-height: 32px; height: auto; }
+#gsc-root .gsc-btn, #gsc-root .gsc-seg button, #gsc-root .gsc-link, #gsc-root .gsc-jumpto { min-width: 32px; justify-content: center; }
+#gsc-root .gsc-toggle { min-height: 32px; padding: 0 4px; }
+#gsc-list .gsc-opt { min-height: 36px; }
+.gsc-panel > .gsc-h { min-height: 40px; padding: 4px 8px; }
+#gsc-root .gsc-i { width: 32px; padding: 0; font-style: italic; font-family: Georgia, serif; font-weight: 600; }
+#gsc-root .gsc-i[aria-expanded="true"] { background: var(--accent-soft); color: var(--accent); border-color: var(--accent-line); }
+/* S-nav 2026-10-07 · round 2: the screen-wide controls sit on the main row; the toolbar is the one runs + scenario row */
+#gsc-tabs .gsc-ctx { flex: 1 1 0; min-width: 0; padding: 0 8px; }
+#gsc-tabs .gsc-global { display: flex; align-items: center; gap: 6px; flex: 0 0 auto; padding-left: 4px; }
+#gsc-tabs .gsc-global select.gsc-yearsel { min-height: 32px; padding: 0 4px; font: inherit; font-size: 12px; color: var(--ink-2);
+  background: var(--surface); border: 1px solid var(--border-2); border-radius: var(--gsc-panel-r); }
+#gsc-tabs .gsc-global .gsc-seg button { min-width: 36px; }
+#gsc-tabs .gsc-global .gsc-toggle span { white-space: nowrap; }
+#gsc-tabs .gsc-global .gsc-live { display: flex; align-items: center; gap: 6px; }
+#gsc-tabs .gsc-global .gsc-livedot { font-size: 12px; color: var(--ink-3); display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+#gsc-tabs .gsc-global .gsc-livedot::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--good, var(--accent)); }
+#gsc-tabs .gsc-global .gsc-nh { font-size: 11px; color: var(--ink-4); white-space: nowrap; }
+#gsc-tabs .gsc-global button { border-bottom: 1px solid var(--border-2); }
+#gsc-tabs .gsc-global .gsc-seg button { border-bottom: 0; }
+#gsc-toolbar { flex-wrap: wrap; gap: 4px 6px; padding: 4px 8px; }
+#gsc-toolbar .gsc-chip { padding: 0 7px; gap: 4px; }
+#gsc-toolbar #gsc-scen { padding-left: 6px; }
+#gsc-tabs .gsc-global .gsc-seg button { border: 0; border-left: 1px solid var(--border); padding: 0 8px; min-height: 32px; color: var(--ink-3); }
+#gsc-tabs .gsc-global .gsc-seg button:first-child { border-left: 0; }
+#gsc-tabs .gsc-global .gsc-seg button[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); }
+#gsc-tabs .gsc-btn { border: 1px solid var(--border-2); padding: 0 10px; min-height: 32px; }
+#gsc-tabs .gsc-btn.pri { border-color: var(--accent); color: var(--accent-ink); background: var(--accent); }
+#gsc-tabs .gsc-btn.pri:hover { color: var(--accent-ink); background: var(--accent); }
+#gsc-main { grid-template-columns: minmax(0, 1fr); }
+#gsc-tabs .gsc-wfrow { flex-wrap: wrap; }
+#gsc-tabs .gsc-wfrow > * { min-width: 0; }
+#gsc-toolbar, #gsc-subnav { min-width: 0; max-width: 100%; }
+#gsc-tabs .gsc-wftab { padding: 0 11px; }
+/* S-nav 2026-10-07 · every control on a Continuum page is a 32 px target (SKL-091 §4), whichever module drew it */
+#gsc-screen button, #gsc-screen select, #gsc-screen input[type=text], #gsc-screen input[type=number], #gsc-screen input[type=date],
+#gsc-screen input[type=search], #gsc-screen input[type=time], #gsc-subnav button, #gsc-toolbar button { min-height: 32px; }
+#gsc-screen button, #gsc-subnav button, #gsc-toolbar button { min-width: 32px; }
+#gsc-screen label:has(> input[type=checkbox]), #gsc-screen label:has(> input[type=radio]) { min-height: 32px; display: inline-flex; align-items: center; gap: 5px; }
+#gsc-screen summary { min-height: 32px; display: list-item; line-height: 32px; }
+/* S-nav 2026-10-07 · the runs and the scenario on ONE row at 1440: the group names are read by assistive tech and in
+   the chips' titles; on screen a rule divides the two groups */
+#gsc-toolbar .gsc-lab { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+#gsc-toolbar { position: relative; gap: 3px 4px; }
+#gsc-toolbar #gsc-strip, #gsc-toolbar #gsc-scen { gap: 3px; }
+#gsc-toolbar .gsc-chip { padding: 0 6px; gap: 4px; }
+#gsc-toolbar .gsc-chip .gsc-sw { width: 8px; height: 8px; flex-basis: 8px; }
+#gsc-toolbar #gsc-scen { border-left: 2px solid var(--border-3); padding-left: 6px; margin-left: 2px; }
+/* S-nav 2026-10-07 · a panel's controls wrap inside its header rather than push past the card; a run-input flag is one line */
+.gsc-panel > .gsc-h { flex-wrap: wrap; row-gap: 4px; }
+.gsc-panel > .gsc-h h3 { flex: 1 1 140px; min-width: 0; }
+.gsc-panel > .gsc-h .gsc-ctl { flex: 0 1 auto; flex-wrap: wrap; justify-content: flex-end; min-width: 0; max-width: 100%; }
+.gsc-note.gsc-flag { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--warn); cursor: help; }
+#gsc-root .em-input { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: help; }
+#gsc-toolbar .gsc-chip { padding: 0 5px; gap: 3px; }
+#gsc-toolbar #gsc-strip, #gsc-toolbar #gsc-scen { gap: 2px; }
+/* the context line repeats the rail's scope, the toolbar's runs and the top bar's asset: shown only where it fits whole */
+@media (max-width: 1599px) { #gsc-tabs .gsc-ctx { display: none; } }
+/* the face keeps ONE line by clamping, not by refusing to wrap: wrapped-away words stay inside the card's width
+   (nothing reaches past the screen, even hidden) and the whole line is the face's title */
+.gsc-face { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; line-clamp: 1; overflow: hidden; white-space: normal; text-overflow: clip; }
+.gsc-face > span { display: inline; }
+/* cost-basis publish 2026-10-08 · the runs and the scenario on ONE row at 1280 too: when the chips wrap at their full labels
+   (60-cathy.js fitToolbar measures it), chip text drops to 11 px (in the type scale) and the three proxy chips share one
+   visible "proxies" tag instead of " · proxy" each — the chip's text, title and aria label still say proxy */
+#gsc-toolbar .gsc-ptag { display: none; font-size: 11px; color: var(--ink-4); white-space: nowrap; align-self: center; padding: 0 1px 0 2px; }
+#gsc-toolbar.gsc-tight .gsc-ptag { display: inline; }
+#gsc-toolbar.gsc-tight .gsc-sfx { display: none; }
+#gsc-toolbar.gsc-tight .gsc-chip { font-size: 11px; padding: 0 4px; }

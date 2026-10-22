@@ -1,0 +1,26 @@
+{
+ "file": "60-cathy.js",
+ "why": "One Studio hosts the Continuum on its own stage (views/continuum.js sets window.GSX_CONTINUUM_HOST): paint into that host, never into #gsf-ws (the live full-workspace takeover hid One Studio's board); put the gsc-on class on the host, not #app; the host owns the tab (no second tab button in the header) and the map dock is left as the reader set it. With no host set, the live behaviour is unchanged. Reviewed by Claude 2026-10-13 (lift plan 14 L4).",
+ "edits": [
+  {
+   "find": "  function mountPoint() {\n    return document.getElementById('gsf-ws')",
+   "replace": "  function mountPoint() {\n    if (window.GSX_CONTINUUM_HOST) return window.GSX_CONTINUUM_HOST;   /* One Studio C1: the host's own stage */\n    return document.getElementById('gsf-ws')"
+  },
+  {
+   "find": "    const app = document.getElementById('app'); if (app) app.classList.add('gsc-on');",
+   "replace": "    const app = window.GSX_CONTINUUM_HOST || document.getElementById('app'); if (app) app.classList.add('gsc-on');"
+  },
+  {
+   "find": "    const app = document.getElementById('app'); if (app) app.classList.remove('gsc-on');",
+   "replace": "    const app = window.GSX_CONTINUUM_HOST || document.getElementById('app'); if (app) app.classList.remove('gsc-on');"
+  },
+  {
+   "find": "  function installTab() {\n",
+   "replace": "  function installTab() {\n    if (window.GSX_CONTINUUM_HOST) return;   /* One Studio C1: the host owns the tab */\n"
+  },
+  {
+   "find": "      if (window.GSFrame && GSFrame.sizes) {",
+   "replace": "      if (window.GSFrame && GSFrame.sizes && !window.GSX_CONTINUUM_HOST) {"
+  }
+ ]
+}

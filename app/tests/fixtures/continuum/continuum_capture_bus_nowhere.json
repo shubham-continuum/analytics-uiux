@@ -1,0 +1,13 @@
+{
+ "request": {
+  "path": "/api/v2/continuum/capture",
+  "query": {
+   "bus": "nowhere"
+  }
+ },
+ "status": 400,
+ "body": {
+  "error": "bus must be a bus number or HUB / a load zone code; got 'nowhere'",
+  "field": "bus"
+ }
+}

@@ -1,0 +1,14 @@
+{
+ "file": "app-configurator.js",
+ "why": "Lift plan 14 L3 (builder G-configurator, 2026-10-13): the Configurator's field catalogue, GS.resolve and every column read are the pinned data.js extract's, but the one window.GS (live-bridge shim) holds the ENGINE's nodes, which lack those columns. The IIFE gets a LOCAL GS: the view views/configurator-host.js hands in at load time only (window.GSX_CFG.GS = Object.create(window.GS) with the extract's nodes/node/CASES/shortCircuitMVA; still one window.GS, nothing replaced), and its ctx() goes through the host's adapter (bus node read from the extract, pins, compare, horizon). Without window.GSX_CFG the code is the live code (window.GS, App.ctx()).",
+ "edits": [
+  {
+   "find": "(function () {\n  const C = Charts, H = C.H, esc = C.esc, cv = C.cv, { fmt, stat } = GS;",
+   "replace": "(function () {\n  const GSX = window.GSX_CFG || null, GS = GSX ? GSX.GS : window.GS; /* One Studio patch F1: the extract view, read once at load */\n  const C = Charts, H = C.H, esc = C.esc, cv = C.cv, { fmt, stat } = GS;"
+  },
+  {
+   "find": "  const ctx = () => App.ctx();",
+   "replace": "  const ctx = () => (GSX ? GSX.ctx(App.ctx()) : App.ctx()); /* One Studio patch F1 */"
+  }
+ ]
+}
