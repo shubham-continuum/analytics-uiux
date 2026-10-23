@@ -85,7 +85,11 @@ for (const st of stages) {
     const rootCs = getComputedStyle(document.documentElement), bodyCs = getComputedStyle(document.body);
     const vars = [...names].map(n => `${n}:${rootCs.getPropertyValue(n)}`).join(';');
     const base = document.createElement('style'); base.textContent = `html{${vars}} body{font-family:${bodyCs.fontFamily};font-size:${bodyCs.fontSize};line-height:${bodyCs.lineHeight};color:${bodyCs.color}}`;
-    sheet.disabled = true; document.head.appendChild(base); const off = snap(); base.remove(); sheet.disabled = false;
+    // Measured at the same width (2026-10-23): with the live sheet off the frame's docks fall away and the board widens
+    // (~500 → ~1,400 px at 1440), which flips any layout that follows the board's width (the map views' container
+    // queries): a different width, not the live sheet's rules. The analyzer body is held at its width while it is off.
+    const an = document.querySelector('.gsx-an'), anW = an ? an.getBoundingClientRect().width : 0, anPin = an ? an.style.width : '';
+    sheet.disabled = true; document.head.appendChild(base); if (an) an.style.width = `${anW}px`; const off = snap(); if (an) an.style.width = anPin; base.remove(); sheet.disabled = false;
     const out = [];
     els.forEach((e, i) => {
       let d = props.filter((k, j) => on[i][j] !== off[i][j] && !(k === 'width' || k === 'height'));

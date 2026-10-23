@@ -45,6 +45,8 @@ export function closeDrawer() { document.querySelectorAll('.drawer, .drawer-bg')
 
 // ---------- Maps: <svg data-map="id" viewBox="..."> with wheel zoom, drag pan, +/−/reset ----------
 const MAPVIEW = new Map();
+/** Forget a map's zoom and pan (its drawing changed frame, so the stored view no longer fits it). */
+export function forgetMapView(id) { MAPVIEW.delete(id); }
 export function mountMaps(root) {
   root.querySelectorAll('svg[data-map]').forEach(svg => {
     const id = svg.dataset.map, base = svg.getAttribute('viewBox').split(' ').map(Number);
@@ -53,11 +55,13 @@ export function mountMaps(root) {
     const dots = [...svg.querySelectorAll('circle[data-r]')];
     const set = () => { svg.setAttribute('viewBox', `${x} ${y} ${w} ${h}`); MAPVIEW.set(id, [x, y, w, h]); const k = base[2] / w; for (const c of dots) c.setAttribute('r', (c.dataset.r / Math.sqrt(k)).toFixed(2)); };
     set();
+    // The drawn frame inside the element (preserveAspectRatio meet): a map held at a fixed height is letterboxed.
+    const box = () => { const b = svg.getBoundingClientRect(), ar = base[2] / base[3]; let { left, top, width, height } = b; if (width / height > ar) { const w2 = height * ar; left += (width - w2) / 2; width = w2; } else { const h2 = width / ar; top += (height - h2) / 2; height = h2; } return { left, top, width, height }; };
     const zoom = (f, cx = x + w / 2, cy = y + h / 2) => { const nw = Math.min(base[2], Math.max(base[2] / 12, w * f)), nh = nw * (base[3] / base[2]); x = cx - (cx - x) * (nw / w); y = cy - (cy - y) * (nh / h); w = nw; h = nh; set(); };
-    svg.addEventListener('wheel', e => { e.preventDefault(); const b = svg.getBoundingClientRect(); zoom(e.deltaY > 0 ? 1.2 : 1 / 1.2, x + ((e.clientX - b.left) / b.width) * w, y + ((e.clientY - b.top) / b.height) * h); }, { passive: false });
+    svg.addEventListener('wheel', e => { e.preventDefault(); const b = box(); zoom(e.deltaY > 0 ? 1.2 : 1 / 1.2, x + ((e.clientX - b.left) / b.width) * w, y + ((e.clientY - b.top) / b.height) * h); }, { passive: false });
     let drag = null;
     svg.addEventListener('pointerdown', e => { if (e.target.closest('[data-act]')) return; drag = { sx: e.clientX, sy: e.clientY, x, y }; svg.setPointerCapture(e.pointerId); });
-    svg.addEventListener('pointermove', e => { if (!drag) return; const b = svg.getBoundingClientRect(); x = drag.x - ((e.clientX - drag.sx) / b.width) * w; y = drag.y - ((e.clientY - drag.sy) / b.height) * h; set(); });
+    svg.addEventListener('pointermove', e => { if (!drag) return; const b = box(); x = drag.x - ((e.clientX - drag.sx) / b.width) * w; y = drag.y - ((e.clientY - drag.sy) / b.height) * h; set(); });
     svg.addEventListener('pointerup', () => { drag = null; });
     const ctl = svg.parentElement.querySelector('.map-ctl');
     ctl?.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; if (b.dataset.z === 'in') zoom(1 / 1.5); else if (b.dataset.z === 'out') zoom(1.5); else { [x, y, w, h] = base; set(); } });
@@ -138,7 +142,9 @@ export function resolveStep(step, stages) {
   if (!st) return null;
   const tabs = st.view?.tabs || [];
   const t = tabs.find(x => lc(x.id) === lc(step.tab) || lc(x.label) === lc(step.tab) || (x.labelFor && ['solar', 'wind', 'storage', 'hybrid', 'datacenter'].some(f => { try { return lc(x.labelFor(f)) === lc(step.tab); } catch { return false; } })));
-  return { stage: st.key, tab: t ? t.id : null, depth: normDepth(step.depth), text: String(step.what_to_look_at ?? ''), option: step.option != null ? String(step.option) : null };
+  // A former tab id a view keeps as an alias (view.tabAlias) resolves to its tab; the alias itself is the step's focus.
+  const alias = !t && st.view?.tabAlias ? st.view.tabAlias[lc(step.tab)] : null, ta = alias ? tabs.find(x => x.id === alias) : null;
+  return { stage: st.key, tab: t ? t.id : ta ? ta.id : null, ...(ta ? { focus: lc(step.tab) } : {}), depth: normDepth(step.depth), text: String(step.what_to_look_at ?? ''), option: step.option != null ? String(step.option) : null };
 }
 /** The state a walkthrough step sets: bus (the step's option, else the chosen one), fuel, MW, depth, stage/tab, pins and Decision options. */
 export function stepPatch(project, optionId, i, stages) {
@@ -150,7 +156,7 @@ export function stepPatch(project, optionId, i, stages) {
   return {
     project: project.id, option: chosenOpt.id, step, of: n,
     nodeId: opt.busId, tech: project.tech || null, exportMW: project.exportMW, importMW: project.importMW,
-    depth: r ? r.depth : null, stage: r ? r.stage : null, tab: r ? r.tab : null, text: r ? r.text : '',
+    depth: r ? r.depth : null, stage: r ? r.stage : null, tab: r ? r.tab : null, focus: r?.focus ?? null, text: r ? r.text : '',
     pins, dOpts: pins.filter(id => id !== opt.busId),
   };
 }

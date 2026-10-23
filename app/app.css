@@ -978,3 +978,246 @@ details.trace.flash{outline:2px solid var(--accent-2);outline-offset:2px;transit
 .gsx-cont-stage{display:block;min-height:560px;height:calc(100% - 96px);padding:0 0 12px}
 .gsx-cont-stage[hidden]{display:none}
 .gsx-cont-banner{margin:0 0 8px}
+
+/* -- Map views (Market, Land, Grid; 2026-10-22; design layer 2026-10-23): one bar of buttons on top (the map and the four
+   analyses, each with its result and the inputs set in it), the map with frosted panels floating on it, and each
+   analysis on its own tab. Glass only where something floats over the map or the page scrolls under it, opaque enough
+   to read over a busy map; motion only where something opens, closes or changes tab, none for reduced motion. -- */
+.gsx-an{--gl-bg:rgba(17,25,39,.72);--gl-bg-2:rgba(21,30,46,.86);--gl-panel:rgba(19,27,41,.92);--gl-line:rgba(170,195,235,.16);--gl-hi:rgba(255,255,255,.06);--gl-blur:blur(14px) saturate(1.25) contrast(1.1);--gl-shadow:0 14px 34px -16px rgba(0,0,0,.75),0 2px 8px -3px rgba(0,0,0,.35);--gl-r:14px;--gl-ease:cubic-bezier(.2,.7,.2,1)}
+html.light .gsx-an{--gl-bg:rgba(255,255,255,.74);--gl-bg-2:rgba(255,255,255,.9);--gl-panel:rgba(255,255,255,.9);--gl-line:rgba(20,40,75,.12);--gl-hi:rgba(255,255,255,.85);--gl-shadow:0 14px 30px -18px rgba(16,40,80,.38),0 2px 6px -3px rgba(16,40,80,.14)}
+.gsx-an .mk-wb{container-type:inline-size;display:flex;flex-direction:column;gap:10px;min-width:0;--mk-h:clamp(440px,calc(100vh - 330px),860px)}
+.gsx-an .mk-wb-answer{margin:0}
+.gsx-an .mk-wb .kpis{grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:8px;margin:0}
+.gsx-an .mk-wb .kpi{padding:10px 12px 11px;border-radius:12px;background:linear-gradient(180deg,var(--surface-2),var(--surface));border:1px solid var(--border);box-shadow:inset 0 1px 0 var(--gl-hi);transition:border-color .18s var(--gl-ease),transform .18s var(--gl-ease)}
+.gsx-an .mk-wb .kpi:hover{border-color:var(--border-2)}
+.gsx-an .mk-wb .kpi[data-kg]{box-shadow:inset 0 2px 0 color-mix(in srgb,var(--cat,var(--accent)) 75%,transparent),inset 0 3px 0 var(--gl-hi)}
+.gsx-an .mk-wb .kpi[data-kg="capacity"]{--cat:#6aa6ff}
+.gsx-an .mk-wb .kpi[data-kg="area"]{--cat:#4ade80}
+.gsx-an .mk-wb .kpi[data-kg="constraints"],.gsx-an .mk-wb .kpi[data-kg="footprint"]{--cat:#f5b14a}
+.gsx-an .mk-wb .kpi[data-kg="cost"],.gsx-an .mk-wb .kpi[data-kg="permits"]{--cat:#a78bfa}
+.gsx-an .mk-wb .kpi[data-kg="mitigation"],.gsx-an .mk-wb .kpi[data-kg="corridor"]{--cat:#2dd4bf}
+.gsx-an .mk-wb .kpi .value{font-size:21px}
+.gsx-an .mk-wb .kpi .note{margin-top:3px}
+/* the bar: the map and the four analyses as buttons, each with its result and the inputs set in it (views/mapview.js) */
+.gsx-an .mk-bar{position:sticky;top:0;z-index:30;display:grid;grid-template-columns:minmax(124px,.74fr) repeat(4,minmax(0,1fr));gap:6px;padding:6px;margin:0;border:1px solid var(--gl-line);border-radius:var(--gl-r);background:var(--gl-bg-2);-webkit-backdrop-filter:var(--gl-blur);backdrop-filter:var(--gl-blur);box-shadow:var(--gl-shadow),inset 0 1px 0 var(--gl-hi)}
+.gsx-an .mk-tab{--cat:var(--accent);position:relative;min-width:0;display:flex;flex-direction:column;gap:5px;padding:8px 10px;border:1px solid transparent;border-radius:11px;background:transparent;transition:background-color .18s var(--gl-ease),border-color .18s var(--gl-ease),box-shadow .2s var(--gl-ease),transform .14s var(--gl-ease)}
+.gsx-an .mk-tab:hover{background:color-mix(in srgb,var(--cat) 9%,transparent);border-color:color-mix(in srgb,var(--cat) 32%,transparent);transform:translateY(-1px);box-shadow:0 10px 22px -16px color-mix(in srgb,var(--cat) 80%,transparent)}
+.gsx-an .mk-tab:active{transform:translateY(0) scale(.992)}
+.gsx-an .mk-tab.on{background:linear-gradient(180deg,color-mix(in srgb,var(--cat) 22%,transparent),color-mix(in srgb,var(--cat) 7%,transparent));border-color:color-mix(in srgb,var(--cat) 58%,transparent);box-shadow:inset 0 1px 0 var(--gl-hi),0 12px 26px -18px color-mix(in srgb,var(--cat) 95%,transparent)}
+.gsx-an .mk-tab.on::before{content:'';position:absolute;left:14px;right:14px;bottom:-1px;height:2px;border-radius:2px;background:var(--cat)}
+.gsx-an .mk-tab-n{position:absolute;top:3px;left:31px;min-width:16px;height:16px;padding:0 4px;display:grid;place-items:center;border-radius:999px;font-size:10px;font-weight:700;line-height:1;color:var(--bg);background:var(--cat);box-shadow:0 0 0 2px var(--gl-bg-2);pointer-events:none;font-variant-numeric:tabular-nums}
+.gsx-an .mk-tab-btn{display:flex;align-items:center;justify-content:flex-start;width:100%;gap:9px;min-width:0;min-height:0;padding:0;border:0;background:none;font:inherit;color:inherit;text-align:left;cursor:pointer}
+.gsx-an .mk-tab-btn::after{content:'';position:absolute;inset:0;border-radius:inherit}
+.gsx-an .mk-tab-btn:hover,.gsx-an .mk-tab-btn:active{background:none}
+.gsx-an .mk-tab-btn:focus-visible{outline:none}
+.gsx-an .mk-tab-btn:focus-visible::after{outline:2px solid var(--cat);outline-offset:1px}
+.gsx-an .mk-tab .mk-ico{flex:none;width:30px;height:30px;padding:6.5px;border-radius:9px;color:var(--cat);background:color-mix(in srgb,var(--cat) 14%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--cat) 28%,transparent);transition:background-color .18s var(--gl-ease),color .18s var(--gl-ease)}
+.gsx-an .mk-tab.on .mk-ico{color:var(--bg);background:var(--cat);box-shadow:0 4px 12px -4px color-mix(in srgb,var(--cat) 80%,transparent)}
+.gsx-an .mk-tab-t{display:flex;flex-direction:column;gap:1px;min-width:0}
+.gsx-an .mk-tab-k{font-size:13px;font-weight:650;line-height:1.2;color:var(--ink);letter-spacing:-.005em}
+.gsx-an .mk-tab-r{font-size:11.5px;line-height:1.3;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gsx-an .mk-tab-r b{color:var(--ink);font-weight:650}
+.gsx-an .mk-tab .mk-chips{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:4px;min-width:0;padding-left:39px;pointer-events:none}
+/* category hues: the icon, the active edge and the hover glow (the map is the accent) */
+.gsx-an .mk-tab[data-k="find"],.gsx-an .mk-tab[data-k="capacity"]{--cat:#6aa6ff}
+.gsx-an .mk-tab[data-k="rank"],.gsx-an .mk-tab[data-k="permits"],.gsx-an .mk-tab[data-k="cost"]{--cat:#a78bfa}
+.gsx-an .mk-tab[data-k="size"],.gsx-an .mk-tab[data-k="mitigation"],.gsx-an .mk-tab[data-k="corridor"]{--cat:#2dd4bf}
+.gsx-an .mk-tab[data-k="regions"],.gsx-an .mk-tab[data-k="footprint"],.gsx-an .mk-tab[data-k="constraints"]{--cat:#f5b14a}
+.gsx-an .mk-tab[data-k="area"]{--cat:#4ade80}
+html.light .gsx-an .mk-tab[data-k="find"],html.light .gsx-an .mk-tab[data-k="capacity"]{--cat:#2563eb}
+html.light .gsx-an .mk-tab[data-k="rank"],html.light .gsx-an .mk-tab[data-k="permits"],html.light .gsx-an .mk-tab[data-k="cost"]{--cat:#7c3aed}
+html.light .gsx-an .mk-tab[data-k="size"],html.light .gsx-an .mk-tab[data-k="mitigation"],html.light .gsx-an .mk-tab[data-k="corridor"]{--cat:#0f9488}
+html.light .gsx-an .mk-tab[data-k="regions"],html.light .gsx-an .mk-tab[data-k="footprint"],html.light .gsx-an .mk-tab[data-k="constraints"]{--cat:#b7791f}
+html.light .gsx-an .mk-tab[data-k="area"]{--cat:#16a34a}
+/* the inputs set under each analysis: × removes one */
+.gsx-an .mk-chips{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:4px;min-width:0;pointer-events:none}
+.gsx-an .mk-chip{pointer-events:auto;display:inline-flex;align-items:center;gap:2px;min-height:20px;max-width:100%;padding:1px 3px 1px 8px;border:1px solid color-mix(in srgb,var(--cat,var(--accent)) 45%,transparent);border-radius:999px;background:color-mix(in srgb,var(--cat,var(--accent)) 14%,transparent);color:var(--ink);font-size:11px;font-weight:600;line-height:1.2;white-space:nowrap;cursor:pointer;transition:background-color .15s,border-color .15s}
+.gsx-an .mk-chip span{font-size:12px;color:var(--ink-3);padding:0 4px}
+.gsx-an .mk-chip:hover{background:color-mix(in srgb,var(--cat,var(--accent)) 24%,transparent);border-color:var(--cat,var(--accent))}
+.gsx-an .mk-chip:hover span{color:var(--ink)}
+.gsx-an .mk-chip-none{font-size:11px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+/* the page under the bar: the Map tab's column, and a category tab's page as it was (the shell's notice spacing kept) */
+.gsx-an .mk-mappage{display:flex;flex-direction:column;gap:10px;min-width:0}
+.gsx-an .mk-tabpage{min-width:0}
+.gsx-an .mk-tabpage>div.notice{margin:8px 0}
+.gsx-an .mk-tabpage>div.notice:first-child{margin-top:0}
+.gsx-an .mk-enter{animation:mk-enter .26s var(--gl-ease) both}
+@keyframes mk-enter{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+/* the map holds the viewport's height; the drawing keeps its aspect inside (letterboxed), the floats sit on it */
+.gsx-an .mk-map-wrap{position:relative;min-width:0}
+.gsx-an .mk-map-wrap .map-wrap{height:var(--mk-h);border-radius:12px;overflow:hidden;will-change:transform} /* its own layer: rasterised once, not on the first scroll */
+.gsx-an .mk-map-wrap .map-wrap svg.gm{width:100%;height:100%}
+.gsx-an .mk-map-wrap .map-ctl{top:auto;bottom:10px;left:50%;right:auto;transform:translateX(-50%);flex-direction:row}
+.gsx-an section.card.card-max .mk-map-wrap{--mk-h:calc(100vh - 270px)}
+.gsx-an .mk-float{position:absolute;top:10px;bottom:10px;z-index:4;display:flex;flex-direction:column;gap:6px;padding:8px 10px;overflow:auto;overscroll-behavior:contain;background:var(--gl-panel);-webkit-backdrop-filter:var(--gl-blur);backdrop-filter:var(--gl-blur);border:1px solid var(--gl-line);border-radius:var(--gl-r);box-shadow:var(--gl-shadow),inset 0 1px 0 var(--gl-hi);opacity:1;transform:none;transition:opacity .2s var(--gl-ease),transform .24s var(--gl-ease),display .24s allow-discrete;scrollbar-width:thin}
+@starting-style{.gsx-an .mk-ff{opacity:0;transform:translateX(-14px)}.gsx-an .mk-fl{opacity:0;transform:translateX(14px)}}
+.gsx-an .mk-ff{left:10px;width:min(290px,calc(100% - 20px));padding:0;gap:0}
+.gsx-an .mk-fl{right:10px;width:min(320px,calc(100% - 20px))}
+.gsx-an .mk-float-h{display:flex;align-items:baseline;gap:8px;min-width:0;flex:none}
+.gsx-an .mk-ff .mk-float-h{position:sticky;top:0;z-index:2;padding:9px 12px 8px;background:color-mix(in srgb,var(--surface-2) 94%,transparent);border-bottom:1px solid var(--gl-line);border-radius:var(--gl-r) var(--gl-r) 0 0}
+.gsx-an .mk-float-h h3{margin:0;font-size:13px;font-weight:650;flex:none}
+.gsx-an .mk-float-sub{flex:1 1 0;min-width:0;font-size:11px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gsx-an .mk-x{flex:none;margin-left:auto;display:inline-grid;place-items:center;width:24px;height:24px;background:none;border:1px solid transparent;border-radius:7px;color:var(--ink-3);font-size:16px;line-height:1;padding:0;min-height:0;cursor:pointer;transition:background-color .15s,border-color .15s,color .15s}
+.gsx-an .mk-x:hover{color:var(--ink);background:var(--tint);border-color:var(--gl-line)}
+.gsx-an .mk-float-a{margin:0;font-size:12px;line-height:1.45;color:var(--ink-2)}
+.gsx-an .mk-float-a b{color:var(--ink)}
+.gsx-an .mk-float .card-f{margin:0;flex:none}
+.gsx-an .mk-float-min{display:none;position:absolute;top:10px;z-index:4;align-items:center;gap:6px;min-height:32px;padding:5px 13px;font-size:12px;font-weight:600;border-radius:999px;color:var(--ink);background:var(--gl-bg-2);-webkit-backdrop-filter:var(--gl-blur);backdrop-filter:var(--gl-blur);border:1px solid var(--gl-line);box-shadow:var(--gl-shadow),inset 0 1px 0 var(--gl-hi);cursor:pointer;transition:transform .14s var(--gl-ease),border-color .15s,background-color .15s,opacity .2s,display .2s allow-discrete}
+.gsx-an .mk-float-min:hover{transform:translateY(-1px);border-color:var(--accent-line);background:var(--gl-bg-2)}
+@starting-style{.gsx-an .mk-float-min{opacity:0}}
+.gsx-an .mk-ff-min{left:10px}
+.gsx-an .mk-fl-min{right:10px}
+.gsx-an .mk-wb[data-ff="0"] .mk-ff,.gsx-an .mk-wb[data-fl="0"] .mk-fl{display:none;opacity:0}
+.gsx-an .mk-wb[data-ff="0"] .mk-ff{transform:translateX(-14px)}
+.gsx-an .mk-wb[data-fl="0"] .mk-fl{transform:translateX(14px)}
+.gsx-an .mk-wb[data-ff="0"] .mk-ff-min,.gsx-an .mk-wb[data-fl="0"] .mk-fl-min{display:inline-flex}
+/* the filter groups in the left float */
+.gsx-an .mk-sec+.mk-sec{border-top:1px solid var(--border)}
+.gsx-an .mk-sec-h{display:flex;align-items:baseline;gap:8px;width:100%;min-height:0;padding:9px 12px 7px;border:0;border-radius:0;background:none;font:inherit;text-align:left;cursor:pointer;color:var(--ink);transition:background-color .15s}
+.gsx-an .mk-sec-h::before{content:'▾';display:inline-block;font-size:10px;color:var(--accent);flex:none;transition:transform .2s var(--gl-ease)}
+.gsx-an .mk-sec[data-shut] .mk-sec-h::before{transform:rotate(-90deg)}
+.gsx-an .mk-sec-h:hover{background:var(--tint)}
+.gsx-an .mk-sec-t{flex:none;font-size:10px;letter-spacing:.09em;text-transform:uppercase;font-weight:700;color:var(--ink-2)}
+.gsx-an .mk-sec-r{flex:1 1 0;min-width:0;font-size:11px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right}
+.gsx-an .mk-sec-r b{color:var(--ink-2)}
+.gsx-an .mk-sec-b{display:flex;flex-direction:column;gap:6px;padding:0 12px 11px;opacity:1;transform:none;transition:opacity .2s var(--gl-ease),transform .2s var(--gl-ease),display .2s allow-discrete}
+.gsx-an .mk-sec[data-shut]>.mk-sec-b{display:none;opacity:0;transform:translateY(-4px)}
+@starting-style{.gsx-an .mk-sec>.mk-sec-b{opacity:0;transform:translateY(-4px)}}
+.gsx-an .mk-sec-a{margin:0;font-size:12px;line-height:1.4;color:var(--ink-2)}
+.gsx-an .mk-sec-a b{color:var(--ink)}
+.gsx-an .mk-sec.mk-flash{animation:mk-flash 1.4s ease-out}
+@keyframes mk-flash{from{background:var(--accent-soft)}to{background:transparent}}
+.gsx-an .mk-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.gsx-an .mk-ff .checks{padding:0;gap:4px}
+.gsx-an .mk-ff .year{padding:3px 7px;font-size:11.5px}
+.gsx-an .mk-ff .field{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:6px}
+.gsx-an .mk-ff .field input,.gsx-an .mk-ff .field select{min-width:0;width:100%}
+.gsx-an .mk-ff .field.mk-price{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);row-gap:4px}
+.gsx-an .mk-ff .field.mk-price>span:first-child{grid-column:1/-1}
+.gsx-an .mk-ff .field.mk-price>span:nth-of-type(2){color:var(--ink-3)}
+.gsx-an .mk-ff .inline-check{margin:4px 0 0;align-items:flex-start}
+/* the shortlist and the selected bus in the right float */
+.gsx-an .mk-fl .table-wrap{flex:none;max-height:calc(var(--mk-h) * .48);overflow:auto}
+.gsx-an .mk-fl table.dense td,.gsx-an .mk-fl table.dense td .audit-note{white-space:normal;overflow-wrap:anywhere}
+.gsx-an .mk-fl table.dense td:first-child{white-space:nowrap}
+.gsx-an .mk-fl table.dense td.num .audit-note{white-space:nowrap}
+.gsx-an .mk-fl tr.sel td{background:var(--accent-soft)}
+.gsx-an .mk-selb{border-top:1px solid var(--border);padding-top:8px;display:flex;flex-direction:column;gap:6px;flex:none;min-width:0}
+.gsx-an .mk-selb h4{margin:0;font-size:12.5px;font-weight:650}
+.gsx-an .mk-selb h4 .audit-note{font-weight:400;margin-left:4px}
+.gsx-an .mk-selb .table-wrap{max-height:none}
+.gsx-an .mk-wb .mk-acts{display:flex;flex-wrap:wrap;gap:4px 6px;align-items:center;margin-top:3px}
+.gsx-an .mk-wb .mk-acts button{white-space:nowrap}
+.gsx-an .mk-wb .mk-acts .pin-btn{min-width:0}
+.gsx-an .mk-szrow{display:flex;flex-wrap:wrap;gap:4px}
+.gsx-an .mk-sz{display:flex;flex-direction:column;align-items:center;gap:0;min-height:38px;padding:3px 9px;line-height:1.15}
+.gsx-an .mk-sz span{font-size:10.5px;color:var(--ink-3)}
+.gsx-an .mk-sz b{font-size:13px}
+.gsx-an .mk-sz.active{background:var(--accent-soft);border-color:var(--accent-line);color:var(--ink)}
+.gsx-an .mk-sz.active span{color:var(--ink-2)}
+.gsx-an .mk-wb button.lnk{background:none;border:0;padding:0;min-height:0;font:inherit;font-weight:600;color:var(--ink);cursor:pointer;text-align:left;border-radius:2px}
+.gsx-an .mk-wb button.lnk:hover{color:var(--accent);text-decoration:underline}
+.gsx-an .gm .gm-pts circle.m-hov{stroke:var(--gs-amber,#e0a63a);stroke-width:3}
+/* a medium board holds one float beside the buses: the filters start open, the shortlist as a button (a click opens it) */
+@container (max-width:1099px){
+  .gsx-an .mk-ff{width:min(250px,calc(100% - 20px))}
+  .gsx-an .mk-fl{width:min(300px,calc(100% - 20px))}
+  .gsx-an .mk-wb[data-fl="auto"] .mk-fl{display:none}
+  .gsx-an .mk-wb[data-fl="auto"] .mk-fl-min{display:inline-flex}
+}
+@container (max-width:999px){
+  .gsx-an .mk-bar{grid-template-columns:repeat(5,minmax(132px,1fr));overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:thin}
+  .gsx-an .mk-tab{scroll-snap-align:start}
+  .gsx-an .mk-tab .mk-ico{width:26px;height:26px;padding:5px}
+  .gsx-an .mk-tab .mk-chips{padding-left:0}
+  .gsx-an .mk-tab-n{left:26px}
+}
+@container (max-width:719px){
+  .gsx-an .mk-map-wrap{--mk-h:clamp(380px,62vh,560px)}
+  .gsx-an .mk-wb[data-ff="auto"] .mk-ff,.gsx-an .mk-wb[data-fl="auto"] .mk-fl{display:none}
+  .gsx-an .mk-wb[data-ff="auto"] .mk-ff-min,.gsx-an .mk-wb[data-fl="auto"] .mk-fl-min{display:inline-flex}
+}
+.gsx-an .gm .gm-pts circle.m-rank{fill:none;stroke:var(--accent);stroke-width:2}
+.gsx-an .gm .gm-labels text.m-zone{font:700 11.5px var(--sans);text-anchor:middle}
+.gsx-an .gm-legend .gm-sw.m-rank{background:transparent;box-shadow:inset 0 0 0 2px var(--accent)}
+@media (prefers-reduced-motion:reduce){.gsx-an .mk-bar *,.gsx-an .mk-float,.gsx-an .mk-float-min,.gsx-an .mk-sec-h::before,.gsx-an .mk-sec-b,.gsx-an .mk-wb .kpi{transition:none!important}.gsx-an .mk-enter{animation:none}.gsx-an .mk-tab:hover,.gsx-an .mk-float-min:hover{transform:none}}
+/* -- A tab page's cards packed by height (views/mapview.js packCards, 2026-10-22): each card spans the 2-px rows its height
+   needs plus an 8-px gap, so a column of short cards fills the room beside a tall one (dense flow) instead of a row
+   stretching every card to its tallest. -- */
+.gsx-an .mk-tabpage .cards{align-items:start;column-gap:8px}
+.gsx-an .mk-tabpage .cards.mk-packed{grid-auto-rows:2px;row-gap:0;grid-auto-flow:row}
+/* -- Land map view (2026-10-22): the Market layout with Land's groups; the float's KPIs and inputs in two columns. -- */
+.gsx-an .mk-ff .kpis.mk-sec-k{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.gsx-an .mk-ff .mk-sec-k .kpi{padding:6px 9px 8px}
+.gsx-an .mk-ff .mk-sec-k .kpi .label{font-size:9.5px}
+.gsx-an .mk-ff .mk-sec-k .kpi .value{font-size:16px}
+.gsx-an .mk-ff .mk-sec-k .kpi .note{font-size:10px}
+.gsx-an .lnd-wb .mk-ff .land-form{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 8px;align-items:start}
+.gsx-an .lnd-wb .mk-ff .land-form .field{grid-template-columns:minmax(0,1fr) auto;gap:2px 6px;font-size:11px}
+.gsx-an .lnd-wb .mk-ff .land-form .field input{grid-column:1/-1;min-height:28px;padding:3px 7px}
+.gsx-an .lnd-wb .mk-ff .land-form .field .audit-note{grid-column:1/-1;margin:0;font-size:10px;line-height:1.3}
+.gsx-an .lnd-wb .mk-ff .land-form .field .pill{font-size:9.5px;padding:0 5px}
+.gsx-an .lnd-wb .mk-ff .mk-sec-b>button.tiny{align-self:flex-start}
+.gsx-an .lnd-wb .mk-fl td .pill{white-space:nowrap}
+.gsx-an .lnd-wb .mk-fl tr[data-st]:hover td{background:var(--tint)}
+.gsx-an .lnd-wb .mk-selb .land-kv{font-size:11px;gap:3px 8px}
+/* the Land map's layers: the screening disc and the land need as filled, solid rings (hover on the outline only, so a
+   click inside still places the site), screened buses as open rings, generation sized by MW, model buses as dots */
+.gsx-an .gm .gm-rings.l-disc circle{fill:color-mix(in srgb,var(--ok) 9%,transparent);stroke:var(--ok);stroke-dasharray:none;stroke-width:1.5;pointer-events:stroke}
+.gsx-an .gm .gm-rings.l-disc text{fill:var(--ok);font:600 11px var(--sans)}
+.gsx-an .gm .gm-rings.l-foot circle{fill:color-mix(in srgb,var(--s2) 28%,transparent);stroke:var(--s2);stroke-dasharray:none;stroke-width:1.5;pointer-events:stroke}
+.gsx-an .gm .gm-rings.l-foot text{fill:var(--s2);font:600 11px var(--sans)}
+.gsx-an .gm .gm-pts circle.l-scr{fill:transparent;stroke:var(--ok);stroke-width:2}
+.gsx-an .gm .gm-pts circle.l-gen{fill:var(--gs-amber,#e0a63a);fill-opacity:.7;stroke:var(--bg);stroke-width:.5}
+.gsx-an .gm .gm-pts circle.l-mbus{fill:var(--ink-3);stroke:none}
+.gsx-an .gm .gm-labels text.l-tie-lab{fill:var(--s2);font:600 11.5px var(--sans);text-anchor:middle;paint-order:stroke;stroke:var(--bg);stroke-width:3px}
+.gsx-an .gm-legend .gm-sw.l-scr{background:transparent;box-shadow:inset 0 0 0 2px var(--ok)}
+/* A tab page's cards follow the board's width, not the window's (the docks narrow the board): two columns on a medium
+   board, one on a narrow one. The shell's own rule collapses them only below a 900-px window. */
+@container (max-width:1099px){
+  .gsx-an .mk-tabpage .cards>.c-3,.gsx-an .mk-tabpage .cards>.c-4,.gsx-an .mk-tabpage .cards>.c-5,.gsx-an .mk-tabpage .cards>.c-6{grid-column:span 6}
+  .gsx-an .mk-tabpage .cards>.c-7,.gsx-an .mk-tabpage .cards>.c-8,.gsx-an .mk-tabpage .cards>.c-9,.gsx-an .mk-tabpage .cards>.c-10{grid-column:1/-1}
+}
+@container (max-width:719px){
+  .gsx-an .mk-tabpage .cards>*,.gsx-an .mk-tabpage .cards>[class*="c-"]{grid-column:1/-1}
+}
+
+/* -- Grid map view (2026-10-22): the Market/Land layout around the network map. The hand-offs and the request slider sit
+   with the Grid inputs; a facility row lights its line; "limits N buses" labels mark contested headroom. -- */
+.gsx-an .grd-wb .mk-ff .handoff{display:flex;flex-direction:column;align-items:stretch;gap:6px;margin:2px 0 0;padding:8px;border:1px solid var(--accent-line);border-radius:var(--r-card);background:var(--accent-soft)}
+.gsx-an .grd-wb .mk-ff .handoff p{margin:2px 0 0;font-size:11px;line-height:1.4;color:var(--ink-2)}
+.gsx-an .grd-wb .mk-ff .handoff strong{font-size:12px}
+.gsx-an .grd-wb .mk-ff .handoff button{white-space:normal;min-height:30px}
+.gsx-an .grd-wb .mk-ff .gx-slider{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;align-items:center;gap:6px;font-size:11.5px}
+.gsx-an .grd-wb .mk-ff .gx-slider input{width:100%}
+.gsx-an .grd-wb .mk-ff .mk-row .segmented{flex-wrap:wrap}
+.gsx-an .grd-wb .mk-fl tr[data-fk]:hover td{background:var(--tint)}
+.gsx-an .grd-wb .gx-map-pending{display:flex;align-items:center;justify-content:center;padding:20px}
+.gsx-an .grd-wb .gx-notices{display:flex;flex-direction:column;gap:6px}
+.gsx-an .grd-wb .gx-notices .notice{margin:0}
+.gsx-an .gm .gm-lines line.m-hov{stroke:var(--gs-amber,#e0a63a);stroke-width:5;opacity:1}
+.gsx-an .gm .gm-labels text.g-shared{fill:var(--bad);font:600 10.5px var(--sans);text-anchor:middle}
+.gsx-an .gm .gm-pts circle.g-gen{fill:var(--gs-amber,#e0a63a);fill-opacity:.7;stroke:var(--bg);stroke-width:.5}
+.gsx-an .gm .gm-pts circle.g-ibr{fill:var(--s3,#2bb3a3);stroke:var(--bg);stroke-width:.8}
+.gsx-an .gm-legend .gm-sw.g-shared-sw{background:transparent;box-shadow:inset 0 0 0 1px var(--bad)}
+.gsx-an .grd-wb .gx-basis b{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.gsx-an .grd-wb .gx-basis{margin:0 !important}
+.gsx-an .grd-wb .kpi .value{white-space:normal;overflow:visible;text-overflow:clip}
+.gsx-an .grd-wb .kpi.kpi-word .value{font-size:17px;line-height:1.2;letter-spacing:-.01em}
+.gsx-an .grd-wb .mk-ff .mk-sec-k .kpi.kpi-word .value{font-size:14px}
+/* -- The stage header on a narrow board (2026-10-23): with the docks open the board can be ~500 px wide, where the
+   header's two columns squeezed the question into a ~70 px column and pushed the page below the fold. Under 760 px of
+   board the controls go under the question instead. (#board is a named container; the map views' own queries are
+   unnamed and answer to .mk-wb, the nearer container.) -- */
+#board{container:board / inline-size}
+@container board (max-width:760px){
+  #board .mk-question{grid-template-columns:minmax(0,1fr);gap:6px 12px;margin:6px 10px 8px}
+  #board .mk-question .mk-for{grid-row:auto;grid-column:1;justify-content:flex-start}
+  #board .mk-question h1{font-size:19px}
+}
+/* glass where the browser cannot blur, and for readers who ask for less transparency: near-solid panels */
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.gsx-an{--gl-bg-2:rgba(21,30,46,.97);--gl-panel:rgba(19,27,41,.98)}html.light .gsx-an{--gl-bg-2:rgba(255,255,255,.97);--gl-panel:rgba(255,255,255,.98)}}
+@media (prefers-reduced-transparency:reduce){.gsx-an{--gl-bg-2:var(--surface-2);--gl-panel:var(--surface-2);--gl-blur:none}}
+/* on a wide window the board keeps its scrollbar's room, so a short tab and a long one lay out at the same width (no
+   sideways jump); a narrow window keeps every pixel for the board (tests/smoke-frame: at least 320 px at 900-1,000 px) */
+@media (min-width:1100px){#board{scrollbar-gutter:stable}}

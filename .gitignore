@@ -5,3 +5,6 @@ __pycache__/
 app/tests/shots/
 .DS_Store
 node_modules/
+# Local databases (README-DB.md) and the local Playwright install for app/tests (app/tests/env.json): never committed
+/db/
+/testenv/

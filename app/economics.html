@@ -5,4 +5,5 @@
 <script type="module">
 import { mount } from './app.js';
 mount({ only: 'economics' }).catch(e => { document.getElementById('app').innerHTML = '<div class="notice error" role="alert" style="margin:40px">Economics could not start: ' + String(e.message).replace(/[<>&]/g, '') + '</div>'; });
-</script></body></html>
+</script>
+<script type="module" src="./live-bridge.js"></script></body></html>

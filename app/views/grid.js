@@ -21,13 +21,20 @@ import { oneLine, scatterSvg } from './grid-charts.js';
 import { getRules, rulesError } from '../rules/isone.js';
 import { pendingBadge } from '../rules/largeload.js';
 import { withDcCards, dropGeneratorOnly } from './grid-dc.js';
-import { geoMap } from '../geomap.js';
+import { geoMap, geoMapSvg, geoLegend } from '../geomap.js';
+import { boxOf, padExtent, mapGeom, frameMap, afterMapRender, categoryBar, tabEnter } from './mapview.js';
 import { netMapModel, netAnswer, substationTip, busTip } from './grid-netmap.js';
 import { traceNetMap } from './grid-trace-v6.js';
 
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const ok = v => typeof v === 'number' && Number.isFinite(v);
-const kpi = (label, value, unit, note, nh = false) => `<div class="kpi${nh ? ' nh' : ''}"><div class="label">${esc(label)}</div><div class="value">${esc(value)}${unit ? `<span class="unit">${esc(unit)}</span>` : ''}</div>${note ? `<div class="note">${esc(note)}</div>` : ''}</div>`;
+// One view (2026-10-22): while renderGrid collects a tab's figures (SINK), every KPI the tab builds is also handed to it, in order.
+let SINK = null;
+// True while a category tab is drawn as before (its own slider and network card); false while the Map tab reads the parts.
+let AS_TAB = false;
+// A figure whose value is words (a status such as "No upgrades indicated", never $0) is set smaller and wraps in the map
+// view rather than being cut; every value carries its full text as a tooltip.
+const kpi = (label, value, unit, note, nh = false) => { const txt = String(value ?? ''), word = txt.length > 3 && !/^[\s≥≤<>~+−–$€£-]*\d/.test(txt); const h = `<div class="kpi${nh ? ' nh' : ''}${word ? ' kpi-word' : ''}"><div class="label">${esc(label)}</div><div class="value" title="${esc(txt)}${unit ? ` ${esc(unit)}` : ''}">${esc(value)}${unit ? `<span class="unit">${esc(unit)}</span>` : ''}</div>${note ? `<div class="note" title="${esc(note)}">${esc(note)}</div>` : ''}</div>`; if (SINK) SINK.push(h); return h; };
 // D6.1 / F009: an envelope-only case is amber "Envelope only · unverified", never the green Fits.
 const pill = s => { const t = s === ENVELOPE_ONLY ? 'Envelope only · unverified' : s; return `<span class="pill ${/^Fits|Priced|True zero|Held/.test(t) ? 'good' : /Does not fit|Hold|Lower bound|Not assessed|Not studied|Envelope only/.test(t) ? 'warn' : ''}" ${s === ENVELOPE_ONLY ? 'title="Vendor substation envelope: the headline element set (first element to reach rating), vintage unconfirmed (D-007); context only (D6.1), never a pass"' : ''}>${esc(t)}</span>`; };
 const musd = v => (ok(v) ? `$${v.toFixed(2)}M` : 'not held');
@@ -49,16 +56,25 @@ const seg = (k, items, cur) => `<div class="segmented seg-sm" role="group">${ite
 const details = (calc, assumptions, evidence) => `<details><summary>Method</summary>${calc}</details><details><summary>Assumptions</summary>${assumptions}</details><details><summary>Evidence and sources</summary>${evidence}</details>`;
 const traceCard = (traces, extra = '') => `<section class="card c-12 card-trace" data-depth="study"><header class="card-h"><h3>Calculations</h3><span class="card-sub">formula, inputs with sources, working, checks and a CSV for every figure on this tab</span></header><div class="card-b">${traces.join('')}${extra}</div></section>`;
 
+// The former four tabs, now the four groups of the one view (2026-10-22), and the strip's lean names for them (v8 copy).
+const GROUPS = [
+  { id: 'capacity', label: 'Connection capacity', short: 'Limit', labelFor: t => ({ datacenter: 'Load connection capacity', storage: 'Discharge & charge capacity', hybrid: 'Export & charge capacity' }[t] || 'Connection capacity') },
+  { id: 'constraints', label: 'Constraints & coverage', short: 'Bottlenecks' },
+  { id: 'cost', label: 'Upgrade cost allocator', short: 'Upgrades', labelFor: t => (t === 'datacenter' ? 'Load upgrade cost allocator' : 'Upgrade cost allocator') },
+  { id: 'mitigation', label: 'Mitigation & phasing', short: 'Phasing', labelFor: t => (t === 'datacenter' ? 'Load phasing & alternatives' : 'Mitigation & phasing') },
+];
+const groupLabel = (id, tech) => { const g = GROUPS.find(x => x.id === id); return (g.labelFor && g.labelFor(tech)) || g.label; };
+/** A step or link naming a tab (by id, label for any fuel or lean name) → the tab. */
+const FOCUS = Object.fromEntries(GROUPS.flatMap(g => [g.id, g.short, g.label, ...(g.labelFor ? ['solar', 'wind', 'storage', 'hybrid', 'datacenter'].map(t => g.labelFor(t)) : [])].map(k => [String(k).toLowerCase(), g.id])));
 export const GRID = {
   key: 'grid',
   question: 'What can connect, and what might need upgrading?',
-  lede: 'Connection limits by study case, the facilities behind them, how the solved runs load them, what upgrades would cost, and smaller or phased alternatives.',
-  tabs: [
-    { id: 'capacity', label: 'Connection capacity', labelFor: t => ({ datacenter: 'Load connection capacity', storage: 'Discharge & charge capacity', hybrid: 'Export & charge capacity' }[t] || 'Connection capacity') },
-    { id: 'constraints', label: 'Constraints & coverage' },
-    { id: 'cost', label: 'Upgrade cost allocator', labelFor: t => (t === 'datacenter' ? 'Load upgrade cost allocator' : 'Upgrade cost allocator') },
-    { id: 'mitigation', label: 'Mitigation & phasing', labelFor: t => (t === 'datacenter' ? 'Load phasing & alternatives' : 'Mitigation & phasing') },
-  ],
+  lede: 'The map first: the network around the bus with the facilities that limit it, the connection limits, what upgrades would cost and what fits without them, with the inputs and the limiting facilities beside it. Limit, Bottlenecks, Upgrades and Phasing each keep their full analysis on their own tab, as before.',
+  // The map is one tab; the four analyses are their own tabs again (2026-10-23), so the case matrix or the cost allocator
+  // starts at the top of its page instead of under the map. One bar (views/mapview.js) draws them as buttons.
+  ownTabs: true,
+  tabs: [{ id: 'map', label: 'Grid map' }, ...GROUPS.map(({ id, label, labelFor }) => (labelFor ? { id, label, labelFor } : { id, label }))],
+  tabAlias: { ...Object.fromEntries(Object.entries(FOCUS).filter(([k, v]) => k !== v)), 'grid map': 'map' },
 };
 const TECH_WORD = { solar: 'solar', wind: 'wind', storage: 'storage', hybrid: 'hybrid', datacenter: 'data centre' };
 const na = (cls, title, tech, why, depth = 'review') => card(cls, title, `not applicable to ${TECH_WORD[tech] || tech}`, `<div class="notice">${esc(why)}</div>`, '', '', { depth, chips: 'not-held', answer: `Not applicable to ${esc(TECH_WORD[tech] || tech)}.` });
@@ -227,7 +243,7 @@ function tabCapacity(vctx) {
   const lastFit = sweep.filter(r => r.fits === true).at(-1), atReqSweep = sweep.find(r => r.size === req);
   const sweepSum = sweepSummary(sweep, load ? im.capMW : ex.capMW, load ? 'Import limit' : 'Export limit', fmt.mw); // C72: step and exact limit apart
   return `${storageNote}
-    <div class="kpis">
+    <!--gx:kpis--><div class="kpis">
       ${kpi('Export limit', load ? 'n/a' : show(ex), '', load ? 'A data centre does not export' : ex.row ? `${bindingText(ex, fmt.mw)} · ${svcNote(ex)}` : ex.status, !load && !ok(ex.value) && ex.status !== 'Not requested')}
       ${kpi(load ? 'Import limit (load)' : 'Import / charge limit', show(im), '', im.row ? `${bindingText(im, fmt.mw)} · ${svcNote(im)}` : im.status, !ok(im.value) && im.status !== 'Not requested')}
       ${load ? kpi('Import margin at request', ok(im.value) && S.importMW > 0 ? `${im.value - S.importMW >= 0 ? '+' : '−'}${fmt.mw(Math.abs(im.value - S.importMW))}` : '—', '', `Request ${fmt.mw(Number(S.importMW))} · load`)
@@ -236,11 +252,12 @@ function tabCapacity(vctx) {
       ${load ? kpi('Fault duty at the bus', m && ok(m.sc) ? fmt.int(m.sc) : ctxRec.state === 'loading' ? '…' : 'not held', 'MVA', 'System strength context; no ratio for a load', !(m && ok(m.sc)))
         : kpi('Short-circuit ratio', m && ok(m.scr) ? m.scr.toFixed(1) : ctxRec.state === 'loading' ? '…' : 'not held', '', m && ok(m.sc) ? `${fmt.int(m.sc)} MVA ÷ ${fmt.mw(req)} · indicator` : 'Fault duty ÷ request', !(m && ok(m.scr)))}
       ${kpi(PRE_EXISTING_LABEL, `${preC.envelope == null ? 'not held' : fmt.int(preC.envelope)} · ${preC.element == null ? 'not held' : fmt.int(preC.element)}`, '', `${preExistingText(preC)}: two sources, this technology's cases only`, preC.envelope == null && preC.element == null)}
-    </div>
+    </div><!--/gx:kpis-->
     ${studyBasisStrip(sb, stale)}
-    <div class="cards">
+    <!--gx:cards--><div class="cards">
       ${card('c-6', 'Case matrix', `injection and withdrawal × summer peak / shoulder / large load; highlighted = cases this service uses${focus ? ` · focus: ${focus.replace('_', ' ')}` : ''}`, caseMatrix(data, S, tech, focus), 'Governing = element study where a usable facility list exists (the source of record, D6.1); else the vendor envelope, shown amber as context and never counted as a fit. Hold = a case with no published limit or not studied. Every injection figure is NR (NCIS) energy-only service; CNR (capacity) is at most that figure until a deliverability screen exists.',
-        load ? '' : `<div class="gx-slider"><span>${sliderK}</span><input type="range" min="10" max="600" step="5" value="${Number(S.exportMW) || 100}" data-act="grid-size" data-live aria-label="Export request MW"><output>${Number(S.exportMW) || 100}</output><span>MW</span></div>`,
+        // on its tab the request slider sits in the case-matrix tools, as before; on the Map tab it is with the Grid inputs
+        AS_TAB && !load ? `<div class="gx-slider"><span>${sliderK}</span><input type="range" min="10" max="600" step="5" value="${Number(S.exportMW) || 100}" data-act="grid-size" data-live aria-label="Export request MW"><output>${Number(S.exportMW) || 100}</output><span>MW</span></div>` : '',
         { depth: 'screen', trace: 'g-capacity', chips: envOnly ? 'envelope-only' : '', answer: capAnswer })}
       ${card('c-6', 'Margin by case', 'envelope and element limit side by side against the request', margins, 'Bold label = the binding case. Envelope: fact_headroom (vendor-asserted). Element: lowest positive transfer, fact_limiting_element. Service: NR (energy-only) for injection.', '', { depth: 'screen', trace: 'g-capacity', answer: ok(gap) ? `In the governing case the vendor envelope sits ${B(fmt.mw(Math.abs(gap)))} ${gap >= 0 ? 'above' : 'below'} the element study; the element study governs.` : 'The envelope and the element limit are not both held in the governing case, so the gap between them is not held.' })}
       ${card('c-12', 'Governing limit by study case', 'element-study limit where published; envelope only where no facility list exists; service type on every figure',
@@ -258,7 +275,7 @@ function tabCapacity(vctx) {
       ${traceCard([traceCapacity(data, S, node, t, ex, im), traceSweep(data, S, tech, sweep, req > 0 ? req : null), sc.trace, wscr.trace, sur.trace],
         details(`<p>Element limit = lowest positive transfer MW among facilities not already overloaded before the project, where transfer = (rating − flow) ÷ sensitivity. Governing = element limit where published, else the envelope. Margin = governing − request. The size sweep re-runs the same rules and the cost engine at 25 MW steps.</p>`,
           `<p>Energy-only service uses all held export cases; capacity service is not separately studied here, and can never exceed energy-only. The shoulder export case has an envelope only: its facility rows in the store are the large-load table under a shoulder label, so they are not used.</p>`, evidence(data)))}
-    </div>
+    </div><!--/gx:cards-->
     ${nextLink('see which facilities set these limits on the map in <b>Grid › Constraints &amp; coverage</b>', 'grid', 'constraints')}`;
 }
 
@@ -291,6 +308,13 @@ function netMapCard(S, tech, depth = 'screen') {
   const foot = `dim_branch (${m.counts.branches} within ${r} mi) placed from dim_bus latitude/longitude; fact_limiting_element for this bus. Tooltip rating: rate A for a base-case row, rate C for a contingency row. Pre-existing = |loading before the project| ≥ 100%. Not drawn: ${ok(nd) ? nd : 'not held'} branch(es) with an end inside ${r} mi whose other end has no coordinate${m.counts.facNotDrawn ? `, ${m.counts.facNotDrawn} facilit${m.counts.facNotDrawn === 1 ? 'y' : 'ies'} likewise` : ''}; ${m.counts.branchUnplaceable ?? 'not held'} branches ISO-wide have no placed end. Nothing is placed at 0,0.`;
   const ans = netAnswer(m) + (sel ? ` Selected: ${B(sel.label)}${sel.drawn ? '' : ' (not drawn)'}.` : '');
   return { html: card('c-8', title, sub, map + `<details class="more-ctl" ${sel ? 'open' : ''}><summary>Facility table: click a row to highlight its line</summary>${twin}</details>`, foot, sel ? '<button type="button" class="tiny" data-act="ui" data-k="gfac" data-v="">Clear selection</button>' : '', { depth, trace: 'g-netmap', answer: ans }), trace: traceNetMap(S.nodeId, m), model: m };
+}
+
+/** The network model's calculation alone (the one view draws the map itself, with the floats on it). */
+function netTraceOnly(S, tech) {
+  const rec = gridData('around', S.nodeId, 'gridnet');
+  if (pending(rec, 'the network around the bus')) return { html: '', trace: '' };
+  return { html: '', trace: traceNetMap(S.nodeId, netMapModel(rec.value, { tech, sel: S.ui.gfac })) };
 }
 
 // ---------- Tab 2: Constraints & coverage ----------
@@ -403,20 +427,20 @@ function tabConstraints(vctx) {
     affTrace = traceAffected(v, aff, NEAR_MI);
   }
   coverage.push(['Affected systems', 'Not assessed', `No neighbouring-system study or model is held. Tie-adjacency indicator: ${aff ? aff.flag : 'loading'}.`]);
-  const net = netMapCard(S, tech, 'screen');
+  const net = AS_TAB ? netMapCard(S, tech, 'screen') : netTraceOnly(S, tech); // its tab draws the network card, as before; the Map tab draws the map
   const olHtml = pending(ctxRec, 'the connection-point elements') || oneLine(ctx, new Set(ctx.facilities.map(f => f.key)), { height: 320 })
     + dense('<th>Element</th><th>Between</th><th class="num">kV</th><th class="num">Rate A</th><th class="num">Rate B</th><th>Status</th>', [...ctx.elements.branches.map(b => `<tr><td>Line</td><td class="wrap">${esc(b.from_name)} ${b.from} – ${esc(b.to_name)} ${b.to}</td><td class="num">${b.kv}</td><td class="num">${ok(b.rate_a) ? b.rate_a : 'not held'}</td><td class="num">${ok(b.rate_b) ? b.rate_b : 'not held'}</td><td>${esc(b.status)}</td></tr>`), ...ctx.elements.transformers.map(x => `<tr><td>Transformer</td><td class="wrap">${esc(x.fname)} ${x.f} – ${esc(x.tname)} ${x.t}</td><td class="num">${esc(String(x.kv).trim())}</td><td class="num">${ok(x.rate_a) ? x.rate_a : 'not held'}</td><td class="num">${ok(x.rate_b) ? x.rate_b : 'not held'}</td><td>${esc(x.status)}</td></tr>`), ...ctx.elements.generators.map(g => `<tr><td>Generator</td><td class="wrap">${esc(g.gen_name)}</td><td class="num">—</td><td class="num">${ok(g.max_capacity_mw) ? `${g.max_capacity_mw} MW` : 'not held'}</td><td class="num">—</td><td>${esc(g.status)}</td></tr>`), ...ctx.elements.loads.map(l => `<tr><td>Load</td><td class="wrap">${esc(l.load_name)}</td><td class="num">—</td><td class="num">${ok(l.load_mw) ? `${l.load_mw} MW` : 'not held'}</td><td class="num">—</td><td>${esc(l.zone || '')}</td></tr>`)].join(''));
   const pcrN = ctx ? new Set(ctx.pcr.map(r => r.key)).size : null, pcrH = ctx ? Math.max(0, ...ctx.pcr.map(r => r.hours)) : null;
   return `${drawers.join('')}
-    <div class="kpis">
+    <!--gx:kpis--><div class="kpis">
       ${kpi('Lowest facility limit', el.status === 'held' ? fmt.mw(el.limit) : '—', '', el.facility ? short(el.facility) : msg || '', el.status !== 'held')}
       ${kpi('Facilities overloaded at request', req > 0 && el.status === 'held' ? fmt.int(over) : '—', '', `Of ${fmt.int((el.rows || []).length - (el.pre || []).length)} not already overloaded`)}
       ${(() => { const heldEl = ['held', 'unpublished', 'noViolation'].includes(el.status); return kpi(PRE_EXISTING_LABEL, heldEl ? fmt.int(el.pre.length) : 'not held', '', heldEl ? `element list, ${CASE_LABEL[key]}: excluded from the project’s own limit and cost` : `no element list for ${CASE_LABEL[key]}`, !heldEl); })()}
       ${kpi('Facilities in the whole list', fmt.int(new Set(busRows.map(r => facilityKey(r.monitored_facility, r.facility_type))).size), '', `${busRows.length} rows across the studied cases; reversed ends and 3-winding legs counted once`)}
       ${kpi('Own facilities binding in PCR', ctx ? `${pcrN} of ${ctx.facilities.length}` : '…', '', ctx ? (pcrN ? `up to ${fmt.int(pcrH)} h in a run` : 'none binds in 2030/2035/2040') : 'loading')}
       ${kpi('Leading constraint', P?.held && P.rows[0] ? `$${n3(ok(P.rows[0].contrib) ? P.rows[0].contrib : P.rows[0].assoc)}` : K ? 'not held' : '…', '/MWh', P?.held && P.rows[0] ? `${pkey}: ${short(P.rows[0].name.split(' · ')[0])}` : '', !(P?.held && P.rows[0]))}
-    </div>
-    <div class="cards">
+    </div><!--/gx:kpis-->
+    <!--gx:cards--><div class="cards">
       ${net.html}
       ${card('c-4', 'Facility loading', `before the project and at the request, ten most loaded · ${CASE_LABEL[key]}`, barsHtml, 'Magnitude of loading; counter-flow shows positive. Bold label = pre-existing overload.', caseSeg, { depth: 'screen', trace: 'g-constraints', answer: bars.length ? `Most loaded ${req > 0 ? `at ${B(fmt.mw(req))}` : 'before the project'}: ${B(short(bars[0].facility))} at ${B(pct(bars[0].after ?? bars[0].before))}${bars.filter(b => ok(b.after) && b.after > 100).length ? `; ${B(bars.filter(b => ok(b.after) && b.after > 100).length)} of these exceed 100%` : ''}.` : esc(msg || 'No facility rows are held for this case.') })}
       ${card('c-8', 'Limiting facilities', `loading at request = |flow + sensitivity × ${fmt.mw(req)}| ÷ rating · click a row to highlight it on the map; Details opens the record`,
@@ -432,7 +456,7 @@ function tabConstraints(vctx) {
       ${card('c-4', 'PCR interfaces', 'flowgates that bind in the solved runs (context; highlighted = one of this bus\'s facilities)', fgHtml, 'fact_pcr_flowgate_hourly · peak use = max |flow| ÷ limit.', '', { depth: 'study', chips: 'modelled', answer: ctx ? `${B(ctx.flowgates.filter(g => g.binding_hours > 0).length)} interface-run pairs bind; ${B(ctx.flowgates.filter(g => g.binding_hours > 0 && g.this_bus).length)} are this bus's own facilities.` : '' })}
       ${card('c-8', 'Connection point', 'feeders, transformers, generators and loads at the station', olHtml, 'dim_branch, dim_transformer, dim_generator, dim_load; a 0 MVA rating in the source is shown as not held.', '', { depth: 'study', answer: ctx ? `The station has ${B(ctx.elements.branches.length)} lines, ${B(ctx.elements.transformers.length)} transformers, ${B(ctx.elements.generators.length)} generators and ${B(ctx.elements.loads.length)} loads in the model.` : '' })}
       ${traceCard([net.trace, traceConstraints(data, S, key, el, req), pcrTrace, assocTrace, affTrace], details('<p>Loading at request = |flow + sensitivity × request| ÷ rating × 100 on the row\'s basis. Association = (MCC in binding hours − MCC otherwise) × hours ÷ year hours.</p>', '<p>Pre-existing overloads with positive project sensitivity are shown as contingent on an existing upgrade, not hidden. PCR binding is matched by branch (both bus numbers + circuit), never by name.</p>', evidence(data)))}
-    </div>
+    </div><!--/gx:cards-->
     ${nextLink(`price the facilities that overload in <b>Grid › ${tech === 'datacenter' ? 'Load upgrade cost allocator' : 'Upgrade cost allocator'}</b>`, 'grid', 'cost')}`;
 }
 
@@ -570,15 +594,15 @@ function tabCost(vctx) {
     ${res.errors.length ? `<div class="notice error" role="alert">${res.errors.map(esc).join(' ')}</div>` : ''}
     ${(step.unverified || []).length ? `<div class="notice">${step.unverified.map(x => `<b>${esc(x.label)}</b>: ${esc(x.reason)}`).join('<br>')}<br>No upgrades are indicated for these cases, but without a facility list that is not a proven $0.</div>` : ''}
     ${step.gaps.length ? `<div class="notice warn">${step.gaps.map(g => esc(g.label)).join(', ')}: no facility costs are held for this case, so the network-upgrade total is a lower bound.</div>` : ''}
-    <div class="kpis">
+    <!--gx:kpis--><div class="kpis">
       ${kpi('Known subtotal', subtotal, '', `Network: ${costLabel(step)} (${step.status.toLowerCase()}) at ${fmt.mw(size)}`)}
       ${kpi('Unpriced scope', fmt.int(res.unpriced), 'items', res.unpriced ? 'Total is at least the subtotal' : 'All listed scope priced')}
       ${kpi('Per kW (known)', step.status === 'Not requested' || !(size > 0) ? '—' : completeCost && ok(known) ? `$${((known * 1e6) / (size * 1000)).toFixed(0)}` : step.status === 'No upgrades indicated' ? 'not priced' : 'not held', step.status === 'Not requested' || !completeCost ? '' : '/kW', completeCost ? 'Known subtotal ÷ request' : step.status === 'No upgrades indicated' ? 'none indicated, unverified (envelope only): never $0/kW' : `no complete total: ${step.status.toLowerCase()}${known > 0 ? ` (known part ≥ $${((known * 1e6) / (size * 1000)).toFixed(0)}/kW)` : ''}`, !completeCost)}
       ${kpi('Cost status', step.status === 'Lower bound' && !(step.gaps || []).length && (step.unverified || []).length ? 'Partly verified · lower bound' : step.status, '', step.status === 'No upgrades indicated' ? 'Envelope-only: never a proven $0' : step.status === 'True zero' ? 'Element evidence in every costed case' : step.status === 'Lower bound' ? (step.boundWhy || []).join('; ') : `${step.items.length} facilit${step.items.length === 1 ? 'y' : 'ies'} below the request`)}
       ${kpi('Next cost step', nextStep ? fmt.mw(nextStep.mw) : 'none', '', nextStep ? `${short(nextStep.facility.split('; ')[0])} · ${nextStep.counted ? '+ $0.00M (already counted at a lower step)' : `+ ${musd(nextStep.cost)}`}` : 'No facility limit above the request', !nextStep)}
       ${kpi('Planned upgrades nearby', nUp == null ? '…' : fmt.int(nUp), '', `within ${ctxRec.value?.radius?.upgrades_mi ?? 50} mi (context)`)}
-    </div>
-    <div class="cards">
+    </div><!--/gx:kpis-->
+    <!--gx:cards--><div class="cards">
       ${card('c-8', 'Cost to unlock', 'cumulative network cost as the size passes each facility limit', unlockChart, 'Solid = complete total (every facility priced, every case evidenced); dashed = lower bound. Same engine as the allocator; no interpolation between study sizes.', '', { depth: 'screen', trace: 'g-unlock', answer: `At ${esc(fmt.mw(size))} the network cost is ${B(costLabel(step))} (${esc(step.status.toLowerCase())})${nextStep ? `; the next step is at ${B(fmt.mw(nextStep.mw))}, adding ${B(musd(nextStep.cost))}` : '; no facility limit lies above the request'}.` })}
       ${card('c-4', 'Cost steps', 'each facility limit, its cost and the running total', u.steps.length ? dense('<th class="num">Above</th><th>Facility</th><th class="num">Step</th><th class="num">Total</th>', u.steps.map(s => `<tr class="${s.mw < size ? 'gx-hi' : ''}"><td class="num">${fmt.mw(s.mw)}</td><td class="wrap">${esc(s.facility.split('; ').map(short).join('; '))}</td><td class="num"${s.counted ? ' title="Already counted at a lower step: adds nothing"' : ''}>${s.counted ? '$0.00M' : s.cost == null ? 'unpriced' : musd(s.cost)}</td><td class="num">${ok(s.cum) ? `${s.status === 'Lower bound' || s.unpriced ? '≥ ' : ''}${musd(s.cum)}` : 'not held'}</td></tr>`).join('')) : '<div class="notice">No facility limits in these cases.</div>', 'Highlighted = below the request (in the allocator). A facility already counted at a lower step adds $0, so the steps sum to the total.', '', { depth: 'screen', trace: 'g-unlock', answer: u.steps.length ? `${B(u.steps.length)} facility limit${u.steps.length === 1 ? '' : 's'}; ${B(u.steps.filter(x => x.mw < size).length)} lie below the request.` : 'No facility limit is held in these cases.' })}
       ${card('c-12', 'Upgrade scope and allocation', 'facilities that overload below the request in any applicable case, plus direct and affected-system scope',
@@ -594,7 +618,7 @@ function tabCost(vctx) {
       ${card('c-12', 'Planned upgrades nearby', `approved transmission and substation upgrades within ${ctxRec.value?.radius?.upgrades_mi ?? 50} mi (context: none is netted into the limit)`, upHtml, 'dim_transmission_upgrade, dim_substation_upgrade (ISO-NE approved lists). No MW is published for an upgrade; years as published.', '', { depth: 'review', trace: 'g-nearby', answer: nUp == null ? '' : `${B(nUp)} approved upgrade${nUp === 1 ? '' : 's'} within ${esc(ctxRec.value?.radius?.upgrades_mi ?? 50)} mi; none is netted into the connection limit.` })}
       ${traceCard([traceCost(data, S, tech, dir, size, step, res, known), traceUnlock(data, S, tech, u), tracePerKw(S, sweep), nearTrace, traceProp(S.nodeId, model.p, model.members, model.cl?.rule || ''), o1920.trace],
         details('<p>Project estimate = Σ (cost × project share). Facilities are unioned across all applicable study cases. A case with no facility costs that binds below the request makes the total a lower bound (≥). Unpriced items are counted, never treated as $0. Cost to unlock evaluates the same engine just above each facility limit.</p>', '<p>Costs come from the stored facility study. No interpolation between study sizes. A true $0 is shown only when every applicable case has evidence that nothing overloads below the request.</p>', evidence(data)))}
-    </div>
+    </div><!--/gx:cards-->
     ${tech === 'datacenter' ? nextLink('add this cost to the load case in <b>Economics › Project finance</b>', 'economics', 'finance') : nextLink('size the deposits on this cost in <b>Queue › Cash &amp; commitments</b>', 'queue', 'cash')}`;
 }
 
@@ -646,15 +670,15 @@ function tabMitigation({ data, S }) {
   const st = studyAtSize(study, req);
   const unitLatest = cur?.unit_runs?.at(-1);
   const retMW = ctx ? ctx.retirements.reduce((a, r) => a + (r.mw || 0), 0) : null;
-  return `<div class="kpis">
+  return `<!--gx:kpis--><div class="kpis">
       ${kpi('Largest size without upgrades', ok(lim) ? fmt.mw(largestWithoutUpgrades(lim)) : 'not held', '', isStorage(S.tech) ? 'Lower of export and shoulder-charge limits' : (dir === 'export' ? ex.row?.label : im.row?.label) || '', !ok(lim))}
       ${kpi('Upgrade cost at request', costLabel(atReq), '', `${fmt.mw(req)} · ${esc(atReq.status.toLowerCase())}`)}
       ${kpi('Output given up by downsizing', ok(lim) && req > lim ? fmt.mw(req - largestWithoutUpgrades(lim)) : '—', '', 'Request − largest size that fits')}
       ${noInj ? kpi('Study curtailment at request', 'n/a', '', `Not applicable to ${TECH_WORD[S.tech]}`, true) : kpi('Study curtailment at request', !cur ? '…' : st?.exact ? pct(st.exact.pct) : 'not tested', '', !cur ? 'loading' : st?.exact ? `${fmt.int(st.exact.mwh)} MWh · injection test (older copy)` : `Tested: ${(study || []).filter(r => r.tested).map(r => `${r.mw} MW ${pct(r.pct)}`).join(', ') || 'none'}`, cur && !st?.exact)}
       ${S.tech === 'datacenter' ? kpi('Cheap-energy hours (latest RT year)', !cur ? '…' : (() => { const r = cur.price.filter(x => x.kind === 'settled' && /^RT/.test(x.key)).at(-1); return r ? fmt.int(r.le0) : 'not held'; })(), 'h', 'Hours priced at or below $0: an energy-cost signal for a load') : kpi('PCR solar/wind curtailment', !cur ? '…' : unitLatest ? pct(unitLatest.pct) : 'not held', '', !cur ? 'loading' : unitLatest ? `${unitLatest.run}, units at this price node` : 'No unit at this price node', cur && !unitLatest)}
       ${kpi('Retirements nearby', ctx ? fmt.mw(retMW) : '…', '', ctx ? `${ctx.retirements.length} within ${ctx.radius.retirements_mi} mi` : 'loading')}
-    </div>
-    <div class="cards">
+    </div><!--/gx:kpis-->
+    <!--gx:cards--><div class="cards">
       ${card('c-8', 'Size alternatives', 'connection, upgrade cost and study curtailment at each size', dense(`<th class="num">Size</th><th>Connection</th><th class="num">Upgrade cost</th><th class="num">Per kW</th>${showStudy ? '<th class="num">Study curtailment</th><th class="num">Value $/offered MWh</th>' : ''}`, rows),
         `Cost from published facility limits (screening; no new study). ${showStudy ? 'Curtailment and value only at the study\'s tested sizes (100 / 250 / 500 MW); never interpolated.' : 'The injection test covers export only; storage and loads are not tested.'}`, '', { depth: 'screen', trace: 'g-mitigation', answer: `The largest size that fits is ${B(ok(lim) ? fmt.mw(largestWithoutUpgrades(lim)) : 'not held')}; at the request (${esc(fmt.mw(req))}) the upgrade cost is ${B(costLabel(atReq))}.` })}
       ${card('c-4', 'Upgrade cost by size', 'complete totals only', pts.length ? CH.lineChart([{ name: 'Upgrade cost', points: pts }], { fmt: v => `$${v.toFixed(1)}M`, xfmt: v => `${v} MW`, title: 'Upgrade cost by size', height: 200 }) : '<div class="notice">No complete cost is held for any size in this configuration.</div>', 'Partly priced, lower-bound and unverified sizes are in the table with ≥ or "none indicated".', '', { depth: 'screen', trace: 'g-mitigation', answer: pts.length ? `${B(pts.length)} size${pts.length === 1 ? ' has' : 's have'} a complete cost, from ${B(musd(pts[0].y))} at ${esc(fmt.mw(pts[0].x))} to ${B(musd(pts.at(-1).y))} at ${esc(fmt.mw(pts.at(-1).x))}.` : 'No size has a complete cost in this configuration.' })}
@@ -666,16 +690,181 @@ function tabMitigation({ data, S }) {
       ${card('c-4', 'Generators nearby', 'units in the power-flow model near the bus', genHtml, 'dim_generator (status as in the model).', '', { depth: 'study', answer: ctx ? `${B(ctx.generators.filter(g => g.status === 'Operating').length)} operating units within ${ctx.radius.generators_mi} mi.` : '' })}
       ${card('c-12', 'Other levers', 'mitigations the store cannot size, listed so they are not forgotten', S.tech === 'datacenter' ? `<p class="gx-cap lead">Phased energisation (energise to the largest import that fits, add after upgrades) · flexible or interruptible load during constrained hours (not modelled) · on-site generation or storage to shave the summer-peak draw (not modelled) · alternative POIs (switch the candidate bus; Market ranks all 2,678 buses) · reactive or voltage support (not studied here). No ISO-NE large-load procedure exists yet (${esc(llBadge())}).</p>` : `<p class="gx-cap lead">${isStorage(S.tech) ? 'Charging caps (Economics › BESS dispatch uses the shoulder charge limit) · ' : ''}staged capacity (build to the largest size that fits, add after upgrades) · alternative POIs (switch the candidate bus; Market ranks all 2,678 buses on the same rules) · surplus interconnection at an existing POI (screened on Connection capacity; never a pass) · reactive or voltage support (not studied here).</p>`, '', '', { depth: 'review', answer: 'These levers cannot be sized from the store; they are listed so they are not forgotten.' })}
       ${traceCard([traceMitigation(data, S, tech, dir, lim), curTrace, ctx ? traceNearby(ctx) : ''], details('<p>Cost(S) = Σ facility costs whose transfer limit is below S, across all applicable cases, excluding pre-existing overloads. Delivered value = (1 − curtailed share) × average LMP after the injection.</p>', '<p>Sizes between study points are screened from facility transfer limits, which are size-independent. This is not an interconnection study result.</p>', evidence(data)))}
-    </div>
+    </div><!--/gx:cards-->
     ${nextLink(`value the size that fits in <b>Economics › ${{ storage: 'Storage revenue', hybrid: 'Hybrid sizing', datacenter: 'Load cost' }[S.tech] || 'Solar &amp; wind revenue'}</b>`, 'economics', { storage: 'bess', hybrid: 'hybrid' }[S.tech] || 'revenue')}`;
+}
+
+// ---------- One view (2026-10-22): the network map in the middle, every input and figure on screen ----------
+// The former four tabs (capacity · constraints · cost · mitigation) are one view around the network map, as Market's and
+// Land's are. Each tab function still computes and builds everything it did: its cards, its six figures, its notices and
+// its side effects (the limits and the cost scenario the hand-offs send, which every render now keeps current).
+// renderGrid takes each tab's output apart by its markers (gx:kpis, gx:cards) and the figures it hands to SINK, and lays
+// them out: a strip naming, under each of the four, what is set and what it gives (it stays at the top while the page
+// scrolls); the answer, two figures per group and the study basis; the network around the bus, with the Grid inputs on
+// its left (each group's other four figures, the request slider, the case and period, both hand-offs) and the limiting
+// facilities on its right (click one to select it on the map); then every card of the four tabs in four groups under
+// the map, each with its one-line answer readable while closed. The old ids and labels stay as aliases (GRID.tabAlias).
+const GROUP_KPIS = {
+  capacity: ['export', 'import', 'margin', 'envgap', 'scr', 'pre'],
+  constraints: ['lowest', 'overloaded', 'pre', 'whole', 'pcr', 'leading'],
+  cost: ['subtotal', 'unpriced', 'perkw', 'status', 'next', 'planned'],
+  mitigation: ['largest', 'atreq', 'givenup', 'curtail', 'pcrcurt', 'retire'],
+};
+const TAB_FN = { capacity: tabCapacity, constraints: tabConstraints, cost: tabCost, mitigation: tabMitigation };
+const stripTags = s => String(s ?? '').replace(/<[^>]+>/g, '');
+const valueOf = h => stripTags(String((/<div class="value"[^>]*>([\s\S]*?)<\/div>/.exec(h || '') || [])[1] || '').replace(/<span class="unit">/g, ' ')).replace(/\s+/g, ' ').trim();
+const firstAnswer = h => (/<p class="card-answer">([\s\S]*?)<\/p>/.exec(h || '') || [])[1] || '';
+const grab = (h, rx) => (rx.exec(h || '') || [])[0] || '';
+// A chip clears one input through that input's own action (mk-chip forwards to data-a), so a selector for the input never
+// also finds its chip.
+const gchip = (text, act, k, v, title) => `<button type="button" class="mk-chip" data-act="mk-chip" data-a="${act}"${k ? ` data-k="${k}"` : ''} data-v="${esc(v)}" title="${esc(title)}">${esc(text)}<span aria-hidden="true">×</span></button>`;
+/** One tab's output taken apart: before its figures (notices, drawers), its figures by name, between them and the cards
+ *  (the study basis), the cards, its next step. The figures are the ones the tab built, in its own order (SINK). */
+function partOf(key, ctx) {
+  SINK = [];
+  let html = '';
+  try { html = TAB_FN[key](ctx); } finally { /* the figures are read below */ }
+  const figs = SINK; SINK = null;
+  const M = { k0: '<!--gx:kpis-->', k1: '<!--/gx:kpis-->', c0: '<!--gx:cards-->', c1: '<!--/gx:cards-->' }, at = m => html.indexOf(m);
+  const names = GROUP_KPIS[key];
+  const K = Object.fromEntries(figs.map((h, i) => { const n = names[i] || `k${i}`; return [n, h.replace('<div class="kpi', `<div data-kg="${key}" data-kpi="${n}" class="kpi`)]; }));
+  if (at(M.k0) < 0 || at(M.c0) < 0) return { key, pre: '', mid: '', cards: html, next: '', K }; // no markers: every part as cards (never lose content)
+  const cards = html.slice(at(M.c0) + M.c0.length, at(M.c1)).replace(/^\s*<div class="cards">/, '').replace(/<\/div>\s*$/, '');
+  return { key, pre: html.slice(0, at(M.k0)), mid: html.slice(at(M.k1) + M.k1.length, at(M.c0)), cards, next: html.slice(at(M.c1) + M.c1.length), K };
+}
+const MAP_LAYERS0 = { gNet: true, gPre: true, gSub: true, gRing: true, gShared: true, gGen: false, gIbr: false };
+/** The network map's content: the model (views/grid-netmap.js) plus what the payloads place near the bus. */
+function gridMapSpec(m, subs, x, L) {
+  const b = m.bus, r = m.radius || 15, dLat = r / 69, dLon = r / (69 * Math.cos((b.lat * Math.PI) / 180));
+  const box = [[b.lon - dLon, b.lat - dLat], [b.lon + dLon, b.lat + dLat], ...m.fac.flatMap(l => [l.a, l.b])];
+  const sel = m.selected, layers = [], items = [];
+  if (L.gRing) layers.push({ kind: 'rings', center: [b.lon, b.lat], miles: [5, 10, r] });
+  if (L.gNet) { layers.push({ kind: 'lines', lines: m.net }); items.push({ label: `Network (${m.net.length})`, cls: 'gm-net', shape: 'line', fill: '#3a4d6b' }); }
+  if (L.gPre) { layers.push({ kind: 'lines', lines: m.fac.filter(l => /gm-pre/.test(l.cls)) }); items.push({ label: `Pre-existing overload (${m.counts.pre})`, shape: 'line', fill: 'var(--warn)' }); }
+  layers.push({ kind: 'lines', lines: m.fac.filter(l => /gm-lim/.test(l.cls) && !/gm-sel/.test(l.cls)) });
+  items.unshift({ label: `Limits this bus (${m.counts.lim})`, shape: 'line', fill: 'var(--bad)' });
+  if (L.gSub) { layers.push({ kind: 'points', points: subs.map(s => ({ lon: s.lon, lat: s.lat, r: 2.6, fill: 'var(--ink-4)', tip: substationTip(s) })) }); items.push({ label: 'Substation', fill: 'var(--ink-4)' }); }
+  if (L.gGen && x.gens.length) { layers.push({ kind: 'points', cls: 'g-gen', points: x.gens.map(g => ({ lon: g.lon, lat: g.lat, r: 3 + Math.min(7, Math.sqrt(Math.max(0, g.mw)) / 2.5), cls: 'g-gen', tip: `<b>Generation at ${esc(g.bus)}</b><br>${g.units.slice(0, 6).map(u => `${esc(u.name)}: ${n1(u.mw)} MW ${esc(String(u.status || '').toLowerCase())}`).join('<br>')}${g.units.length > 6 ? `<br>+${g.units.length - 6} more` : ''}<br>drawn at its connection bus` })) }); items.push({ label: 'Generators within 10 mi (at their bus; size = max MW)', fill: 'var(--gs-amber, #e0a63a)' }); }
+  if (L.gIbr && x.ibr.length) { layers.push({ kind: 'points', cls: 'g-ibr', points: x.ibr.map(u => ({ lon: u.lon, lat: u.lat, r: 4.5, cls: 'g-ibr', tip: `<b>${esc(u.name)}</b> · inverter-based (by name)<br>${n1(u.mw)} MW · ${esc(u.status || '')}${ok(u.mi) ? ` · ${u.mi.toFixed(1)} mi` : ''}<br>counts toward the weighted SCR indicator` })) }); items.push({ label: 'Inverter-based units (by name; weighted-SCR indicator)', fill: 'var(--s3, #2bb3a3)' }); }
+  if (L.gShared && x.shared.length) { layers.push({ kind: 'labels', labels: x.shared }); items.push({ label: 'N buses on a limiting line: the connection points it also limits (contested headroom)', fill: 'transparent', cls: 'g-shared-sw' }); }
+  if (sel && sel.drawn) { layers.push({ kind: 'lines', lines: m.fac.filter(l => l.key === sel.key) }, { kind: 'points', points: [sel.a, sel.b].map(q => ({ lon: q[0], lat: q[1], r: 4.5, cls: 'gm-sel', fill: 'var(--bad)', tip: `${esc(sel.label)} (selected)` })) }); items.push({ label: `Selected: ${sel.label}`, shape: 'line', fill: 'var(--bad)', cls: 'g-sel-sw' }); }
+  layers.push({ kind: 'points', points: [{ lon: b.lon, lat: b.lat, r: 6.5, cls: 'gm-sel', fill: 'var(--accent)', label: b.bus_name, tip: busTip(b) }] });
+  items.push({ label: 'This bus', fill: 'var(--accent)' });
+  return { box, layers, legend: { items }, title: `Network within ${r} mi of ${b.bus_name}` };
+}
+/** Right of the map: this bus's facilities in the cases its service uses (limiting first, tightest first); a row selects
+ *  its line on the map (the map line does the same), and the selected one's cases are listed under the list. */
+function facilitiesFloat(m, sharedOf) {
+  const sel = m.selected, list = m.facilities.slice().sort((x, y) => (y.limiting - x.limiting) || ((x.minTransfer ?? 1e9) - (y.minTransfer ?? 1e9)));
+  const rows = list.map(f => { const sh = sharedOf(f.key); return `<tr class="clickable${sel && sel.key === f.key ? ' sel' : ''}" data-act="grid-fac" data-v="${esc(f.key)}" data-fk="${esc(f.key)}" tabindex="0" title="${sel && sel.key === f.key ? 'Clear the selection' : 'Select to highlight its line on the map'}"><td><b>${esc(f.label)}</b><div class="audit-note" style="margin:0">${ok(f.kv) ? `${esc(f.kv)} kV · ` : ''}${esc(f.cases.map(c => c.caseLabel).join(', '))}${ok(f.mi) ? ` · ${f.mi.toFixed(1)} mi` : f.drawn ? '' : ' · not drawn'}${ok(sh) && sh > 1 ? ` · limits ${fmt.int(sh)} buses` : ''}</div></td><td class="num">${ok(f.minTransfer) ? fmt.mw(f.minTransfer) : '—'}</td><td>${f.limiting ? '<span class="pill warn">Limits</span>' : '<span class="pill warn">Pre-existing</span>'}</td></tr>`; }).join('');
+  const selBox = sel ? `<section class="mk-selb" aria-label="Selected facility"><h4>${esc(sel.label)} <span class="audit-note">${ok(sel.kv) ? `${esc(sel.kv)} kV · ` : ''}${sel.limiting ? 'limits this bus' : 'pre-existing overload'}${ok(sel.mi) ? ` · ${sel.mi.toFixed(1)} mi` : ''}${ok(sharedOf(sel.key)) ? ` · limits ${fmt.int(sharedOf(sel.key))} buses` : ''}</span></h4>${dense('<th>Case</th><th class="num">Rating</th><th class="num">Before</th><th class="num">DFAX</th><th class="num">Transfer</th>', sel.cases.map(c => `<tr><td class="wrap">${esc(c.caseLabel)}</td><td class="num">rate ${esc(c.rate)} ${ok(c.rating) ? fmt.int(c.rating) : 'n/h'}</td><td class="num">${ok(c.pct_loading_no_transfer) ? `${c.pct_loading_no_transfer.toFixed(1)}%` : 'not held'}</td><td class="num">${n3(c.dfax)}</td><td class="num">${ok(c.transfer_mw) ? fmt.mw(c.transfer_mw) : '—'}</td></tr>`).join(''))}${sel.drawn ? '' : '<p class="audit-note" style="margin:0">Not drawn: an end has no coordinate.</p>'}<button type="button" class="tiny" data-act="ui" data-k="gfac" data-v="" style="align-self:flex-start">Clear the selection</button></section>` : '';
+  return `<aside class="mk-float mk-fl" aria-label="This bus's limiting facilities" data-trace="g-netmap"><header class="mk-float-h"><h3>Limiting facilities</h3><span class="mk-float-sub">${esc(m.counts.lim)} limit · ${esc(m.counts.pre)} pre-existing · click to select</span><button type="button" class="mk-x" data-act="mk-float" data-k="gridList" data-v="0" aria-label="Fold the facilities" title="Fold">–</button></header>
+    <p class="mk-float-a">${netAnswer(m)}</p>
+    ${rows ? `<div class="table-wrap"><table class="dense"><thead><tr><th>Facility</th><th class="num">Limit</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>` : '<div class="notice">No limiting facility is listed for this bus in the cases this service uses.</div>'}
+    ${selBox}
+    <p class="card-f">Limit = the lowest transfer to 100% among the facility's rows that are not already overloaded. Pre-existing = |loading before the project| ≥ 100%. Contingencies, loading at the request and each row's record (Details) are in Constraints &amp; coverage, under the map.</p></aside>
+    <button type="button" class="mk-float-min mk-fl-min" data-act="mk-float" data-k="gridList" data-v="1" title="Show the limiting facilities">Facilities · ${esc(m.counts.lim)} limit ▸</button>`;
 }
 
 export function renderGrid(tab, ctx) {
   // fix-3 / nullmw: a project that does not hold its size is never screened at 0 MW (no margin, SCR ÷ 0, "Request 0 MW"
   // or slider default of 100): the one card, Decision's phrase.
   if (ctx.S && sizeNotHeld(ctx.S)) return sizeNotHeldCard(ctx.S);
-  const key = { capacity: 1, constraints: 1, cost: 1, mitigation: 1 }[tab] ? tab : 'capacity';
-  const html = ({ capacity: tabCapacity, constraints: tabConstraints, cost: tabCost, mitigation: tabMitigation })[key](ctx);
-  // S6 #2 / #7: a data centre gets the large-load cards on this tab and loses any generator-titled card.
-  return ctx.S?.tech === 'datacenter' ? withDcCards(dropGeneratorOnly(html), 'grid', key, ctx) : html;
+  const { S, data } = ctx;
+  const tech = techKey(S.tech), load = tech === 'datacenter';
+  // Every analysis computes on every render (capacity first: the limits the Economics hand-off sends; cost: the scenario
+  // Finance takes): the bar shows each one's result, and the Map tab its figures and inputs.
+  const P = Object.fromEntries(['capacity', 'constraints', 'cost', 'mitigation'].map(k => [k, partOf(k, ctx)]));
+  const val = (g, k) => valueOf(P[g].K[k]);
+  const fig = (g, ks) => ks.map(k => P[g].K[k]).filter(Boolean);
+  const req = load ? Number(S.importMW) : Number(S.exportMW);
+  const edits = Object.keys(S.ui.alloc?.[S.ui.allocKey] || {}).length, members = S.ui.gCluster ? parseCluster(S.ui.gCluster, S.nodeId).members.length : 0;
+  const rec = gridData('around', S.nodeId, 'gridnet'), mPend = pending(rec, 'the network around the bus');
+  const m = mPend ? null : netMapModel(rec.value, { tech, sel: S.ui.gfac });
+  const ctxRec = ctxOf(S, 'context'), cx = ctxRec.state === 'ok' ? ctxRec.value : null, v5 = v5Of(S).value || null;
+  const sharedOf = k => cx?.facilities?.find(f => f.key === k)?.shared?.buses ?? null;
+  // The four groups: what each strip pill and float section shows.
+  const G = [
+    { key: 'capacity', short: 'Limit', top: load ? ['import', 'margin'] : ['export', 'margin'], side: load ? ['export', 'envgap', 'scr', 'pre'] : ['import', 'envgap', 'scr', 'pre'],
+      chips: load && S.ui.llAppDate ? [gchip(`application ${S.ui.llAppDate}`, 'ui', 'llAppDate', '', 'Clear the large-load application date')] : [],
+      none: `${fmt.mw(req)} ${load ? 'import' : 'export'}${isStorage(S.tech) ? ` + ${fmt.mw(chargeMW(tech, S.exportMW, S.importMW))} charge` : ''} · ${TECH_WORD[S.tech] || S.tech}`,
+      result: `${load ? 'import' : 'export'} ${B(val('capacity', load ? 'import' : 'export'))} · margin ${B(val('capacity', 'margin'))}`,
+      body: `${load ? '' : `<div class="gx-slider"><span>Export request</span><input type="range" min="10" max="600" step="5" value="${Number(S.exportMW) || 100}" data-act="grid-size" data-live aria-label="Export request MW"><output>${Number(S.exportMW) || 100}</output><span>MW</span></div>`}${grab(P.capacity.cards, /<div class="handoff">[\s\S]*?<\/button><\/div>/)}` },
+    { key: 'constraints', short: 'Bottlenecks', top: ['lowest', 'overloaded'], side: ['pre', 'whole', 'pcr', 'leading'],
+      chips: [S.ui.gcase && CASE_LABEL[S.ui.gcase] ? gchip(`case: ${CASE_LABEL[S.ui.gcase]}`, 'ui', 'gcase', '', 'Back to the binding case') : '', m?.selected ? gchip(`selected: ${short(m.selected.label)}`, 'ui', 'gfac', '', 'Clear the selected facility') : '', S.ui.gper ? gchip(`period ${S.ui.gper}`, 'ui', 'gper', '', 'Back to the default period') : ''].filter(Boolean),
+      none: 'Binding case · no facility selected', result: `lowest ${B(val('constraints', 'lowest'))} · ${B(val('constraints', 'overloaded'))} overloaded`,
+      body: `${grab(P.constraints.cards, /<div class="segmented seg-sm" role="group"><button type="button" data-act="ui" data-k="gcase"[\s\S]*?<\/div>/) ? `<div class="mk-row"><span class="audit-note" style="margin:0">Case</span>${grab(P.constraints.cards, /<div class="segmented seg-sm" role="group"><button type="button" data-act="ui" data-k="gcase"[\s\S]*?<\/div>/)}</div>` : ''}${grab(P.constraints.cards, /<div class="segmented seg-sm" role="group"><button type="button" data-act="ui" data-k="gper"[\s\S]*?<\/div>/) ? `<div class="mk-row"><span class="audit-note" style="margin:0">Period</span>${grab(P.constraints.cards, /<div class="segmented seg-sm" role="group"><button type="button" data-act="ui" data-k="gper"[\s\S]*?<\/div>/)}</div>` : ''}` },
+    { key: 'cost', short: 'Upgrades', top: ['subtotal', 'status'], side: ['unpriced', 'perkw', 'next', 'planned'],
+      chips: [edits ? gchip(`${edits} cost edit${edits === 1 ? '' : 's'}`, 'alloc-reset', '', '', 'Reset to study values') : '', members ? gchip(`cluster: ${members} bus${members === 1 ? '' : 'es'}`, 'ui', 'gCluster', '', 'Clear the cluster') : ''].filter(Boolean),
+      none: 'Standalone: the project pays 100%', result: `${B(val('cost', 'subtotal'))} · ${esc(val('cost', 'status'))}`,
+      body: `${grab(P.cost.pre, /<div class="notice">Allocation scenario:[\s\S]*?<\/div>/)}<div class="mk-row"><button type="button" class="tiny" data-act="alloc-reset">Reset to study values</button></div>${grab(P.cost.cards, /<div class="handoff">[\s\S]*?<\/button><\/div>/)}` },
+    { key: 'mitigation', short: 'Phasing', top: ['largest', 'givenup'], side: ['atreq', 'curtail', 'pcrcurt', 'retire'],
+      chips: [], none: 'No inputs: every size is screened', result: `largest fit ${B(val('mitigation', 'largest'))}`, body: '' },
+  ].map(g => ({ ...g, label: groupLabel(g.key, S.tech), answer: firstAnswer(P[g.key].cards) }));
+  // The bar: the map, then the four analyses, each with its result and the inputs set in it (× clears one).
+  const ICON = { capacity: 'limit', constraints: 'bottleneck', cost: 'upgrade', mitigation: 'phase' };
+  const bar = categoryBar({ label: 'Grid: the map and the four analyses', tab, items: [
+    { id: 'map', icon: 'map', label: 'Map', title: 'The network around the bus, with the Grid inputs and the limiting facilities beside it', result: m ? `${B(fmt.int(m.counts.lim))} limiting · ${fmt.int(m.counts.pre)} pre-existing` : 'network loading' },
+    ...G.map(g => ({ id: g.key, icon: ICON[g.key], label: g.short, title: g.label, result: g.result, chips: g.chips, none: g.none })),
+  ] });
+  const enter = tabEnter('grid', tab);
+  if (tab !== 'map') {
+    // The analysis as it was before the map view (its tab function; the request slider and the network card included).
+    // S6 #2 / #7: a data centre gets the large-load cards on this tab and loses any generator-titled card.
+    const key = GROUPS.some(g => g.id === tab) ? tab : 'capacity';
+    let html;
+    AS_TAB = true;
+    try { html = TAB_FN[key](ctx); } finally { AS_TAB = false; }
+    if (load) html = withDcCards(dropGeneratorOnly(html), 'grid', key, ctx);
+    afterMapRender();
+    return `<div class="mk-wb mk-tabwrap grd-wb">${bar}<div class="mk-tabpage${enter}" data-tab="${key}">${html}</div></div>`;
+  }
+  const shut = S.ui.gridSec || {}, nSet = G.reduce((t, g) => t + g.chips.length, 0);
+  const inputs = `<aside class="mk-float mk-ff" aria-label="Grid inputs"><header class="mk-float-h"><h3>Grid inputs</h3><span class="mk-float-sub">${nSet ? `${nSet} set` : 'study values'} · a change redraws the map</span><button type="button" class="mk-x" data-act="mk-float" data-k="gridFilters" data-v="0" aria-label="Fold the Grid inputs" title="Fold">–</button></header>${G.map(g => `<section class="mk-sec" data-sec="${g.key}"${shut[g.key] ? ' data-shut' : ''}><button type="button" class="mk-sec-h" data-act="grid-sec" data-k="${g.key}" aria-expanded="${!shut[g.key]}"><span class="mk-sec-t">${esc(g.short)}</span><span class="mk-sec-r">${g.result}</span></button>${`<div class="mk-sec-b"><div class="kpis mk-sec-k">${fig(g.key, g.side).join('')}</div>${g.answer ? `<p class="mk-sec-a">${g.answer}</p>` : ''}${g.body}</div>`}</section>`).join('')}</aside>
+    <button type="button" class="mk-float-min mk-ff-min" data-act="mk-float" data-k="gridFilters" data-v="1" title="Show the Grid inputs">Grid inputs${nSet ? ` · ${nSet} set` : ''} ▸</button>`;
+  // The map: drawn at its own size, framed by the floats (views/mapview.js); a line or a row selects a facility (grid-fac).
+  const Lf = { ...MAP_LAYERS0, ...(S.ui.mapLayers || {}) }, idx = new Map((data.index || []).map(b => [String(b.id), b]));
+  const at = id => { const b = idx.get(String(id)); return b && ok(b.lat) && ok(b.lon) ? b : null; };
+  const gensAt = new Map();
+  for (const u of cx?.generators || []) { const b = at(u.bus_id); if (!b) continue; const e = gensAt.get(b.id) || { lat: b.lat, lon: b.lon, bus: b.name, mw: 0, units: [] }; e.mw += u.max_mw || 0; e.units.push({ name: u.name, mw: u.max_mw || 0, status: u.status }); gensAt.set(b.id, e); }
+  const ibr = (v5?.ibr || []).map(u => { const b = at(u.bus_id); return b ? { lat: b.lat, lon: b.lon, name: u.name, mw: u.mw, status: u.status, mi: u.mi } : null; }).filter(Boolean);
+  const shared = m ? m.fac.filter(l => /gm-lim/.test(l.cls) && l.a && l.b).map(l => ({ l, n: sharedOf(l.key) })).filter(x => ok(x.n) && x.n > 1).map(({ l, n }) => ({ lon: (l.a[0] + l.b[0]) / 2, lat: (l.a[1] + l.b[1]) / 2, text: `${fmt.int(n)} buses`, cls: 'g-shared' })) : [];
+  let mapHtml, legend = '', toggles = '';
+  if (m) {
+    const spec = gridMapSpec(m, rec.value.substations || [], { gens: [...gensAt.values()], ibr, shared }, Lf);
+    const drawn = frameMap('grid-map', mapGeom(), (gg, whole) => (whole ? geoMap : geoMapSvg)({ id: 'grid-map', width: gg.W, height: gg.H, extent: padExtent(boxOf(spec.box, 2), gg.W, gg.H, gg.pad), layers: spec.layers, title: spec.title }));
+    mapHtml = `<div class="mk-map-wrap">${drawn}${inputs}${facilitiesFloat(m, sharedOf)}</div>`;
+    legend = geoLegend(spec.legend);
+    toggles = [['gNet', 'Network', m.net.length], ['gPre', 'Pre-existing overloads', m.counts.pre], ['gSub', 'Substations', (rec.value.substations || []).length], ['gRing', 'Rings 5 / 10 / 15 mi'], ['gShared', 'Shared-limit labels', shared.length], ['gGen', 'Generators (10 mi)', gensAt.size], ['gIbr', 'Inverter-based units', ibr.length]]
+      .filter(([k, , c]) => !(['gShared', 'gGen', 'gIbr'].includes(k) && c === 0)) // nothing to place: no toggle
+      .map(([k, l, c]) => `<label class="inline-check" style="margin:0 10px 0 0"><input type="checkbox" data-act="map-layer" data-k="${k}" ${Lf[k] ? 'checked' : ''}> ${esc(l)}${ok(c) ? ` (${fmt.int(c)})` : ''}</label>`).join('');
+  } else mapHtml = `<div class="mk-map-wrap"><div class="map-wrap gx-map-pending">${mPend}</div>${inputs}</div>`;
+  const nd = m?.counts.branchNotDrawn;
+  const mapCard = card('mk-map', 'Network around the bus', `branches within ${m?.radius || 15} mi; this bus's limiting facilities and pre-existing overloads · click a line or a row to select`,
+    `${toggles ? `<div class="chip-row" style="display:flex;flex-wrap:wrap;align-items:center">${toggles}</div>` : ''}${mapHtml}${legend}`,
+    m ? `dim_branch (${m.counts.branches} within ${m.radius || 15} mi) placed from dim_bus latitude/longitude; fact_limiting_element for this bus. Tooltip rating: rate A for a base-case row, rate C for a contingency row. Pre-existing = |loading before the project| ≥ 100%. Not drawn: ${ok(nd) ? nd : 'not held'} branch(es) with an end inside ${m.radius || 15} mi whose other end has no coordinate${m.counts.facNotDrawn ? `, ${m.counts.facNotDrawn} facilit${m.counts.facNotDrawn === 1 ? 'y' : 'ies'} likewise` : ''}; ${m.counts.branchUnplaceable ?? 'not held'} branches ISO-wide have no placed end. Nothing is placed at 0,0. Shared-limit labels: the connection points whose element study lists the facility (context endpoint). Generators and inverter-based units are drawn at their bus (bus index). Scroll to zoom, drag to pan.` : '',
+    m?.selected ? '<button type="button" class="tiny" data-act="ui" data-k="gfac" data-v="">Clear selection</button>' : '',
+    { depth: 'screen', trace: 'g-netmap', answer: m ? netAnswer(m) + (m.selected ? ` Selected: ${B(m.selected.label)}${m.selected.drawn ? '' : ' (not drawn)'}.` : '') : '' });
+  const fold = v => (v === '0' ? '0' : v === '1' ? '1' : 'auto');
+  const answer = [firstAnswer(P.capacity.cards), firstAnswer(P.cost.cards)].filter(Boolean).join(' ');
+  afterMapRender('grid-map');
+  // The Map tab's one next step is the cost analysis's: deposits in Queue, or the load case in Economics.
+  return `<div class="mk-wb grd-wb" data-ff="${fold(S.ui.gridFilters)}" data-fl="${fold(S.ui.gridList)}">
+    ${bar}
+    <div class="mk-mappage${enter}">
+    ${answer ? `<p class="card-answer mk-wb-answer">${answer}</p>` : ''}
+    <div class="kpis">${G.flatMap(g => fig(g.key, g.top)).join('')}</div>
+    ${P.capacity.pre}${P.capacity.mid}
+    ${mapCard}
+    ${P.cost.next}
+    </div>
+  </div>`;
+}
+
+// Document-level and registered once (the board is rebuilt on every render): hovering a facility row lights its line on
+// the Map tab's map.
+if (typeof document !== 'undefined') {
+  const lit = k => { for (const l of document.querySelectorAll('svg[data-map="grid-map"] .m-hov')) l.classList.remove('m-hov'); if (k) for (const l of document.querySelectorAll(`svg[data-map="grid-map"] line[data-v="${CSS.escape(k)}"]`)) l.classList.add('m-hov'); };
+  document.addEventListener('pointerover', e => { const tr = e.target.closest?.('.grd-wb .mk-fl tr[data-fk]'); if (tr) lit(tr.dataset.fk); });
+  document.addEventListener('pointerout', e => { const tr = e.target.closest?.('.grd-wb .mk-fl tr[data-fk]'); if (tr && !tr.contains(e.relatedTarget)) lit(null); });
 }

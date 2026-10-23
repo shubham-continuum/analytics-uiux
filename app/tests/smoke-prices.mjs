@@ -63,7 +63,8 @@ for (const vp of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
 
   // Unredesigned dashboard loads the isolated legacy copy.
   await page.click('[data-act="stage"][data-v="market"]');
-  check((await page.locator('.tabs button').count()) === 4, `[${vp.width}] market shows its four analyzer tabs`);
+  // 2026-10-23: Market's tabs are its own bar (the map, then its four analyzer tabs), as Land's and Grid's are
+  check((await page.locator('.tabs button, .mk-bar .mk-tab-btn').count()) === 5, `[${vp.width}] market shows its map and four analyzer tabs`);
 
   const hscroll = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1);
   check(!hscroll, `[${vp.width}] no horizontal page scroll`);

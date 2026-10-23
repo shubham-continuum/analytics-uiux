@@ -196,7 +196,9 @@ function syncOption() { const p = walkProject(); if (!p?.user) return; S.walk.op
 /** The open project (user or Dummy sample) for the bridge and the inspector; null when none. */
 export const currentProject = () => walkProject();
 const stage = () => STAGES.find(s => s.key === S.stage) || STAGES[4];
-const activeTab = st => (st.view ? (st.view.tabs.find(t => t.id === S.tabs[st.key]) ? S.tabs[st.key] : st.view.tabs[0].id) : null);
+// A view may keep former tab ids as aliases (view.tabAlias, e.g. Market's find · rank · size · regions → map): the
+// alias resolves to its tab here, and the view reads the raw S.tabs value once to open the matching section.
+const activeTab = st => { if (!st.view) return null; const t = S.tabs[st.key]; if (st.view.tabs.find(x => x.id === t)) return t; const a = st.view.tabAlias?.[t] ?? st.view.tabAlias?.[String(t ?? '').toLowerCase()]; return a && st.view.tabs.find(x => x.id === a) ? a : st.view.tabs[0].id; };
 const node = () => D.nodes.find(n => String(n.id) === String(S.nodeId));
 const indexOf = id => D.index.find(n => n.id === String(id));
 
@@ -310,8 +312,8 @@ function chromeModel() {
     sweep, depth: S.depth, scopeOpen: !!S.ui.scopeOpen, guidedOn: !!(S.walk && !S.walkHidden), guidedStep: p?.steps?.length ? ` · ${(S.walk.step || 0) + 1}/${p.steps.length}` : '',
     guidedTitle: p ? (S.walkHidden ? 'Show the guided review bar (g)' : 'Hide the guided review bar (g)') : 'Choose a sample project and walk the seven dashboards (g)',
     score: { a: sent, b: 3, note: S.basis ? (S.basis.mode === 'forecast' ? `${S.basis.run} run` : `${S.basis.market} ${S.basis.years.length === 1 ? S.basis.years[0] : `${S.basis.years.length} yrs`}`) : '…', title: 'Hand-offs current for this bus and these inputs: Prices → Economics, Grid → Economics, Economics → Finance/Decision. No combined score: the preview never weights criteria into one number.' },
-    analyses: `${st.view?.tabs.length || 0} analyzers · ${cardsShown || '—'} cards · ${DEPTH_LABEL[S.depth]}`,
-    head: (() => { const tid = activeTab(st), tv = st.view?.tabs.find(x => x.id === tid); return { key: st.key, cfg: featureOn('configurator') && !!st.view, idx: STAGES.indexOf(st) + 1, name: st.name, question: STAGE_Q[st.key] || st.q, tabName: tv ? tabName(st.key, tid, S.tech, tabLabel(tv, S.tech)) : '', tabQ: TAB_Q[st.key]?.[tid] || '', tag: `${st.view?.tabs.length || 0} tabs`, depth: S.depth }; })(),
+    analyses: `${st.view?.tabs.length || 0} ${st.view?.tabs.length === 1 ? 'analyzer' : 'analyzers'} · ${cardsShown || '—'} cards · ${DEPTH_LABEL[S.depth]}`,
+    head: (() => { const tid = activeTab(st), tv = st.view?.tabs.find(x => x.id === tid); return { key: st.key, cfg: featureOn('configurator') && !!st.view, idx: STAGES.indexOf(st) + 1, name: st.name, question: STAGE_Q[st.key] || st.q, tabName: tv ? tabName(st.key, tid, S.tech, tabLabel(tv, S.tech)) : '', tabQ: TAB_Q[st.key]?.[tid] || '', tag: st.view?.tabs.length === 1 ? 'one view' : `${st.view?.tabs.length || 0} tabs`, depth: S.depth }; })(),
     band: {
       kill: { state: g.state, tone: g.fail ? 'bad' : g.pass === g.total && g.total ? 'ok' : 'warn', label: g.total ? g.label : (g.label || 'gates loading'),
         title: g.lines, text: g.kill, src: `${cur?.name || S.nodeId} ${cur?.kv ?? ''} kV · ${reqMW == null ? 'size not held' : `${reqMW} MW`} · ${CASE_LABEL[S.caseKey]}` },
@@ -374,11 +376,11 @@ function walkBar() {
   if (!p) return samplesState === 'loading' ? '' : `<section class="walk"><div class="walk-h"><span class="pill warn">Sample</span><span>The sample project "${esc(w.project)}" is not in data/samples.json.</span><div class="walk-nav"><button class="tiny quiet" data-act="walk-exit">Close</button></div></div></section>`;
   const n = p.steps.length, i = Math.min(w.step || 0, Math.max(0, n - 1)), r = n ? resolveStep(p.steps[i], STAGES) : null;
   const st = r && STAGES.find(s => s.key === r.stage), tb = st?.view?.tabs.find(t => t.id === r.tab);
-  const where = r ? `${st.name}${tb ? ` › ${tabLabel(tb, S.tech)}` : ''} · ${DEPTH_LABEL[r.depth]}` : 'no steps';
+  const where = r ? `${st.name}${tb ? ` › ${tabLabel(tb, S.tech)}` : ''}${r.focus ? ` · ${tabName(st.key, r.focus, S.tech)}` : ''} · ${DEPTH_LABEL[r.depth]}` : 'no steps';
   const off = r && (S.stage !== r.stage || (r.tab && activeTab(stage()) !== r.tab) || S.depth !== r.depth);
   const opt = p.options.find(o => o.id === w.option) || p.options[0];
   const mw = [p.exportMW ? `${p.exportMW} MW export` : '', p.importMW ? `${p.importMW} MW import` : ''].filter(Boolean).join(' · ');
-  const stops = p.steps.map((s, k) => { const rr = resolveStep(s, STAGES), ss = rr && STAGES.find(x => x.key === rr.stage), tt = ss?.view?.tabs.find(x => x.id === rr.tab); return `<option value="${k}" ${k === i ? 'selected' : ''}>${k + 1}. ${esc(ss?.name || s.stage)} / ${esc(tt ? tabLabel(tt, S.tech) : s.tab)}</option>`; }).join('');
+  const stops = p.steps.map((s, k) => { const rr = resolveStep(s, STAGES), ss = rr && STAGES.find(x => x.key === rr.stage), tt = ss?.view?.tabs.find(x => x.id === rr.tab); return `<option value="${k}" ${k === i ? 'selected' : ''}>${k + 1}. ${esc(ss?.name || s.stage)} / ${esc(tt ? tabLabel(tt, S.tech) : s.tab)}${rr?.focus ? ` · ${esc(tabName(ss.key, rr.focus, S.tech))}` : ''}</option>`; }).join('');
   return `<section class="walk" aria-label="Guided walkthrough">
     <div class="walk-h"><span class="pill good">Sample</span><b class="walk-name" title="${esc(p.narrative || '')}">${esc(p.name)}</b><span class="walk-meta">${esc([p.client_type, p.tech, mw].filter(Boolean).join(' · '))}</span>
       <label class="walk-opt">Option<select data-act="sample-opt">${p.options.map(o => `<option value="${esc(o.id)}" ${o.id === opt.id ? 'selected' : ''} title="${esc(o.note || '')}">${esc(o.label)} · ${esc(o.busId)}</option>`).join('')}</select></label>
@@ -430,9 +432,11 @@ function mainView() {
   const bl = busLoad.get(String(S.nodeId)), hl = busLoad.get('hub');
   if (bl instanceof Error || hl instanceof Error) return `${head}<div class="notice error" role="alert">Could not load data for this bus: ${esc((bl instanceof Error ? bl : hl).message)}. Pick another bus.</div>`;
   if (!busReady(S.nodeId)) return `${head}<div class="loading-panel" role="status"><span class="spinner" aria-hidden="true"></span><b>Loading hourly prices for ${esc(indexOf(S.nodeId)?.name || S.nodeId)}</b><span>Six years of history and five forecast runs are read from the local database: about 5–8 s the first time, instant after that.</span></div>`;
-  const tabs = `<div class="tabs" role="tablist">${st.view.tabs.map(t => `<button role="tab" aria-selected="${t.id === tab}" tabindex="${t.id === tab ? 0 : -1}" class="${t.id === tab ? 'active' : ''}" data-act="tab" data-v="${t.id}" title="${esc(TAB_Q[st.key]?.[t.id] || tabLabel(t, S.tech))}">${esc(tabName(st.key, t.id, S.tech, tabLabel(t, S.tech)))}</button>`).join('')}</div>`;
+  // A view with its own bar (Market, Land, Grid: the map and the categories as buttons, views/mapview.js) draws its tabs.
+  const tabs = st.view.tabs.length < 2 || st.view.ownTabs ? '' : `<div class="tabs" role="tablist">${st.view.tabs.map(t => `<button role="tab" aria-selected="${t.id === tab}" tabindex="${t.id === tab ? 0 : -1}" class="${t.id === tab ? 'active' : ''}" data-act="tab" data-v="${t.id}" title="${esc(TAB_Q[st.key]?.[t.id] || tabLabel(t, S.tech))}">${esc(tabName(st.key, t.id, S.tech, tabLabel(t, S.tech)))}</button>`).join('')}</div>`;
   let body;
   try { body = st.render(tab, { data: D, S, node: node(), ensureBus, busReady, busError, depth: S.depth, tech: S.tech, caseKey: S.caseKey, caseScenario: caseScenario(S.caseKey), hz: S.hz, hzRun: hzRun(S.hz) }); } catch (e) { console.error(e); body = `<div class="notice error" role="alert">Could not compute this analysis: ${esc(e.message)}</div>`; }
+  if (st.view.tabAlias?.[S.tabs[st.key]]) S.tabs[st.key] = tab; // a former tab id (an alias) is consumed by the one render that read it
   return `${head}${tabs}<section role="tabpanel">${body}</section>`;
 }
 
@@ -822,6 +826,26 @@ function renderBoard() {
   for (const cb of renderHooks) { try { cb(); } catch (e) { console.error(e); } }
 }
 
+// ---------- Map views: panel and group toggles drawn in place ----------
+// Folding a filter group or a whole panel on the map changes nothing but what is shown, so it never rebuilds the board:
+// the attribute changes, CSS animates it, the map and the scroll stay where they are, and the state is saved.
+function secInPlace(key, el) {
+  const o = (S.ui[key] ||= {}), k = el.dataset.k; o[k] = !o[k];
+  const sec = el.closest('.mk-sec');
+  if (!sec?.querySelector(':scope > .mk-sec-b')) return; // not drawn yet: the render draws it
+  sec.toggleAttribute('data-shut', !!o[k]); el.setAttribute('aria-expanded', String(!o[k]));
+  save(); return 'no-render';
+}
+const FLOAT_KEYS = { mktFilters: 'ff', landFilters: 'ff', gridFilters: 'ff', mktList: 'fl', landList: 'fl', gridList: 'fl' };
+function floatInPlace(k, v) {
+  if (!FLOAT_KEYS[k]) return;
+  S.ui[k] = v === '1' ? '1' : '0';
+  const wb = document.querySelector('.gsx-an .mk-wb[data-ff]');
+  if (!wb) return;
+  wb.dataset[FLOAT_KEYS[k]] = S.ui[k];
+  save(); return 'no-render';
+}
+
 // ---------- Events ----------
 function draft() { S.draft = S.draft || structuredClone(S.basis); return S.draft; }
 function resetBasisForNode() {
@@ -877,7 +901,7 @@ function goStep(i, { fresh = false, link = false } = {}) {
   S.ui.dOpts = P.dOpts.slice(0, 2);
   if (P.depth) S.depth = P.depth;
   if (P.stage) {
-    if (P.tab) S.tabs[P.stage] = P.tab;
+    if (P.tab) S.tabs[P.stage] = P.focus || P.tab; // focus = a former tab id the view reads once (ui.resolveStep tabAlias)
     if (ONLY && P.stage !== ONLY) { leave(P.stage, P.tab); return 'left'; }
     S.stage = P.stage;
   }
@@ -1068,6 +1092,12 @@ const ACTIONS = {
   'mkt-zone': (v, el) => { const m = (S.ui.mkt ||= {}); m.zones = el.checked ? [...new Set([...(m.zones || []), v])] : (m.zones || []).filter(z => z !== v); },
   'mkt-shoulder': (v, el) => { (S.ui.mkt ||= {}).shoulder = el.checked; },
   'mkt-own': (v, el) => { (S.ui.mkt ||= {}).ownPrice = el.checked; },
+  'mkt-sec': (v, el) => secInPlace('mktSec', el), // Market filters: fold or unfold one group (in place)
+  'land-sec': (v, el) => secInPlace('landSec', el), // Land inputs: fold or unfold one group (in place)
+  'grid-sec': (v, el) => secInPlace('gridSec', el), // Grid inputs: fold or unfold one group (in place)
+  'mk-float': (v, el) => floatInPlace(el.dataset.k, v), // a map view's panel folded or shown (in place)
+  'mk-chip': (v, el) => { const fn = ACTIONS[el.dataset.a]; return fn && el.dataset.a !== 'mk-chip' ? fn(v, el) : 'no-render'; }, // a chip in the stage bar: its input's own action
+  'land-site-clear': () => { const L = (S.ui.land ||= {}); L.siteLat = undefined; L.siteLon = undefined; }, // Land strip: remove the placed site (as clearing both fields)
   'mkt-pri': (v, el) => { const m = (S.ui.mkt ||= {}); const cur = m.pri?.length ? m.pri : ['margin', 'price']; m.pri = el.checked ? [...new Set([...cur, v])].slice(0, 3) : cur.filter(x => x !== v); },
   'pick-bus': v => { S.nodeId = v; S.basis = null; S.tabs.grid = 'capacity'; if (ONLY && ONLY !== 'grid') { leave('grid', 'capacity'); return; } S.stage = 'grid'; toast('Candidate set. Opened in Grid.'); },
   'q-whatif': (v, el) => { S.ui.qWhatIf = el.checked; },

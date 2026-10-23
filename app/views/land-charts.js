@@ -70,6 +70,53 @@ export function siteGeoMap(node, site, stations, { mw, fmtHr, discMi = null, W =
     .replace('<svg data-map=', `<svg data-site-map data-lon0="${a.lon0}" data-lat0="${a.lat0}" data-span="${a.span}" data-lspan="${a.lspan}" data-map=`);
 }
 
+/**
+ * v7 (2026-10-22): the content of the one-view Land map (views/land.js draws it at the map's own pixel size, framed by
+ * views/mapview.js in the room its floating panels leave). Layers, bottom to top: the screening disc with its clear block,
+ * distance rings 3 / 6 / 9 mi, the project's land need as an equal-area circle (at the placed site, else at the bus; a
+ * scale, not a parcel), model buses and generation within 10 mi (bus-index coordinates; a generator is drawn at its
+ * connection bus), screened buses with their clear share, stations by whether they clear the request, the placed
+ * site's tie with its length, then the bus and the site. Each layer but the bus and the site follows its flag in L.
+ * Returns the box to frame (the bus's outer ring and the placed site), the layers, the legend and the title.
+ */
+export function landMapSpec(node, site, stations, { mw, fmtHr, sc = null, fp = null, L = {}, screened = [], gens = [], mbuses = [], tieLabel = '' }) {
+  if (!ok(node?.latitude) || !ok(node?.longitude)) return null;
+  const bus = [node.longitude, node.latitude], hasSite = ok(site?.lat) && ok(site?.lon);
+  const col = { Fits: 'var(--ok)', 'Does not fit': 'var(--bad)' }, word = { Fits: 'fits (element study)', 'Does not fit': 'does not fit (element study)', 'Envelope only': 'envelope only (Hold)', Hold: 'Hold (element limit not published)', 'Not studied': 'not studied', 'Partly studied': 'partly studied (Hold)', 'Not requested': 'not requested' };
+  const layers = [], items = [];
+  if (L.disc && sc && ok(sc.radiusMi)) {
+    layers.push({ kind: 'rings', center: bus, miles: [sc.radiusMi], cls: 'l-disc', labels: [`${sc.radiusMi}-mi screening disc${ok(sc.clear) ? ` · ${acres(sc.clear)} clear block` : ''}`], tip: `Screening disc, ${sc.radiusMi} mi around the bus: ${ok(sc.gross) ? acres(sc.gross) : 'area not held'}${ok(sc.clear) ? `, largest block outside habitat/protected land ${acres(sc.clear)} (an upper bound)` : ''}. Exclusion shapes are not held, so the block is not drawn.` });
+    items.push({ label: `screening disc ${sc.radiusMi} mi (acres held, shapes not held)`, fill: 'color-mix(in srgb, var(--ok) 22%, transparent)' });
+  }
+  if (L.rings) { layers.push({ kind: 'rings', center: bus, miles: [3, 6, 9] }); items.push({ label: 'rings 3 / 6 / 9 mi', shape: 'line', fill: 'var(--border-3)' }); }
+  if (L.foot && fp && ok(fp.base) && fp.base > 0) {
+    const r = Math.sqrt(fp.base / 640 / Math.PI);
+    layers.push({ kind: 'rings', center: hasSite ? [site.lon, site.lat] : bus, miles: [r], cls: 'l-foot', labels: [`${acres(fp.base)} need`], tip: `Land need at base: ${acres(fp.base)} (range ${ok(fp.low) ? acres(fp.low) : '—'}–${ok(fp.high) ? acres(fp.high) : '—'}), drawn as a circle of equal area ${hasSite ? 'at the placed site' : 'at the bus'}: a scale, not a parcel or a layout` });
+    items.push({ label: `land need ${acres(fp.base)} (equal-area circle, a scale)`, fill: 'color-mix(in srgb, var(--s2) 30%, transparent)' });
+  }
+  if (L.mbus && mbuses.length) { layers.push({ kind: 'points', cls: 'l-mbus', points: mbuses.map(b => ({ lon: b.lon, lat: b.lat, r: 2.2, cls: 'l-mbus', tip: `<b>${esc(b.name)}</b> ${esc(b.kv ?? '?')} kV<br>${ok(b.mi) ? `${b.mi.toFixed(1)} mi · ` : ''}model bus${b.spine ? ' on the spine' : ''}` })) }); items.push({ label: 'model buses within 10 mi', fill: 'var(--ink-3)' }); }
+  if (L.gen && gens.length) { layers.push({ kind: 'points', cls: 'l-gen', points: gens.map(g => ({ lon: g.lon, lat: g.lat, r: 3 + Math.min(7, Math.sqrt(Math.max(0, g.mw)) / 2.5), cls: 'l-gen', tip: `<b>Generation at ${esc(g.bus)}</b><br>${g.plants.map(p => `${esc(p.name)}: ${p.mw.toFixed(1)} MW ${esc(p.status.toLowerCase())}`).slice(0, 6).join('<br>')}${g.plants.length > 6 ? `<br>+${g.plants.length - 6} more` : ''}<br>drawn at its connection bus` })) }); items.push({ label: 'generation within 10 mi (at its bus; size = max MW)', fill: 'var(--gs-amber, #e0a63a)' }); }
+  if (L.scr && screened.length) { layers.push({ kind: 'points', cls: 'l-scr', points: screened.map(s => ({ lon: s.lon, lat: s.lat, r: 4.5, cls: 'l-scr', tip: `<b>${esc(s.name)}</b> ${esc(s.kv ?? '?')} kV · screened<br>${ok(s.share) ? `${s.share.toFixed(1)}% of its ${esc(s.radius)}-mi disc is the largest block (${acres(s.clear)})` : 'block not held'}<br>${esc(s.fits)} on the screen (upper bound)`, label: s.label || '' })) }); items.push({ label: 'screened buses (exclusion screen held)', fill: 'transparent', cls: 'l-scr' }); }
+  if (L.st) {
+    const seen = new Set();
+    const pts = (stations || []).filter(s => ok(s.lat) && ok(s.lon)).map((s, i) => {
+      const k = `${s.lat}|${s.lon}`, lab = i < 6 && !seen.has(k); seen.add(k); const d = ok(s.d) ? s.d : s.mi;
+      return { lon: s.lon, lat: s.lat, r: s.kv >= 300 ? 5.5 : 4, fill: col[s.clears] || 'var(--ink-4)', v: s.key, label: lab ? `${s.name} ${s.kv}` : '', tip: `<b>${esc(s.name)}</b> ${esc(s.kv)} kV<br>${ok(d) ? `${d.toFixed(1)} mi · ` : ''}${esc(fmtHr(s.hr))}<br>request ${esc(mw)} MW: ${esc(word[s.clears] || 'unknown')}` };
+    });
+    layers.push({ kind: 'points', points: pts });
+    items.unshift({ label: `fits ${mw} MW (element study)`, fill: 'var(--ok)' }, { label: 'does not fit (element study)', fill: 'var(--bad)' }, { label: 'Hold: envelope only, not published or not studied', fill: 'var(--ink-4)' });
+  }
+  if (hasSite) {
+    layers.push({ kind: 'lines', lines: [{ a: bus, b: [site.lon, site.lat], cls: 'gm-tie', w: 2, tip: 'Straight-line tie from the site to the bus' }] });
+    if (tieLabel) layers.push({ kind: 'labels', labels: [{ lon: (bus[0] + site.lon) / 2, lat: (bus[1] + site.lat) / 2, text: tieLabel, cls: 'l-tie-lab' }] });
+  }
+  layers.push({ kind: 'points', points: [{ lon: bus[0], lat: bus[1], r: 7, fill: 'var(--accent)', label: `${node.name} (bus)`, tip: `<b>${esc(node.name)}</b> (this bus)` }, ...(hasSite ? [{ lon: site.lon, lat: site.lat, r: 7, fill: 'var(--s2)', label: 'Site', tip: `Placed site ${site.lat}, ${site.lon}` }] : [])] });
+  items.push({ label: 'this bus', fill: 'var(--accent)' }, ...(hasSite ? [{ label: 'placed site', fill: 'var(--s2)' }] : []));
+  const R = 9, dLat = R / 69, dLon = R / (69 * 0.725374);
+  const box = [[bus[0] - dLon, bus[1]], [bus[0] + dLon, bus[1]], [bus[0], bus[1] - dLat], [bus[0], bus[1] + dLat], ...(hasSite ? [[site.lon, site.lat]] : [])];
+  return { box, layers, legend: { items }, title: 'Site map: click to place the site' };
+}
+
 /** Scoped styles for the graphics above (only land-* classes; the shell owns app.css). */
 // Land's styles moved to studio-bridge.css (v6 shell: no inline <style> blocks in views).
 export const LAND_CSS = '';
